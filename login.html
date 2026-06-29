@@ -81,11 +81,10 @@
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
       padding: var(--spacing-md);
     }
@@ -125,7 +124,7 @@
 
     .login-title {
       font-size: 24px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text);
       margin-bottom: var(--spacing-sm);
     }
@@ -133,7 +132,6 @@
     .login-subtitle {
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: var(--spacing-md);
     }
 
     .login-form {
@@ -150,20 +148,20 @@
 
     .form-label {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text);
-      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .form-input {
-      width: 100%;
-      padding: var(--spacing-md);
-      background-color: var(--bg-main);
+      background-color: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+      padding: var(--spacing-md) var(--spacing-md);
       color: var(--text);
       font-size: 14px;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition: all var(--transition-fast);
       font-family: inherit;
     }
 
@@ -174,6 +172,7 @@
     .form-input:focus {
       outline: none;
       border-color: var(--primary);
+      background-color: rgba(212, 175, 55, 0.05);
       box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
     }
 
@@ -182,39 +181,43 @@
     }
 
     .login-button {
-      width: 100%;
-      padding: var(--spacing-md);
-      background-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
       color: var(--bg-main);
       border: none;
       border-radius: var(--radius-md);
+      padding: var(--spacing-md) var(--spacing-lg);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: background-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+      transition: all var(--transition-fast);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       box-shadow: var(--shadow-md);
-      font-family: inherit;
+      margin-top: var(--spacing-sm);
     }
 
     .login-button:hover {
-      background-color: var(--primary-hover);
-      box-shadow: 0 6px 12px rgba(212, 175, 55, 0.2);
       transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(212, 175, 55, 0.2);
     }
 
     .login-button:active {
       transform: translateY(0);
-      box-shadow: var(--shadow-md);
     }
 
     .login-footer {
-      text-align: center;
       margin-top: var(--spacing-xl);
       padding-top: var(--spacing-lg);
       border-top: 1px solid var(--border);
+      text-align: center;
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.8;
+    }
+
+    .login-footer-note {
+      color: var(--accent-dark);
+      font-style: italic;
     }
 
     @media (max-width: 480px) {
@@ -226,19 +229,8 @@
         font-size: 20px;
       }
 
-      .login-header {
-        margin-bottom: var(--spacing-lg);
-      }
-
-      .login-form {
-        gap: var(--spacing-md);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .form-input,
       .login-button {
-        transition: none;
+        padding: var(--spacing-md) var(--spacing-md);
       }
     }
   </style>
@@ -289,7 +281,9 @@
       </form>
 
       <div class="login-footer">
-        <p>※ サンプル実装ではどの入力でもログインできます</p>
+        <p class="login-footer-note">
+          ※ サンプル実装ではどの入力でもログインできます
+        </p>
       </div>
     </div>
   </div>

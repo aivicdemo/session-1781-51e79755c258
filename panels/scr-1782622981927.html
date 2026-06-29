@@ -10,21 +10,21 @@
   --primary-hover: #c9a23e;
   --bg-main: #0f0e0a;
   --bg-card: #1a1815;
-  --bg-sidebar: #161410;
-  --top-bar-bg: #1c1a15;
-  --border: #3d3a2f;
-  --text: #f5f5f0;
+  --bg-sidebar: #151410;
+  --top-bar-bg: #1a1815;
+  --border: #3d3a32;
+  --text: #f5f3f0;
   --text-muted: #a89968;
-  --top-bar-border: #3d3a2f;
-  --accent-silver: #c0c0c0;
-  --accent-silver-hover: #d3d3d3;
-  --success: #7cb342;
-  --warning: #ffa726;
-  --error: #e53935;
-  --info: #29b6f6;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 12px rgba(212, 175, 55, 0.15);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --top-bar-border: #3d3a32;
+  --secondary: #c0c0c0;
+  --secondary-hover: #a8a8a8;
+  --success: #6ba587;
+  --warning: #d4a574;
+  --error: #c97070;
+  --info: #7ba3b8;
+  --shadow: rgba(0, 0, 0, 0.6);
+  --overlay: rgba(212, 175, 55, 0.08);
+  --divider: #2a2620;
 }
 
 * {
@@ -34,44 +34,44 @@
 }
 
 html, body {
-  width: 100%;
   height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   background: var(--bg-main);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   font-size: 13px;
   line-height: 1.4;
 }
 
-body {
+.shell-container {
   display: flex;
+  height: 100vh;
   flex-direction: column;
 }
 
-.app-header {
+.top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 48px;
   padding: 0 20px;
+  height: 48px;
   background: var(--top-bar-bg);
   border-bottom: 1px solid var(--top-bar-border);
   flex-shrink: 0;
 }
 
-.app-logo {
+.logo {
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 600;
   font-size: 14px;
-  color: var(--primary);
+  letter-spacing: 0.5px;
 }
 
-.app-logo-icon {
+.logo-icon {
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, var(--primary), var(--accent-silver));
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -81,7 +81,7 @@ body {
   color: var(--bg-main);
 }
 
-.header-actions {
+.top-bar-right {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -98,23 +98,23 @@ body {
 }
 
 .user-menu:hover {
-  background: rgba(212, 175, 55, 0.1);
+  background: var(--overlay);
 }
 
 .user-avatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 3px;
   background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--bg-main);
 }
 
-.main-container {
+.main-wrapper {
   display: flex;
   flex: 1;
   overflow: hidden;
@@ -124,55 +124,53 @@ body {
   width: 220px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
   overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .sidebar-section {
   padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
 }
 
-.sidebar-section:last-child {
-  border-bottom: none;
+.sidebar-section:first-child {
+  padding-top: 16px;
 }
 
 .sidebar-label {
-  padding: 8px 16px;
+  padding: 0 16px;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
   color: var(--text-muted);
+  text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 8px;
 }
 
-.sidebar-item {
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-left: 2px solid transparent;
-  font-size: 13px;
-  color: var(--text);
+.nav-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 8px 16px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+  border-left: 2px solid transparent;
 }
 
-.sidebar-item:hover {
-  background: rgba(212, 175, 55, 0.08);
+.nav-item:hover {
+  background: var(--overlay);
+  color: var(--text);
+}
+
+.nav-item.aivic-active {
+  background: var(--overlay);
   color: var(--primary);
-}
-
-.sidebar-item.aivic-active {
-  background: rgba(212, 175, 55, 0.15);
   border-left-color: var(--primary);
-  color: var(--primary);
-  font-weight: 500;
 }
 
-.sidebar-icon {
+.nav-icon {
   width: 16px;
   height: 16px;
   display: flex;
@@ -183,35 +181,35 @@ body {
 
 .content-area {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  background: var(--bg-main);
 }
 
 [data-aivic-panel] {
-  flex: 1;
-  overflow: auto;
-  padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 
 .page-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  gap: 16px;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-main);
 }
 
 .page-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--text);
+  margin-bottom: 4px;
 }
 
 .page-subtitle {
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 2px;
+}
+
+.page-body {
+  padding: 20px 28px;
 }
 
 .kpi-grid {
@@ -234,21 +232,18 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 6px;
+  font-weight: 600;
 }
 
 .kpi-value {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: var(--primary);
+  margin-bottom: 4px;
 }
 
 .kpi-change {
   font-size: 11px;
-  margin-top: 4px;
-  color: var(--text-muted);
-}
-
-.kpi-change.positive {
   color: var(--success);
 }
 
@@ -256,24 +251,11 @@ body {
   color: var(--error);
 }
 
-.section-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 12px;
-  margin-top: 16px;
-}
-
-.section-title:first-child {
-  margin-top: 0;
-}
-
 .table-wrapper {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 16px;
 }
 
 table {
@@ -283,7 +265,7 @@ table {
 }
 
 thead {
-  background: rgba(212, 175, 55, 0.08);
+  background: var(--bg-main);
   border-bottom: 1px solid var(--border);
 }
 
@@ -291,7 +273,7 @@ th {
   padding: 10px 12px;
   text-align: left;
   font-weight: 600;
-  color: var(--primary);
+  color: var(--text-muted);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -299,31 +281,55 @@ th {
 
 td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
   color: var(--text);
-}
-
-tbody tr:last-child td {
-  border-bottom: none;
 }
 
 tbody tr:hover {
-  background: rgba(212, 175, 55, 0.05);
+  background: var(--overlay);
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(107, 165, 135, 0.15);
+  color: var(--success);
+}
+
+.badge-warning {
+  background: rgba(212, 165, 116, 0.15);
+  color: var(--warning);
+}
+
+.badge-error {
+  background: rgba(201, 112, 112, 0.15);
+  color: var(--error);
+}
+
+.badge-info {
+  background: rgba(123, 163, 184, 0.15);
+  color: var(--info);
 }
 
 .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
-label {
+.form-label {
   display: block;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-input, select, textarea {
+.form-input, .form-select, .form-textarea {
   width: 100%;
   padding: 8px 10px;
   background: var(--bg-main);
@@ -332,34 +338,31 @@ input, select, textarea {
   color: var(--text);
   font-size: 12px;
   font-family: inherit;
-  transition: border 0.2s;
+  transition: border-color 0.2s;
 }
 
-input:focus, select:focus, textarea:focus {
+.form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
 }
 
-input::placeholder {
-  color: var(--text-muted);
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
-.button-group {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-button {
-  padding: 8px 16px;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
   border: none;
   border-radius: 4px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: inherit;
+  text-decoration: none;
 }
 
 .btn-primary {
@@ -372,145 +375,34 @@ button {
 }
 
 .btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.btn-secondary:hover {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: var(--primary);
-}
-
-.btn-danger {
-  background: var(--error);
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #d32f2f;
-}
-
-.btn-small {
-  padding: 4px 8px;
-  font-size: 11px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 10px;
-  font-weight: 500;
-}
-
-.badge-success {
-  background: rgba(124, 179, 66, 0.2);
-  color: var(--success);
-}
-
-.badge-warning {
-  background: rgba(255, 167, 38, 0.2);
-  color: var(--warning);
-}
-
-.badge-error {
-  background: rgba(229, 57, 53, 0.2);
-  color: var(--error);
-}
-
-.badge-info {
-  background: rgba(41, 182, 246, 0.2);
-  color: var(--info);
-}
-
-.tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
-}
-
-.tab {
-  padding: 10px 16px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-
-.tab:hover {
-  color: var(--text);
-}
-
-.tab.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
-}
-
-.stepper {
-  display: flex;
-  gap: 0;
-  margin-bottom: 24px;
-  align-items: center;
-}
-
-.step {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-}
-
-.step-number {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.step.active .step-number {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--secondary);
   color: var(--bg-main);
 }
 
-.step.completed .step-number {
-  background: var(--success);
-  border-color: var(--success);
-  color: white;
+.btn-secondary:hover {
+  background: var(--secondary-hover);
 }
 
-.step-label {
-  font-size: 12px;
-  font-weight: 500;
+.btn-ghost {
+  background: transparent;
   color: var(--text-muted);
+  border: 1px solid var(--border);
 }
 
-.step.active .step-label {
-  color: var(--primary);
+.btn-ghost:hover {
+  background: var(--overlay);
+  color: var(--text);
 }
 
-.step-connector {
-  flex: 1;
-  height: 2px;
-  background: var(--border);
-  margin: 0 8px;
+.btn-small {
+  padding: 5px 10px;
+  font-size: 11px;
 }
 
-.step.completed .step-connector {
-  background: var(--success);
+.btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .modal-overlay {
@@ -530,7 +422,6 @@ button {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 20px;
   max-width: 500px;
   width: 90%;
   max-height: 80vh;
@@ -538,190 +429,212 @@ button {
 }
 
 .modal-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
   font-size: 14px;
   font-weight: 600;
-  margin-bottom: 12px;
   color: var(--text);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .modal-body {
-  margin-bottom: 16px;
-  font-size: 12px;
-  color: var(--text);
+  padding: 16px;
 }
 
 .modal-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
   display: flex;
   gap: 8px;
   justify-content: flex-end;
 }
 
-.chart-container {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 14px;
-  margin-bottom: 16px;
-  min-height: 200px;
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  gap: 0;
 }
 
-.chart-title {
+.tab {
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
   font-size: 12px;
   font-weight: 600;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab:hover {
   color: var(--text);
-  margin-bottom: 12px;
 }
 
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  color: var(--text-muted);
-  text-align: center;
+.tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
-.empty-state-icon {
-  font-size: 32px;
-  margin-bottom: 12px;
-  opacity: 0.5;
+.tab-content {
+  display: none;
 }
 
-.empty-state-text {
-  font-size: 12px;
-  margin-bottom: 8px;
+.tab-content.active {
+  display: block;
 }
 
-.search-box {
+.search-bar {
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
 }
 
-.search-box input {
+.search-input {
   flex: 1;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 12px;
 }
 
-.filter-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
+.search-input::placeholder {
+  color: var(--text-muted);
 }
 
 .filter-chip {
-  padding: 6px 12px;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid var(--primary);
-  border-radius: 4px;
-  font-size: 11px;
-  color: var(--primary);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.filter-chip:hover {
-  background: rgba(212, 175, 55, 0.2);
-}
-
-.filter-chip.active {
-  background: var(--primary);
-  color: var(--bg-main);
-}
-
-.split-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  height: 100%;
-}
-
-.split-left, .split-right {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.list-item {
-  padding: 10px 12px;
-  background: var(--bg-card);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--overlay);
   border: 1px solid var(--border);
   border-radius: 4px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.list-item:hover {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: var(--primary);
-}
-
-.list-item.active {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: var(--primary);
-}
-
-.list-item-title {
-  font-weight: 500;
+  font-size: 11px;
   color: var(--text);
+}
+
+.filter-chip-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
   font-size: 12px;
 }
 
-.list-item-subtitle {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.action-menu {
+.stepper {
   display: flex;
-  gap: 4px;
+  gap: 0;
+  margin-bottom: 24px;
 }
 
-.action-btn {
-  padding: 4px 8px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  color: var(--text);
-  cursor: pointer;
+.stepper-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 11px;
-  transition: all 0.2s;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
 }
 
-.action-btn:hover {
-  background: rgba(212, 175, 55, 0.1);
+.stepper-item.active .stepper-number {
+  background: var(--primary);
   border-color: var(--primary);
+  color: var(--bg-main);
+}
+
+.stepper-item.completed .stepper-number {
+  background: var(--success);
+  border-color: var(--success);
+  color: var(--bg-main);
+}
+
+.stepper-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stepper-item.active .stepper-label {
   color: var(--primary);
 }
 
-.status-indicator {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 4px;
+.stepper-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 8px;
 }
 
-.status-indicator.active {
+.stepper-item.completed .stepper-line {
   background: var(--success);
 }
 
-.status-indicator.pending {
-  background: var(--warning);
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.status-indicator.inactive {
-  background: var(--text-muted);
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.card-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
   font-size: 12px;
 }
 
@@ -734,90 +647,112 @@ button {
 }
 
 .stat-value {
+  color: var(--text);
   font-weight: 600;
-  color: var(--text);
 }
 
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background: var(--bg-main);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 4px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--primary);
-  transition: width 0.3s;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: help;
-}
-
-.tooltip-text {
-  visibility: hidden;
-  background: rgba(0, 0, 0, 0.8);
-  color: var(--text);
+.empty-state {
   text-align: center;
-  padding: 4px 8px;
-  border-radius: 3px;
-  position: absolute;
-  z-index: 100;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 11px;
-}
-
-.tooltip:hover .tooltip-text {
-  visibility: visible;
-}
-
-.divider {
-  height: 1px;
-  background: var(--border);
-  margin: 12px 0;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-muted {
+  padding: 40px 20px;
   color: var(--text-muted);
 }
 
-.text-primary {
-  color: var(--primary);
+.empty-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.5;
 }
 
-.text-success {
-  color: var(--success);
+.empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
 }
 
-.text-error {
-  color: var(--error);
+.empty-desc {
+  font-size: 12px;
+  margin-bottom: 16px;
 }
 
-.mt-8 { margin-top: 8px; }
-.mt-12 { margin-top: 12px; }
-.mt-16 { margin-top: 16px; }
-.mb-8 { margin-bottom: 8px; }
-.mb-12 { margin-bottom: 12px; }
-.mb-16 { margin-bottom: 16px; }
-.gap-8 { gap: 8px; }
-.gap-12 { gap: 12px; }
+.action-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
 
+.scrollable-x {
+  overflow-x: auto;
+}
+
+.inline-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.status-dot.active {
+  background: var(--success);
+}
+
+.status-dot.pending {
+  background: var(--warning);
+}
+
+.status-dot.error {
+  background: var(--error);
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 180px;
+  }
+  .grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-wrapper {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-section {
+    display: inline-block;
+    padding: 0 16px;
+    border: none;
+    margin-right: 16px;
+  }
+  .sidebar-label {
+    display: none;
+  }
+  .nav-item {
+    display: inline-flex;
+    padding: 8px 12px;
+  }
+  .grid-2col, .grid-3col {
+    grid-template-columns: 1fr;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
   </style>
   
 <script>
@@ -826,7 +761,7 @@ window.AIVIC_APP_ID = "session-1781935010162";
 window.AIVIC_APPLICATION_NAME = "匠の案件管理";
 window.AIVIC_SYSTEM_NAME = "営業成果レポート自動生成・配信システム";
 window.AIVIC_TABLES = [{"tableName":"ユーザー","purpose":"営業データ品質管理・請求自動化システムのユーザー管理。ユーザーの認証、権限管理、組織所属、請求情報の関連付けを行う。","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーの一意識別子"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーのメールアドレス（ログイン用、一意）"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ユーザーの表示名"},{"name":"パスワードハッシュ","type":"varchar(100)","required":true,"description":"ハッシュ化されたパスワード"},{"name":"組織ID","type":"uuid","required":true,"description":"所属する組織の識別子"},{"name":"役割","type":"varchar(100)","required":true,"description":"ユーザーの役割（管理者、営業、請求担当者等）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"ユーザーのステータス（有効、無効、保留中）"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"最後にログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザーレコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザーレコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーレコードを作成したユーザーID"}]},{"tableName":"営業活動","purpose":"営業担当者の日々の営業活動を記録し、成果レポート生成の基礎データとなるトランザクションテーブル","columns":[{"name":"営業活動ID","type":"uuid","required":true,"description":"営業活動の一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"営業担当者のユーザーID（ユーザーテーブルへの外部キー）"},{"name":"活動日","type":"timestamp","required":true,"description":"営業活動が実施された日時"},{"name":"活動種別","type":"varchar(100)","required":true,"description":"営業活動の種類（訪問、電話、メール、提案等）"},{"name":"顧客名","type":"varchar(100)","required":true,"description":"対象顧客の名称"},{"name":"案件名","type":"varchar(100)","required":false,"description":"関連する案件の名称"},{"name":"活動内容","type":"text","required":false,"description":"営業活動の詳細内容"},{"name":"成果金額","type":"integer","required":false,"description":"この活動に関連する売上金額（円）"},{"name":"成果有無","type":"boolean","required":true,"description":"営業活動が成果に結びついたかどうか"},{"name":"次回フォロー予定日","type":"timestamp","required":false,"description":"次回のフォローアップ予定日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"顧客企業","purpose":"営業成果レポート自動生成・配信システムにおける顧客企業の基本情報を管理し、営業活動の対象企業として機能する","columns":[{"name":"顧客企業ID","type":"uuid","required":true,"description":"顧客企業の一意識別子"},{"name":"企業名","type":"varchar(100)","required":true,"description":"顧客企業の正式名称"},{"name":"業種","type":"varchar(100)","required":false,"description":"顧客企業の業種分類"},{"name":"所在地","type":"varchar(100)","required":false,"description":"顧客企業の本社所在地"},{"name":"代表者名","type":"varchar(100)","required":false,"description":"顧客企業の代表者名"},{"name":"電話番号","type":"varchar(100)","required":false,"description":"顧客企業の代表電話番号"},{"name":"メールアドレス","type":"varchar(100)","required":false,"description":"顧客企業の代表メールアドレス"},{"name":"担当営業ユーザーID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー（担当営業）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"顧客企業のステータス（見込み客/既存顧客/休止中等）"},{"name":"作成日時","type":"timestamp","required":true,"description":"顧客企業レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"顧客企業レコード最終更新日時"},{"name":"作成者ユーザーID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー（作成者）"}]},{"tableName":"成約","purpose":"営業活動から成約に至った案件を記録し、営業成果レポート生成の基礎データとなるトランザクションテーブル","columns":[{"name":"成約ID","type":"uuid","required":true,"description":"成約レコードの一意識別子"},{"name":"営業活動ID","type":"uuid","required":true,"description":"関連する営業活動への外部キー"},{"name":"ユーザーID","type":"uuid","required":true,"description":"成約を達成した営業担当者への外部キー"},{"name":"顧客企業ID","type":"uuid","required":true,"description":"成約した顧客企業への外部キー"},{"name":"成約金額","type":"integer","required":true,"description":"成約時の契約金額（円）"},{"name":"成約日","type":"timestamp","required":true,"description":"成約が確定した日時"},{"name":"商品サービス名","type":"varchar(100)","required":true,"description":"成約した商品またはサービスの名称"},{"name":"契約期間開始日","type":"timestamp","required":false,"description":"契約の開始日"},{"name":"契約期間終了日","type":"timestamp","required":false,"description":"契約の終了日"},{"name":"備考","type":"text","required":false,"description":"成約に関する追加情報やメモ"},{"name":"作成日時","type":"timestamp","required":true,"description":"成約レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"成約レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"成約レコードを作成したユーザーID"}]},{"tableName":"レポートテンプレート","purpose":"営業成果レポートの自動生成に使用するテンプレート定義を管理。レポート形式、含含める項目、配信先などを定義","columns":[{"name":"テンプレートID","type":"uuid","required":true,"description":"テンプレートの一意識別子"},{"name":"テンプレート名","type":"varchar(100)","required":true,"description":"テンプレートの名称（例：月次営業成果レポート）"},{"name":"説明","type":"text","required":false,"description":"テンプレートの詳細説明"},{"name":"レポート種別","type":"varchar(100)","required":true,"description":"レポートの種類（例：月次、週次、日次、カスタム）"},{"name":"対象ユーザーID","type":"uuid","required":true,"description":"このテンプレートを使用するユーザーID"},{"name":"含含める指標","type":"text","required":true,"description":"レポートに含める指標のリスト（カンマ区切り）"},{"name":"フィルター条件","type":"text","required":false,"description":"レポート生成時に適用するフィルター条件"},{"name":"配信先メールアドレス","type":"text","required":false,"description":"レポート配信先のメールアドレス（複数の場合はカンマ区切り）"},{"name":"配信スケジュール","type":"varchar(100)","required":false,"description":"配信スケジュール（例：毎月1日、毎週月曜日）"},{"name":"有効フラグ","type":"boolean","required":true,"description":"テンプレートが有効かどうか"},{"name":"作成日時","type":"timestamp","required":true,"description":"テンプレート作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"テンプレート最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"テンプレート作成者のユーザーID"}]},{"tableName":"生成済みレポート","purpose":"営業成果レポートの生成履歴を管理し、配信状況、テンプレート適用、生成内容を追跡するためのトランザクションテーブル","columns":[{"name":"レポートID","type":"uuid","required":true,"description":"生成済みレポートの一意識別子"},{"name":"テンプレートID","type":"uuid","required":true,"description":"レポートテンプレートテーブルへの外部キー"},{"name":"ユーザーID","type":"uuid","required":true,"description":"レポート生成対象のユーザー（営業担当者）"},{"name":"レポート期間開始日","type":"timestamp","required":true,"description":"レポート対象期間の開始日時"},{"name":"レポート期間終了日","type":"timestamp","required":true,"description":"レポート対象期間の終了日時"},{"name":"生成日時","type":"timestamp","required":true,"description":"レポートが実際に生成された日時"},{"name":"レポートタイトル","type":"varchar(100)","required":true,"description":"生成されたレポートのタイトル"},{"name":"レポート内容","type":"text","required":true,"description":"生成されたレポートの本文内容"},{"name":"配信ステータス","type":"varchar(100)","required":true,"description":"配信状況（未配信/配信済み/配信失敗等）"},{"name":"配信日時","type":"timestamp","required":false,"description":"実際に配信された日時"},{"name":"配信先メールアドレス","type":"varchar(100)","required":false,"description":"レポート配信先のメールアドレス"},{"name":"成約件数","type":"integer","required":false,"description":"レポート期間内の成約件数"},{"name":"営業活動件数","type":"integer","required":false,"description":"レポート期間内の営業活動件数"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レポート生成を実行したユーザーID（システムまたは管理者）"}]},{"tableName":"レポート配信履歴","purpose":"営業成果レポートの配信実績を記録し、配信状況の追跡、再配信管理、配信パフォーマンス分析を実現する","columns":[{"name":"配信履歴ID","type":"uuid","required":true,"description":"配信履歴の一意識別子"},{"name":"生成済みレポートID","type":"uuid","required":true,"description":"生成済みレポートテーブルへの外部キー"},{"name":"配信先ユーザーID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー、配信対象ユーザー"},{"name":"配信先メールアドレス","type":"varchar(100)","required":true,"description":"配信時点のメールアドレス（ユーザー情報変更時の履歴保持用）"},{"name":"配信日時","type":"timestamp","required":true,"description":"実際の配信実行日時"},{"name":"配信ステータス","type":"varchar(100)","required":true,"description":"配信状況（成功/失敗/保留中/再配信待ち）"},{"name":"配信方法","type":"varchar(100)","required":true,"description":"配信チャネル（メール/システム内通知等）"},{"name":"エラーメッセージ","type":"text","required":false,"description":"配信失敗時のエラー詳細"},{"name":"開封日時","type":"timestamp","required":false,"description":"受信者がレポートを開封した日時"},{"name":"開封フラグ","type":"boolean","required":true,"description":"レポートが開封されたかどうか"},{"name":"再配信フラグ","type":"boolean","required":true,"description":"再配信対象かどうか"},{"name":"再配信回数","type":"integer","required":true,"description":"これまでの再配信実行回数"},{"name":"作成日時","type":"timestamp","required":true,"description":"配信履歴レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"配信履歴レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"配信を実行したユーザーまたはシステムID"}]},{"tableName":"成果指標","purpose":"営業成果の定量的な目標値と実績値を管理し、レポート生成時の評価基準となるマスタデータ","columns":[{"name":"成果指標ID","type":"uuid","required":true,"description":"成果指標の一意識別子"},{"name":"指標名","type":"varchar(100)","required":true,"description":"成果指標の名称（例：売上高、受注件数、顧客満足度）"},{"name":"指標コード","type":"varchar(100)","required":true,"description":"成果指標の一意なコード（例：SALES_REVENUE、ORDER_COUNT）"},{"name":"説明","type":"text","required":false,"description":"成果指標の詳細説明"},{"name":"単位","type":"varchar(100)","required":true,"description":"測定単位（例：円、件、％）"},{"name":"計算方法","type":"text","required":false,"description":"指標の計算ロジック説明"},{"name":"目標値","type":"integer","required":false,"description":"期間内の目標値"},{"name":"警告閾値","type":"integer","required":false,"description":"警告を発する下限値（目標値に対する達成率など）"},{"name":"表示順序","type":"integer","required":false,"description":"レポート内での表示順序"},{"name":"有効フラグ","type":"boolean","required":true,"description":"指標が有効かどうか"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"作成したユーザーID"}]}];
-window.AIVIC_PRESET_SEED = {"ユーザー":[{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-0001","役割":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-001"},{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-042","役割":"営業","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:45","作成日時":"2024-04-10 14:22:18","更新日時":"2025-01-15 09:30:45","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.yuki@example.co.jp","ユーザー名":"鈴木由紀","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-0042","役割":"経理部員","ステータス":"有効","最終ログイン日時":"2025-01-15T09:32:45+09:00","作成日時":"2024-04-10T14:20:30+09:00","更新日時":"2025-01-10T16:45:12+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-042","役割":"営業マネージャー","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-10T14:20:00+09:00","更新日時":"2025-01-10T16:45:00+09:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"asahi.yamamoto@company.jp","ユーザー名":"山本朝日","パスワードハッシュ":"$2b$12$8kL9mN2pQr5xV3jW6tY9uOz1aB4cD5eF6gH7iJ8kL9mN2pQr5xV3j","組織ID":"rec-org-001","役割":"営業アシスタント","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOP","組織ID":"rec-org-042","役割":"営業","ステータス":"保留中","最終ログイン日時":"2024-11-15T14:32:00Z","作成日時":"2023-04-10T09:15:00Z","更新日時":"2025-01-20T10:45:00Z","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJ","組織ID":"rec-org-0042","役割":"営業","ステータス":"保留中","最終ログイン日時":null,"作成日時":"2025-01-15T10:30:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001-7a2f9c45","メールアドレス":"suzuki.hiroshi@partnerco.jp","ユーザー名":"鈴木洋","パスワードハッシュ":"$2b$12$kL9mN2pQ8vR5xY3zW1aB7e4cD6fG9hJ0kL2mN3oP4qR5sT6uV7wX8y","組織ID":"rec-org-b3e8d1f2","役割":"営業","ステータス":"有効","最終ログイン日時":"2025-01-15T09:32:15Z","作成日時":"2024-06-20T14:22:00Z","更新日時":"2025-01-10T11:45:30Z","作成者":"rec-admin-5c1f8a9d"},{"ユーザーID":"rec-001","メールアドレス":"maintenance-admin@company.jp","ユーザー名":"システム保守用","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-001","役割":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T02:30:00+09:00","作成日時":"2024-04-01T09:00:00+09:00","更新日時":"2025-01-15T02:30:00+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"yamada.hanako@company.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-0042","役割":"営業部長","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:15:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-admin-0001"}],"営業活動":[{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社ソリューション工業","案件名":"既存システムの保守契約更新＆新規DX推進案件","活動内容":"既存顧客への定期訪問。現在の保守契約状況の確認と更新手続きを実施。訪問時に顧客のDX推進ニーズについてヒアリングしたところ、在庫管理システムの刷新に強い関心を示された。初期段階での要件ヒアリングを実施し、提案資料の作成を約束した。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-12-10T10:00:00+09:00","作成日時":"2024-11-15T16:45:00+09:00","更新日時":"2024-11-15T16:45:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"user-2024-0847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"電話","顧客名":"株式会社ウエストテック","案件名":"クラウド勤怠管理システム導入検討","活動内容":"初回接触。企業規模200名程度の製造業。現在手書きタイムカード運用。当社のクラウド勤怠管理システムの概要、機能、導入事例を説明。相手方は購買担当者で関心を示した。給与計算システムとの連携について質問あり。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-12-06T10:00:00+09:00","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"user-2024-0847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"面談","顧客名":"株式会社ハイテックソリューションズ","案件名":"基幹システム刷新プロジェクト","活動内容":"先週提出した提案資料に関するフォローアップ面談を実施。顧客側の経営企画部長・山田健一氏、IT部長・佐藤美咲氏と対面。提案内容の詳細説明、導入スケジュール、費用体系について質疑応答。顧客から実装期間の短縮要望があり、フェーズ分割による段階的導入の代替案を提示。次段階として詳細設計仕様書の作成を提案し、顧客側で検討することで合意。","成果金額":8500000,"成果有無":true,"次回フォロー予定日":"2024-12-06T10:00:00+09:00","作成日時":"2024-11-15T16:45:00+09:00","更新日時":"2024-11-15T16:45:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"usr-045","活動日":"2024-11-15T14:30:00","活動種別":"メール","顧客名":"株式会社サンテック工業","案件名":"生産管理システム導入プロジェクト","活動内容":"既成約案件の納期確認メールを送付。システム構築が予定通り12月20日完了見込みであることを確認。同時に、追加機能モジュール（在庫管理機能拡張）の導入提案を行い、顧客の関心確認を実施。","成果金額":450000,"成果有無":true,"次回フォロー予定日":"2024-12-01T10:00:00","作成日時":"2024-11-15T14:35:22","更新日時":"2024-11-15T14:35:22","作成者":"usr-045"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"電話","顧客名":"株式会社ビジネスソリューション","案件名":"業務効率化システム導入検討","活動内容":"展示会での名刺交換後、初回ヒアリング実施。同社は現在、既存システムの老朽化に伴い、クラウドベースの業務管理システム導入を検討中。IT部門責任者の佐藤課長と通話。ニーズ確認：①既存データの移行、②ユーザー教育体制の構築、③導入期間の短縮化。次回は詳細提案資料を提示する予定。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-12-06T10:00:00+09:00","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-20250115-001","ユーザーID":"usr-00847","活動日":"2025-01-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社トラストテクノロジー","案件名":"営業支援システム導入プロジェクト（再提案）","活動内容":"前回の提案時にご指摘いただいた予算制約と導入スケジュールの課題について、段階的な導入プランと3ヶ月間の無償トライアルオプションを含めた改善提案を実施。顧客のシステム部長と営業部長の両名に対して、ROI試算シートを用いて詳細説明を行った。特に初期費用を30%削減できる新パッケージについて高い関心を示していただき、決裁権者である取締役への稟議提出を約束いただいた。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2025-02-10T10:00:00+09:00","作成日時":"2025-01-15T16:45:00+09:00","更新日時":"2025-01-15T16:45:00+09:00","作成者":"usr-00847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2025-01-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社ハイテックソリューション","案件名":"2025年度システム刷新プロジェクト","活動内容":"既存顧客との定例会議に参加。次期予算案件として、現在のレガシーシステムの刷新を検討中であることが判明。予算規模は約5,000万円で、4月の予算承認を見込んでいる。IT部長の佐藤課長より、クラウド移行とデータ分析機能の強化が主要ニーズとして挙げられた。次回の詳細ヒアリングは2月中旬を予定。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2025-02-12T10:00:00+09:00","作成日時":"2025-01-15T15:45:00+09:00","更新日時":"2025-01-15T15:45:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"user-2847","活動日":"2025-01-15T14:30:00+09:00","活動種別":"提案","顧客名":"株式会社フューチャーテック","案件名":"クラウドERPシステム導入","活動内容":"競合他社A社のシステムから切り替え検討中の見込み客に対して、当社のクラウドERPシステムの詳細説明会を実施。機能比較、導入実績、コスト削減効果、サポート体制について説明。顧客の経理部長、システム部長が出席。A社との契約終了時期は2025年3月末で、その前に導入判断を行いたいとのこと。顧客からの質問は主に既存データの移行方法と運用体制について。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2025-02-05T10:00:00+09:00","作成日時":"2025-01-15T16:45:00+09:00","更新日時":"2025-01-15T16:45:00+09:00","作成者":"user-2847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2025-01-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社ハイテックソリューションズ","案件名":"基幹システム導入プロジェクト","活動内容":"成約済み案件の契約書に顧客代表取締役と営業部長が署名。契約金額5,800万円で合意。納期については、システム要件定義期間を2週間短縮することで、当初予定の2025年7月末から2025年7月中旬への前倒しが可能であることを確認。顧客側の体制準備の都合により、最終的には2025年7月20日での納期確定とした。初期導入サポートスケジュールも併せて確認完了。次段階として2月上旬のキックオフミーティングを予定。","成果金額":58000000,"成果有無":true,"次回フォロー予定日":"2025-02-05T10:00:00+09:00","作成日時":"2025-01-15T16:45:00+09:00","更新日時":"2025-01-15T16:45:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2025-01-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社メディアテック","案件名":"クラウド型マーケティング自動化ツール導入","活動内容":"過去3年間お問い合わせいただいていた株式会社メディアテック様に対して、新製品『AutoCampaign Pro v3.0』の機能紹介と導入メリットについてプレゼンテーションを実施。従来製品との比較資料を提供し、特にAI分析機能の強化点について詳しく説明。担当者（マーケティング部長・佐藤由美様）から高い関心を示していただき、導入検討の前向きな意思確認ができた。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2025-02-05T10:00:00+09:00","作成日時":"2025-01-15T16:45:00+09:00","更新日時":"2025-01-15T16:45:00+09:00","作成者":"usr-0847"}],"顧客企業":[{"顧客企業ID":"rec-001","企業名":"株式会社トヨタ部品工業","業種":"自動車部品製造","所在地":"愛知県豊田市","代表者名":"山田健一","電話番号":"0565-28-2111","メールアドレス":"info@toyota-bukhin.co.jp","担当営業ユーザーID":"rec-u-042","ステータス":"既存顧客","作成日時":"2023-06-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ユーザーID":"rec-u-008"},{"顧客企業ID":"rec-001","企業名":"株式会社フューチャーロジスティクス","業種":"物流・運送業","所在地":"東京都港区虎ノ門2-2-5","代表者名":"山田健一","電話番号":"03-XXXX-5678","メールアドレス":"info@future-logistics.co.jp","担当営業ユーザーID":"rec-u-042","ステータス":"見込み客","作成日時":"2024-11-15T10:30:00+09:00","更新日時":"2024-11-15T10:30:00+09:00","作成者ユーザーID":"rec-u-015"},{"顧客企業ID":"rec-001","企業名":"東京信用金庫","業種":"金融機関","所在地":"東京都中央区日本橋1-2-3","代表者名":"山田太郎","電話番号":"03-1234-5678","メールアドレス":"info@tokyo-shinkin.jp","担当営業ユーザーID":"rec-102","ステータス":"既存顧客","作成日時":"2022-06-15T09:30:00Z","更新日時":"2024-11-20T14:15:00Z","作成者ユーザーID":"rec-201"},{"顧客企業ID":"rec-001","企業名":"株式会社フレッシュマート田中","業種":"小売業（食品・日用雑貨）","所在地":"東京都渋谷区道玄坂2-10-7","代表者名":"田中健一","電話番号":"03-XXXX-5678","メールアドレス":"info@freshmart-tanaka.co.jp","担当営業ユーザーID":"rec-012","ステータス":"休止中","作成日時":"2023-06-15T09:30:00Z","更新日時":"2024-11-20T14:45:00Z","作成者ユーザーID":"rec-008"},{"顧客企業ID":"rec-001","企業名":"株式会社山田建設","業種":"建設業","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"山田太郎","電話番号":"03-1234-5678","メールアドレス":"info@yamada-construction.jp","担当営業ユーザーID":"rec-101","ステータス":"見込み客","作成日時":"2024-11-15T10:30:00Z","更新日時":"2024-11-15T10:30:00Z","作成者ユーザーID":"rec-201"},{"顧客企業ID":"rec-001","企業名":"医療法人社団仁心会 総合病院","業種":"医療・福祉","所在地":"東京都渋谷区道玄坂2-10-12","代表者名":"山田健一","電話番号":"03-5784-2100","メールアドレス":"info@jinshinkaihosp.jp","担当営業ユーザーID":"rec-002","ステータス":"既存顧客","作成日時":"2023-06-15T09:30:00Z","更新日時":"2025-01-20T14:15:00Z","作成者ユーザーID":"rec-003"},{"顧客企業ID":"rec-001","企業名":"株式会社関東流通センター","業種":"卸売業・流通","所在地":"神奈川県横浜市港北区新横浜3-18-1","代表者名":"山田健一","電話番号":"045-555-0123","メールアドレス":"info@kantou-ryutsu.co.jp","担当営業ユーザーID":"rec-102","ステータス":"見込み客","作成日時":"2024-11-15T09:30:00","更新日時":"2025-01-22T14:45:00","作成者ユーザーID":"rec-201"},{"顧客企業ID":"rec-001","企業名":"株式会社フードウェーブ","業種":"飲食業","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"山田太郎","電話番号":"03-1234-5678","メールアドレス":"info@foodwave.co.jp","担当営業ユーザーID":"rec-u-042","ステータス":"既存顧客","作成日時":"2023-11-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ユーザーID":"rec-u-018"},{"顧客企業ID":"rec-001","企業名":"株式会社東京プロパティ","業種":"不動産業","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"山田健一","電話番号":"03-XXXX-5678","メールアドレス":"info@tokyoproperty.co.jp","担当営業ユーザーID":"rec-u-042","ステータス":"休止中","作成日時":"2023-11-15T10:30:00Z","更新日時":"2024-12-10T14:45:00Z","作成者ユーザーID":"rec-u-015"},{"顧客企業ID":"rec-001","企業名":"東日本物流サービス株式会社","業種":"運輸業","所在地":"埼玉県さいたま市大宮区","代表者名":"鈴木健一","電話番号":"048-123-4567","メールアドレス":"info@tohinichi-logistics.co.jp","担当営業ユーザーID":"rec-101","ステータス":"見込み客","作成日時":"2025-01-15T10:30:00Z","更新日時":"2025-01-15T10:30:00Z","作成者ユーザーID":"rec-201"}],"成約":[{"成約ID":"rec-20250115-001","営業活動ID":"rec-20241201-act-001","ユーザーID":"rec-user-tanaka-001","顧客企業ID":"rec-cust-toyota-001","成約金額":4800000,"成約日":"2025-01-15T14:30:00+09:00","商品サービス名":"産業用機械設備年間保守契約パッケージ","契約期間開始日":"2025-02-01T00:00:00+09:00","契約期間終了日":"2026-01-31T23:59:59+09:00","備考":"トヨタ自動車名古屋工場の主要生産ラインに対する定期保守・点検・部品交換を含む。24時間対応ホットライン付き。前年度契約からの継続更新。割引率5%適用。","作成日時":"2025-01-15T14:35:22+09:00","更新日時":"2025-01-15T14:35:22+09:00","作成者":"rec-user-suzuki-001"},{"成約ID":"rec-001","営業活動ID":"rec-002","ユーザーID":"rec-003","顧客企業ID":"rec-004","成約金額":2400000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"クラウドERP統合パッケージ（年間ライセンス）","契約期間開始日":"2025-01-01T00:00:00+09:00","契約期間終了日":"2025-12-31T23:59:59+09:00","備考":"初期導入コンサルティング費用30万円を含む。既存システムとの連携検証完了。顧客側の要件定義ミーティングは2024年10月に実施済み。","作成日時":"2024-11-15T15:45:23+09:00","更新日時":"2024-11-15T15:45:23+09:00","作成者":"rec-005"},{"成約ID":"rec-001","営業活動ID":"rec-102","ユーザーID":"rec-u-045","顧客企業ID":"rec-c-078","成約金額":1500000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"スタートアップ向け経営戦略コンサルティング","契約期間開始日":"2024-11-20T00:00:00+09:00","契約期間終了日":"2025-02-19T23:59:59+09:00","備考":"シリーズA資金調達を控えた人工知能スタートアップ。経営体制整備と事業計画ブラッシュアップが主要課題。営業担当の鈴木との信頼関係が成約につながった。","作成日時":"2024-11-15T15:45:23+09:00","更新日時":"2024-11-15T15:45:23+09:00","作成者":"rec-u-045"},{"成約ID":"rec-001","営業活動ID":"rec-102","ユーザーID":"rec-205","顧客企業ID":"rec-308","成約金額":2400000,"成約日":"2024-11-15T14:30:00Z","商品サービス名":"クラウド勤怠管理システム追加ライセンス（50ユーザー分）","契約期間開始日":"2024-12-01T00:00:00Z","契約期間終了日":"2025-11-30T23:59:59Z","備考":"既存顧客の株式会社ソフトウェア開発センターが、現在利用中のクラウド勤怠管理システムの追加ライセンスを50ユーザー分購入。新規事業部門の立ち上げに伴う拡張。営業担当者の山田花子が既存営業活動から継続対応。","作成日時":"2024-11-15T15:45:22Z","更新日時":"2024-11-15T15:45:22Z","作成者":"rec-205"},{"成約ID":"rec-001","営業活動ID":"rec-002","ユーザーID":"rec-003","顧客企業ID":"rec-004","成約金額":4800000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"POSシステム クラウド版 50ライセンス + 導入サポート","契約期間開始日":"2025-01-01T00:00:00+09:00","契約期間終了日":"2027-12-31T23:59:59+09:00","備考":"全国15店舗への一括導入。初期導入費用800万円、月額利用料40万円（3年契約）。決済端末30台を含む。導入予定日は2024年12月20日。","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"rec-005"},{"成約ID":"rec-20250147","営業活動ID":"rec-20250089","ユーザーID":"rec-20240312","顧客企業ID":"rec-20240156","成約金額":8500000,"成約日":"2025-01-15T14:30:00+09:00","商品サービス名":"エンタープライズ向けセキュリティ監視・運用サービス","契約期間開始日":"2025-02-01T00:00:00+09:00","契約期間終了日":"2027-01-31T23:59:59+09:00","備考":"3年間の長期契約。24時間SOC監視、月次セキュリティレポート、年2回のセキュリティ診断を含む。初期導入支援として1ヶ月間の集中サポート提供。顧客：東京中央銀行 情報セキュリティ部。担当者：佐藤浩一氏。","作成日時":"2025-01-15T16:45:23+09:00","更新日時":"2025-01-15T16:45:23+09:00","作成者":"rec-20240312"},{"成約ID":"rec-20250215-001","営業活動ID":"rec-20241008-042","ユーザーID":"rec-user-00156","顧客企業ID":"rec-cust-00789","成約金額":2850000,"成約日":"2025-02-14T14:30:00+09:00","商品サービス名":"クラウド型経費管理システム エンタープライズプラン","契約期間開始日":"2025-03-01T00:00:00+09:00","契約期間終了日":"2026-02-28T23:59:59+09:00","備考":"初回営業活動（2024年10月開始）で提案後、顧客都合により2024年12月にキャンセル。2025年1月に顧客企業の経営方針転換に伴い再度打診、条件調整（月額から年額契約へ変更、割引率10%適用）を経て再成約。導入予定部門は経理・財務部（約150名）。","作成日時":"2025-02-14T15:45:23+09:00","更新日時":"2025-02-14T15:45:23+09:00","作成者":"rec-user-00156"},{"成約ID":"rec-20250215-001","営業活動ID":"rec-20241120-exhibit","ユーザーID":"rec-user-tanaka","顧客企業ID":"rec-cust-yamada-corp","成約金額":850000,"成約日":"2025-02-15T14:30:00+09:00","商品サービス名":"クラウド型営業管理システム Professional プラン","契約期間開始日":"2025-03-01T00:00:00+09:00","契約期間終了日":"2026-02-28T23:59:59+09:00","備考":"東京ビジネスエキスポ2024秋で初接触。営業担当田中が展示ブースで製品デモを実施。その後3ヶ月間の検討を経て、導入決定。初年度は割引適用。","作成日時":"2025-02-15T15:45:00+09:00","更新日時":"2025-02-15T15:45:00+09:00","作成者":"rec-user-tanaka"},{"成約ID":"rec-20250115-001","営業活動ID":"rec-20250110-act-042","ユーザーID":"rec-user-0087","顧客企業ID":"rec-cust-0156","成約金額":2800000,"成約日":"2025-01-15T14:30:00+09:00","商品サービス名":"クラウドERPシステム年間保守契約","契約期間開始日":"2025-04-01T00:00:00+09:00","契約期間終了日":"2026-03-31T23:59:59+09:00","備考":"前年度契約金額2,500,000円から12%の値上げで更新。システム拡張モジュール3点の追加オプション含む。既存顧客（5年継続）のため更新手数料は無料。","作成日時":"2025-01-15T15:45:22+09:00","更新日時":"2025-01-15T15:45:22+09:00","作成者":"rec-user-0087"},{"成約ID":"rec-20250147","営業活動ID":"rec-20250089","ユーザーID":"rec-20240512","顧客企業ID":"rec-20250203","成約金額":2850000,"成約日":"2025-01-28T14:30:00+09:00","商品サービス名":"クラウド型勤怠管理システム 年間ライセンス","契約期間開始日":"2025-02-01T00:00:00+09:00","契約期間終了日":"2026-01-31T23:59:59+09:00","備考":"提携パートナー株式会社デジタルコンサルティングからの紹介。従業員150名規模の製造業。初期導入支援サービス込み。営業担当者：山田花子","作成日時":"2025-01-28T15:45:22+09:00","更新日時":"2025-01-28T15:45:22+09:00","作成者":"rec-20240512"}],"レポートテンプレート":[{"テンプレートID":"rec-001","テンプレート名":"月次営業成果レポート（全社集計）","説明":"営業部全体の月次売上実績、目標達成率、顧客獲得数、案件進捗状況を集計したレポート。営業部長が経営層への報告資料として使用します。","レポート種別":"月次","対象ユーザーID":"user-2024-001","含含める指標":"月次売上高,売上目標達成率,新規顧客獲得数,既存顧客売上,案件数,受注率,平均受注金額,営業担当者別売上,地域別売上,商品カテゴリ別売上","フィルター条件":"売上計上日>=当月1日 AND 売上計上日<=当月末日 AND 組織=営業部 AND ステータス IN (受注,売上計上)","配信先メールアドレス":"eisaku.tanaka@company.jp,yuki.suzuki@company.jp,hiroshi.yamamoto@company.jp","配信スケジュール":"毎月5日 09:00","有効フラグ":true,"作成日時":"2024-01-15T10:30:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者ID":"user-2023-045"},{"テンプレートID":"rec-001-2024-sales-weekly","テンプレート名":"営業チーム向け週次営業進捗レポート（地域別）","説明":"全国の営業チームを対象とした週次の営業進捗状況を地域別に集計したレポート。売上実績、案件進捗、新規顧客獲得数などの主要指標を可視化し、地域ごとの成績比較と改善施策の検討に活用される。","レポート種別":"週次","対象ユーザーID":"rec-user-2024-001","含含める指標":"週間売上実績,目標達成率,案件数（新規・進行中・完了）,新規顧客獲得数,受注金額,失注案件数,営業活動時間","フィルター条件":"対象期間:当該週月曜日～日曜日,地域:全国（東日本営業部,西日本営業部,中部営業部）,対象者:営業職員のみ,ステータス:全案件","配信先メールアドレス":"sales-team@company.jp,manager-tanaka@company.jp,director-suzuki@company.jp","配信スケジュール":"毎週月曜日09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00Z","更新日時":"2025-01-20T10:45:00Z","作成者ID":"rec-user-2024-admin-001"},{"テンプレートID":"rec-001-q4-sales-report","テンプレート名":"2024年度Q4経営層向け営業成果レポート","説明":"経営層向けの四半期営業成果レポート。売上高、目標達成率、顧客獲得数、地域別売上構成、営業担当者別成績などの主要指標を含む。経営判断に必要な数値分析と前期比較を網羅。","レポート種別":"四半期","対象ユーザーID":"user-exec-001","含める指標":"売上高,売上目標,目標達成率,前年同期比,新規顧客数,既存顧客売上,地域別売上,営業担当者別売上,利益率,受注件数,受注金額,失注件数,平均受注単価","フィルター条件":"決算期間:2024年10月1日～12月31日,ステータス:完了,部門:営業本部,対象地域:全国","配信先メールアドレス":"ceo@company.jp,cfo@company.jp,sales-director@company.jp","配信スケジュール":"毎四半期終了後7日以内（1月10日、4月10日、7月10日、10月10日）","有効フラグ":true,"作成日時":"2024-09-15T10:30:00Z","更新日時":"2024-12-20T14:45:00Z","作成者ID":"user-admin-002"},{"テンプレートID":"rec-001","テンプレート名":"営業担当者向け日次営業活動レポート","説明":"個別営業担当者が自身の日次営業活動成績を確認するためのレポート。新規訪問件数、商談数、受注金額、進捗中案件数を集計し、毎日朝9時に配信される。","レポート種別":"日次","対象ユーザーID":"rec-u-0847","含含める指標":"新規訪問件数,商談数,受注件数,受注金額,失注件数,案件進捗率,顧客満足度スコア","フィルター条件":"担当者ID = 対象ユーザーID AND レポート日付 = 前営業日","配信先メールアドレス":"suzuki.jiro@company.co.jp,suzuki.jiro.manager@company.co.jp","配信スケジュール":"毎営業日 09:00","有効フラグ":true,"作成日時":"2024-11-15T10:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者ID":"rec-u-0102"},{"テンプレートID":"rec-001","テンプレート名":"月次顧客別売上分析レポート","説明":"営業支援部門向けの月次レポート。顧客別の売上実績、前月比、目標達成率、顧客満足度スコアを集計し、営業戦略の立案に活用します。","レポート種別":"月次","対象ユーザーID":"rec-usr-0042","含める指標":"売上高,売上前月比,目標達成率,顧客満足度,新規顧客数,既存顧客売上,解約件数,平均受注単価","フィルター条件":"売上計上日が当月1日～末日、対象営業所=東京営業所、売上金額>=50000","配信先メールアドレス":"sales-support@company.jp,tokyo-branch-manager@company.jp,director-tanaka@company.jp","配信スケジュール":"毎月5日 09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00+09:00","更新日時":"2025-01-20T10:15:00+09:00","作成者ID":"rec-usr-0018"},{"テンプレートID":"rec-001","テンプレート名":"営業員別パフォーマンスランキングレポート","説明":"営業部門全体の営業員を売上高、受注件数、顧客満足度スコアでランキング集計し、営業部門長が部下の成績を把握・指導するためのレポート","レポート種別":"月次","対象ユーザーID":"rec-u-0847","含含める指標":"売上高,受注件数,受注率,平均受注金額,顧客満足度スコア,新規顧客数,リピート率","フィルター条件":"部門=営業部,期間=当月1日〜月末日,ステータス=完了","配信先メールアドレス":"sales-director@company.jp,sales-manager-a@company.jp,sales-manager-b@company.jp","配信スケジュール":"毎月1日 09:00","有効フラグ":true,"作成日時":"2024-04-15T14:30:00+09:00","更新日時":"2025-01-10T11:20:00+09:00","作成者ID":"rec-u-0512"},{"テンプレートID":"rec-001","テンプレート名":"月次受注確定案件一覧レポート（請求準備用）","説明":"営業事務部門向けの月次レポート。当月確定した受注案件を一覧化し、請求書作成の準備資料として使用。顧客名、受注金額、納期、請求対象者情報を集約。","レポート種別":"月次","対象ユーザーID":"rec-u-0042","含含める指標":"案件ID,顧客名,受注金額,税抜金額,消費税,請求金額,受注日,納期,納入予定日,担当営業,請求先住所,請求先電話番号,支払条件,入金予定日","フィルター条件":"ステータス=受注確定 AND 受注日>=当月1日 AND 受注日<=当月末日 AND 有効フラグ=true","配信先メールアドレス":"eigyo-jimu@example.co.jp,seikyu-gakari@example.co.jp,yamada.hanako@example.co.jp","配信スケジュール":"毎月3日 09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00+09:00","更新日時":"2025-01-08T11:45:30+09:00","作成者ID":"rec-u-0018"},{"テンプレートID":"rec-001","テンプレート名":"月次リード獲得・成約率レポート","説明":"マーケティング部門向けの月次レポート。リード獲得数、成約数、成約率、チャネル別パフォーマンス、顧客獲得単価を集計し、営業部門との連携状況を可視化します。","レポート種別":"月次","対象ユーザーID":"usr-2024-001","含める指標":"リード獲得数,成約数,成約率,チャネル別リード数,顧客獲得単価,マーケティング投資額,ROI","フィルター条件":"対象月のデータのみ,ステータス=有効なリード,地域=全国","配信先メールアドレス":"marketing-team@company.jp,yamada.hanako@company.jp,suzuki.taro@company.jp","配信スケジュール":"毎月1日 09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00+09:00","更新日時":"2025-01-08T10:45:00+09:00","作成者ID":"usr-2024-admin-001"},{"テンプレートID":"rec-001-pipeline-2024","テンプレート名":"営業パイプライン進捗レポート（案件ステージ別）","説明":"営業管理職向けの月次レポート。案件を受注前、商談中、提案済み、交渉中、クローズ予定のステージ別に分類し、各ステージの件数、金額、進捗率を可視化。売上予測と達成率の把握に活用。","レポート種別":"月次","対象ユーザーID":"rec-user-sales-manager-001","含める指標":"ステージ別案件件数,ステージ別商談金額,受注確度,売上予測額,前月比成長率,営業担当者別成績,顧客業種別分析,案件平均金額","フィルター条件":"レポート対象月度,営業部門=営業第一部・営業第二部,案件ステータス!=キャンセル,金額>=500000","配信先メールアドレス":"sales-manager@company.jp,director-tanaka@company.jp,finance-yokota@company.jp","配信スケジュール":"毎月1日 09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00+09:00","更新日時":"2025-01-08T11:20:00+09:00","作成者ID":"rec-user-admin-yamamoto"},{"テンプレートID":"rec-001","テンプレート名":"月次売上実績・入金予定レポート","説明":"経理部門向けの月次売上実績と翌月の入金予定を集計したレポート。営業成績と現金流動性の把握に用いる。","レポート種別":"月次","対象ユーザーID":"usr-0042","含含める指標":"売上高,売上原価,粗利益,粗利益率,売掛金残高,入金予定額,回収率,未回収売上","フィルター条件":"売上計上日>=当月1日 AND 売上計上日<=当月末日 AND 部門コード IN ('営業1部','営業2部','営業3部')","配信先メールアドレス":"keiri-tanaka@company.jp,keiri-suzuki@company.jp,cfo-yamamoto@company.jp","配信スケジュール":"毎月5日 09:00","有効フラグ":true,"作成日時":"2024-04-15 14:30:00","更新日時":"2025-01-20 10:15:00","作成者ID":"usr-0015"}],"生成済みレポート":[{"レポートID":"rec-001","テンプレートID":"rec-tpl-0001","ユーザーID":"rec-user-0042","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-01-31T23:59:59Z","生成日時":"2024-02-01T09:30:00Z","レポートタイトル":"2024年1月営業活動レポート","レポート内容":"2024年1月の営業活動報告です。本月は新規顧客開拓に注力し、既存顧客との関係強化を図りました。成約案件3件（総契約金額850万円）を達成し、営業活動件数は25件でした。特に中旬の展示会出展により、有望見込み客5社を獲得することができました。来月も継続して目標達成に向け取り組みます。","配信ステータス":"配信済み","配信日時":"2024-02-01T10:15:00Z","配信先メールアドレス":"yamada.manager@company.jp","成約件数":3,"営業活動件数":25,"作成日時":"2024-02-01T09:30:00Z","更新日時":"2024-02-01T10:15:00Z","作成者ID":"rec-sys-admin"},{"レポートID":"rec-001","テンプレートID":"rec-002","ユーザーID":"rec-003","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-01-31T23:59:59Z","生成日時":"2024-02-01T09:30:00Z","レポートタイトル":"2024年1月度営業活動レポート（営業担当者B）","レポート内容":"営業担当者Bの2024年1月度営業活動レポートです。\n\n【成果概要】\n成約件数：1件\n営業活動件数：18件\n\n【主な成約案件】\nA社との大型案件（契約金額：250万円）\n\n【営業活動内訳】\n新規訪問：7件\nフォローアップ面談：8件\nメール営業：3件\n\n【来月への課題】\n既存顧客との関係強化、新規開拓の加速が必要です。","配信ステータス":"配信失敗","配信日時":null,"配信先メールアドレス":"yamada.b@company.co.jp","成約件数":1,"営業活動件数":18,"作成日時":"2024-02-01T09:30:00Z","更新日時":"2024-02-02T14:15:00Z","作成者ID":"rec-004"},{"レポートID":"rec-001-rpt-20250115-001","テンプレートID":"rec-001-tpl-dept-summary","ユーザーID":"rec-001-usr-mgr-yamada","レポート期間開始日":"2025-01-01T00:00:00+09:00","レポート期間終了日":"2025-01-31T23:59:59+09:00","生成日時":"2025-02-03T09:15:32+09:00","レポートタイトル":"2025年1月度 営業部門集計レポート","レポート内容":"【営業部門集計レポート】\n対象期間：2025年1月1日～1月31日\n\n【部門全体成績】\n・総成約件数：48件\n・総営業活動件数：287件\n・成約率：16.7%\n・平均案件化率：23.2%\n\n【営業担当者別成績】\n1. 佐藤健一：成約12件、活動72件\n2. 鈴木美咲：成約11件、活動68件\n3. 高橋翔太：成約10件、活動65件\n4. 伊藤由美：成約9件、活動58件\n5. 中村拓也：成約6件、活動24件\n\n【注力顧客層別】\n・大手企業：18件（37.5%）\n・中堅企業：22件（45.8%）\n・小規模企業：8件（16.7%）\n\n【改善項目】\n・中村拓也の活動件数が目標比80%となっており、フォローアップが必要です。\n・全体的に成約率は前月比+2.1%で推移良好です。","配信ステータス":"未配信","配信日時":null,"配信先メールアドレス":"yamada.taro@company.jp","成約件数":48,"営業活動件数":287,"作成日時":"2025-02-03T09:15:32+09:00","更新日時":"2025-02-03T09:15:32+09:00","作成者ID":"rec-001-usr-sys-admin"},{"レポートID":"rec-001","テンプレートID":"rec-tmpl-0042","ユーザーID":"rec-user-0087","レポート期間開始日":"2024-10-01T00:00:00Z","レポート期間終了日":"2024-12-31T23:59:59Z","生成日時":"2025-01-06T09:30:00Z","レポートタイトル":"2024年第4四半期営業成績報告書（営業担当者C）","レポート内容":"営業担当者Cの2024年第4四半期における営業活動報告です。本期間中、新規顧客開拓に注力し、既存顧客との関係強化に努めました。成約案件については大型案件2件を含む計12件を達成し、目標比120%の成果となりました。営業活動件数は89件で、訪問活動が68件、電話対応が21件となっています。今後も顧客満足度向上と継続的な案件創出に取り組んでまいります。","配信ステータス":"配信済み","配信日時":"2025-01-06T10:15:00Z","配信先メールアドレス":"suzuki.takeshi@company.jp","成約件数":12,"営業活動件数":89,"作成日時":"2025-01-06T09:30:00Z","更新日時":"2025-01-06T10:15:00Z","作成者ID":"rec-user-admin-001"},{"レポートID":"rec-001","テンプレートID":"rec-tpl-001","ユーザーID":"rec-usr-004","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-01-31T23:59:59Z","生成日時":"2024-02-01T09:30:00Z","レポートタイトル":"2024年1月営業活動レポート（新入社員研修期間）","レポート内容":"1月の営業活動を報告いたします。本月は新入社員研修期間中のため、既存顧客への定期訪問及び営業基礎トレーニングを中心に活動いたしました。見積提出3件、提案資料作成2件、顧客面談3件の営業活動を実施いたしましたが、成約には至りませんでした。今後はトレーニング内容を実践に活かし、成約獲得に向けて精進いたします。","配信ステータス":"配信済み","配信日時":"2024-02-01T10:15:00Z","配信先メールアドレス":"sales-manager@example.jp","成約件数":0,"営業活動件数":8,"作成日時":"2024-02-01T09:30:00Z","更新日時":"2024-02-01T10:15:00Z","作成者ID":"rec-sys-admin"},{"レポートID":"rec-001","テンプレートID":"rec-002","ユーザーID":"rec-003","レポート期間開始日":"2024-02-01T00:00:00Z","レポート期間終了日":"2024-02-29T23:59:59Z","生成日時":"2024-03-01T09:15:30Z","レポートタイトル":"2024年2月度 営業活動報告書","レポート内容":"2024年2月度の営業活動をご報告いたします。本月は新規顧客開拓に注力し、既存顧客のフォローアップを並行して実施いたしました。成約件数5件、営業活動件数31件となっており、前月比で成約率が向上しております。特にIT業界向けのソリューション提案が好評をいただき、複数の大型案件の進捗が見られました。今後も顧客満足度向上に注力いたします。","配信ステータス":"未配信","配信日時":null,"配信先メールアドレス":"suzuki.hanako@company.jp","成約件数":5,"営業活動件数":31,"作成日時":"2024-03-01T09:15:30Z","更新日時":"2024-03-01T09:15:30Z","作成者ID":"rec-004"},{"レポートID":"rec-20250115-001","テンプレートID":"rec-tmpl-campaign-002","ユーザーID":"rec-user-salesE-045","レポート期間開始日":"2025-01-06T00:00:00Z","レポート期間終了日":"2025-01-19T23:59:59Z","生成日時":"2025-01-20T09:15:00Z","レポートタイトル":"営業担当者E 新春キャンペーン期間レポート（1月6日～19日）","レポート内容":"【期間】2025年1月6日～1月19日（2週間）\n【成約件数】7件\n【営業活動件数】42件\n\n本期間は新春キャンペーン実施期間として、重点的な営業活動を展開いたしました。\n\n【成約内訳】\n・既存顧客フォローアップ：3件\n・新規開拓：4件\n\n【活動内訳】\n・訪問活動：18件\n・電話営業：16件\n・メール営業：8件\n\n成約率は16.7%となり、月間平均12.5%を上回る好成績を達成いたしました。特に新規開拓での成功が顕著です。\n\n【次期への課題】\n継続的なフォローアップ体制の強化、提案資料の質向上を目指します。","配信ステータス":"配信済み","配信日時":"2025-01-20T10:30:00Z","配信先メールアドレス":"manager.yamada@company.jp","成約件数":7,"営業活動件数":42,"作成日時":"2025-01-20T09:15:00Z","更新日時":"2025-01-20T10:30:00Z","作成者ID":"rec-user-system-admin"},{"レポートID":"rec-20240215-001","テンプレートID":"tpl-monthly-sales-001","ユーザーID":"usr-sales-B-002","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-01-31T23:59:59Z","生成日時":"2024-02-15T09:30:00Z","レポートタイトル":"2024年1月度営業活動レポート（修正版）","レポート内容":"営業担当者：鈴木花子\n\n【概要】\n2024年1月の営業活動実績をご報告いたします。前月比において成約件数が増加し、営業活動の効率化が進みました。\n\n【主要実績】\n・成約件数：12件\n・営業活動件数：48件\n・成約率：25.0%\n・平均商談期間：14日\n\n【活動内訳】\n新規顧客訪問：18件、既存顧客フォロー：20件、電話営業：10件\n\n【課題と対応】\n1月中旬の顧客対応遅延について、メール配信システムの改善により2月以降の対応を強化いたします。\n\n【次月への取組み】\n既存顧客との関係強化に注力し、リピート受注の拡大を目指します。","配信ステータス":"配信済み","配信日時":"2024-02-15T10:15:00Z","配信先メールアドレス":"suzuki.hanako@company.jp","成約件数":12,"営業活動件数":48,"作成日時":"2024-02-15T09:30:00Z","更新日時":"2024-02-15T10:15:00Z","作成者ID":"usr-admin-system-001"},{"レポートID":"rec-001-20240201-001","テンプレートID":"rec-tmpl-001","ユーザーID":"rec-user-sales-dept","レポート期間開始日":"2024-01-01T00:00:00+09:00","レポート期間終了日":"2024-01-31T23:59:59+09:00","生成日時":"2024-02-01T09:30:00+09:00","レポートタイトル":"営業部全体2024年1月サマリーレポート","レポート内容":"営業部全体の2024年1月の営業実績をご報告いたします。本月は新規顧客開拓に注力した結果、成約件数21件、営業活動件数156件を達成いたしました。特に製造業セクターにおいて前月比35%の成約増加が見られました。詳細は以下の通りです。\n\n【主要成績】\n・成約件数：21件（前月比+8件）\n・営業活動件数：156件（前月比+12件）\n・平均成約率：13.5%\n・新規顧客数：8社\n・既存顧客拡大：13件\n\n【部門別実績】\n営業一課：成約8件、営業活動52件\n営業二課：成約7件、営業活動48件\n営業三課：成約6件、営業活動56件\n\n【課題と対策】\n既存顧客のフォローアップ体制をさらに強化し、顧客満足度向上に注力してまいります。","配信ステータス":"配信済み","配信日時":"2024-02-01T10:15:00+09:00","配信先メールアドレス":"sales-team@company.jp","成約件数":21,"営業活動件数":156,"作成日時":"2024-02-01T09:30:00+09:00","更新日時":"2024-02-01T10:15:00+09:00","作成者ID":"rec-user-admin-yamada"},{"レポートID":"rec-001","テンプレートID":"rec-002","ユーザーID":"rec-003","レポート期間開始日":"2024-02-01T00:00:00Z","レポート期間終了日":"2024-02-29T23:59:59Z","生成日時":"2024-03-01T09:30:00Z","レポートタイトル":"2024年2月度営業活動レポート","レポート内容":"営業担当者Cの2月度営業活動実績をご報告いたします。本月は新規顧客開拓に注力し、既存顧客との関係強化を図りました。成約案件としては、大型製造業顧客との契約締結、中堅流通企業との追加受注、地域密着型小売店舗との新規取引開始、および既存顧客の契約更新を達成いたしました。営業活動件数28件の内訳は、新規訪問営業12件、既存顧客フォローアップ11件、提案資料作成・提出5件となります。今後も継続的な顧客満足度向上と売上拡大に向けて取り組んでまいります。","配信ステータス":"未配信","配信日時":null,"配信先メールアドレス":"suzuki.takeshi@company.jp","成約件数":4,"営業活動件数":28,"作成日時":"2024-03-01T09:30:00Z","更新日時":"2024-03-01T09:30:00Z","作成者ID":"rec-004"}],"レポート配信履歴":[{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-12-001","配信先ユーザーID":"usr-0847","配信先メールアドレス":"tanaka.taro@company.jp","配信日時":"2024-12-01T09:00:00+09:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2024-12-01T10:35:00+09:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-12-01T08:55:00+09:00","更新日時":"2024-12-01T10:35:00+09:00","作成者ID":"sys-auto-001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-0847","配信先ユーザーID":"usr-0512","配信先ユーザー":"営業部長 山田花子","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2024-12-16 09:15:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":null,"開封フラグ":false,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-12-16 09:15:00","更新日時":"2024-12-16 09:15:00","作成者ID":"sys-auto-001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-0847","配信先ユーザーID":"usr-5392","配信先ユーザー":"鈴木花子","配信先メールアドレス":"suzuki.hanako@oldomain.jp","配信日時":"2024-11-15 09:30:45","配信ステータス":"失敗","配信方法":"メール","エラーメッセージ":"メールアドレスが無効です。ドメインが存在しません（oldomain.jp）","開封日時":null,"開封フラグ":false,"再配信フラグ":true,"再配信回数":0,"作成日時":"2024-11-15 09:30:45","更新日時":"2024-11-15 09:31:12","作成者ID":"sys-auto"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-0847","配信先ユーザーID":"usr-5234","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2024-11-15 14:32:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2024-11-15 16:45:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":1,"作成日時":"2024-11-14 09:15:00","更新日時":"2024-11-15 14:32:00","作成者ID":"usr-9001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-1847","配信先ユーザーID":"usr-5432","配信先ユーザー":"山田花子","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2025-01-15 09:30:00","配信ステータス":"失敗","配信方法":"メール","エラーメッセージ":"メールサーバーエラー: 受信メールボックスが満杯のため配信不可。再配信試行後も同様のエラーが継続。最終的にメールサーバー側で受信拒否設定となったため配信不可能。","開封日時":null,"開封フラグ":false,"再配信フラグ":false,"再配信回数":3,"作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-17 14:22:00","作成者ID":"sys-auto-001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-0847","配信先ユーザーID":"usr-2341","配信先ユーザー":"山田花子","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2024-11-15 09:30:00","配信ステータス":"成功","配信方法":"システム内通知","エラーメッセージ":null,"開封日時":"2024-11-15 10:45:23","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 10:45:23","作成者ID":"sys-0001"},{"配信履歴ID":"rec-20250115-001","生成済みレポートID":"rep-202501-quarterly-sales","配信先ユーザーID":"usr-tanaka-taro-001","配信先メールアドレス":"tanaka.taro@company.co.jp","配信日時":"2025-01-15 09:30:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2025-01-15 14:22:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 14:22:00","作成者ID":"sys-automated-delivery"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-0847","配信先ユーザーID":"usr-5234","配信先メールアドレス":"suzuki.hanako@company.jp","配信日時":null,"配信ステータス":"保留中","配信方法":"メール","エラーメッセージ":"SMTPサーバーへの接続タイムアウト。メールサーバーが一時的に応答していません。","開封日時":null,"開封フラグ":false,"再配信フラグ":false,"再配信回数":0,"作成日時":"2025-01-15 09:30:45","更新日時":"2025-01-15 09:35:12","作成者ID":"sys-auto"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-0847","配信先ユーザーID":"usr-2341","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2024-11-15 09:30:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2024-11-18 14:22:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-18 14:22:00","作成者ID":"usr-0001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-1547","配信先ユーザーID":"usr-8392","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2024-11-15 09:30:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2024-11-15 10:45:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-11-15 09:30:00","更新日時":"2025-01-20 14:22:00","作成者ID":"usr-sys-001"}],"成果指標":[{"成果指標ID":"rec-001","指標名":"月次売上高","指標コード":"MONTHLY_SALES_REVENUE","説明":"毎月の売上高の達成状況を追跡する基本指標。営業部門の業績評価の主要な指標として使用される。","単位":"万円","計算方法":"当月の確定売上高合計 = Σ(受注金額 × 納入完了フラグ) ※納入完了した案件のみ計上","目標値":50000,"警告閾値":40000,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-user-0001"},{"成果指標ID":"rec-001","指標名":"営業部門月間受注件数","指標コード":"SALES_ORDER_COUNT","説明":"営業部門全体における月間の新規受注件数。顧客からの正式な発注を受けた件数を集計し、営業活動の成果を定量的に測定する主要指標。","単位":"件","計算方法":"毎月1日から月末までに受注システムに登録された受注伝票の件数合計。キャンセルされた受注は除外。営業所別の集計値を合算。","目標値":850,"警告閾値":722,"表示順序":1,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2024-12-15T14:20:00+09:00","作成者":"rec-user-0042"},{"成果指標ID":"rec-001","指標名":"新規顧客獲得数","指標コード":"NEW_CUSTOMER_ACQUISITION","説明":"営業月間における新規顧客獲得件数の実績値。既存顧客との取引がない新規法人・個人顧客の獲得数を集計し、月別進捗を監視する。","単位":"件","計算方法":"当月に新規契約を締結した顧客数（重複排除済み）の合計。既存顧客からの追加受注は除外。営業日報および契約管理システムより自動集計。","目標値":150,"警告閾値":120,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"既存顧客リピート受注率","指標コード":"REPEAT_ORDER_RATE","説明":"前年度に受注実績のある既存顧客からの当年度受注件数が、既存顧客総数に占める割合を測定する指標。顧客満足度と営業効率を総合的に評価する重要なKPI。","単位":"％","計算方法":"（当年度既存顧客からの受注件数 ÷ 前年度受注実績のある既存顧客総数）× 100","目標値":75,"警告閾値":65,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2024-10-15T14:20:00+09:00","作成者":"rec-u-0847"},{"成果指標ID":"rec-001","指標名":"顧客単価","指標コード":"CUSTOMER_UNIT_PRICE","説明":"営業活動の効率性を示す指標。売上高を顧客数で除算した1顧客あたりの平均売上金額。顧客単価の向上は営業活動の質的改善を示す。","単位":"円","計算方法":"当期売上高 ÷ 当期新規顧客数。月次で算出し、前月比および前年同月比の推移を追跡する。","目標値":850000,"警告閾値":765000,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:45:00+09:00","作成者":"rec-user-0042"},{"成果指標ID":"rec-001","指標名":"提案から受注までの成約率","指標コード":"PROPOSAL_CONVERSION_RATE","説明":"営業部門が提示した提案件数に対して、実際に受注に至った件数の割合を測定する指標。営業効率と顧客獲得能力を評価するための重要なKPI。","単位":"％","計算方法":"（当月受注件数 ÷ 当月提案件数） × 100。提案から受注までの平均日数が30日以内のものを対象とし、キャンセルされた提案は分母から除外する。","目標値":35,"警告閾値":28,"表示順序":2,"有効フラグ":true,"作成日時":"2024-04-01T09:00:00+09:00","更新日時":"2025-01-15T14:30:00+09:00","作成者":"rec-user-042"},{"成果指標ID":"rec-001","指標名":"顧客満足度スコア","指標コード":"CSAT_SCORE","説明":"月次アンケート調査による顧客満足度を0〜100ポイントで測定し、サービス品質の向上度合いを定期的に追跡する指標","単位":"ポイント","計算方法":"毎月末に実施する顧客アンケート（5段階評価）の回答を集計し、満足度の高い回答の割合をスコア化。計算式：（満足+やや満足の回答数÷総回答数）×100","目標値":80,"警告閾値":70,"表示順序":1,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:45:00+09:00","作成者":"rec-user-0042"},{"成果指標ID":"rec-001","指標名":"売上原価率","指標コード":"COGS_RATIO","説明":"売上高に対する売上原価の比率を示す指標。この指標を監視することで、製造原価の効率性を把握し、利益率の維持・向上を実現する。目標値以下に抑えることで適切な利益確保が可能。","単位":"％","計算方法":"売上原価率（％）= （売上原価 ÷ 売上高） × 100。月次の売上高と売上原価の実績値から算出。","目標値":62,"警告閾値":68,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:20:00+09:00","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"営業担当者個別売上達成率","指標コード":"SALES_ACHIEVEMENT_RATE","説明":"各営業担当者の月間売上目標に対する達成度を百分率で測定する指標。営業チーム内での相対的なパフォーマンス評価と個別目標管理に用いられる。","単位":"％","計算方法":"（当月実績売上 ÷ 当月売上目標） × 100。目標値100%以上で目標達成と判定。","目標値":100,"警告閾値":80,"表示順序":1,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:22:00+09:00","作成者":"rec-user-0042"},{"成果指標ID":"rec-001","指標名":"四半期契約更新率","指標コード":"CONTRACT_RENEWAL_RATE_Q","説明":"四半期ごとの既存契約のうち、更新・継続した契約の割合。顧客ロイヤルティと事業の安定性を測定する重要指標。","単位":"％","計算方法":"（当四半期更新契約数 ÷ 当四半期更新対象契約数） × 100","目標値":92,"警告閾値":85,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-10-22T14:45:00+09:00","作成者":"rec-user-0847"}]};
+window.AIVIC_PRESET_SEED = {"ユーザー":[{"ユーザーID":"rec-001","メールアドレス":"admin@company.co.jp","ユーザー名":"山田太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-001","役割":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T08:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.jiro@company.jp","ユーザー名":"鈴木次郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOP","組織ID":"rec-org-sales-001","役割":"営業部門長","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@salesforce.example.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMN","組織ID":"rec-org-0047","役割":"営業","ステータス":"有効","最終ログイン日時":"2025-01-15T08:32:45+09:00","作成日時":"2024-04-10T10:15:30+09:00","更新日時":"2025-01-15T08:32:45+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"yamada.hanako@billing-corp.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$8qL9vZ3mK1pQ2wR4sT5uN6oP7xY8zAbCdEfGhIjKlMnOpQrStUvWx","組織ID":"rec-org-0047","役割":"請求担当者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:32:00+09:00","作成日時":"2024-04-10T14:20:00+09:00","更新日時":"2025-01-15T09:32:00+09:00","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001","メールアドレス":"yamada.hanako@company.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-001","役割":"経理部長","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001-u7f2k9m","メールアドレス":"yamada.hanako@company.jp","ユーザー名":"山田花子","パスワードハッシュ":"$2b$12$K8vN3pQ9xL2mR5sT8wY1uOz6jA4bC7dE9fG2hI5kJ8lM3nO0pP","組織ID":"rec-001-org-sales","役割":"営業アシスタント","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00Z","作成日時":"2024-12-01T10:15:00Z","更新日時":"2025-01-10T14:20:00Z","作成者":"rec-001-u2a5k1n"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOP","組織ID":"rec-org-042","役割":"営業","ステータス":"保留中","最終ログイン日時":"2025-01-15T14:32:00+09:00","作成日時":"2022-04-10T09:00:00+09:00","更新日時":"2025-01-20T10:15:00+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.yuki@company.jp","ユーザー名":"鈴木由紀","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQ","組織ID":"rec-org-0042","役割":"営業事務","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-10T14:20:00Z","更新日時":"2025-01-15T09:30:45Z","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001-usr-2024-0847","メールアドレス":"tanaka.jiro@salesoffice-kanto.co.jp","ユーザー名":"田中次郎","パスワードハッシュ":"$2b$12$8KL9mN4pQxRvWsYzAb5cHeJ6sTuVwXyZ2aB3cDeFgHiJkLmNoPqRs","組織ID":"rec-001-org-2024-0215","役割":"営業所長","ステータス":"有効","最終ログイン日時":"2025-01-16T09:34:22Z","作成日時":"2024-04-10T14:22:00Z","更新日時":"2025-01-16T09:34:22Z","作成者":"rec-001-usr-2024-0001"},{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890","組織ID":"rec-org-0042","役割":"監査部長","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-002"}],"営業活動":[{"営業活動ID":"rec-001","ユーザーID":"usr-2847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社山田建設","案件名":"オフィス移転に伴う什器購入追加案件","活動内容":"既存顧客である山田建設の本社訪問。前月の什器納入後のフォローアップを実施。オフィス移転に伴う追加スペースの什器購入について提案資料を提示。会議室用テーブル・椅子セット一式の追加受注を獲得。納期は12月中旬を予定。","成果金額":850000,"成果有無":true,"次回フォロー予定日":"2024-12-10T10:00:00+09:00","作成日時":"2024-11-15T16:45:00+09:00","更新日時":"2024-11-15T16:45:00+09:00","作成者":"usr-2847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2024-11-15T10:30:00+09:00","活動種別":"電話","顧客名":"株式会社ハイテックソリューションズ","案件名":"クラウド基盤導入検討","活動内容":"営業担当の鈴木から紹介を受けた新規見込み客への初期接触。企業のIT部長・山田花子氏に電話で連絡。現在のシステム構成と課題をヒアリング。クラウド移行の関心度は高く、来週のオンライン打ち合わせを提案し了承を得た。資料送付予定。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-11-22T14:00:00+09:00","作成日時":"2024-11-15T11:15:00+09:00","更新日時":"2024-11-15T11:15:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"提案","顧客名":"株式会社ハイテックソリューションズ","案件名":"基幹システム刷新プロジェクト","活動内容":"11月8日に提出した基幹システム刷新提案資料について、顧客のIT部門長・山田課長と経営企画部長・佐藤部長とのミーティングを実施。提案内容の詳細説明、導入スケジュール、概算費用について質疑応答を行った。顧客からは実装期間の短縮化と既存システムとの連携方法について追加質問があり、次回ミーティング時に詳細資料を提出することで合意。顧客の意思決定プロセスは12月中旬の経営会議を予定しており、それまでに追加資料3点の提出を約束した。","成果金額":4500000,"成果有無":true,"次回フォロー予定日":"2024-12-03T10:00:00+09:00","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"rec-u-042","活動日":"2024-11-15T14:30:00","活動種別":"メール","顧客名":"株式会社フューチャーシステムズ","案件名":"クラウドERPシステム導入プロジェクト","活動内容":"顧客からの機能仕様に関する問い合わせメールに対応。在庫管理モジュールのカスタマイズ可否、API連携の技術仕様、導入スケジュール等について詳細に説明。顧客の懸念事項を解消し、次段階の提案資料作成を約束。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-11-22T10:00:00","作成日時":"2024-11-15T14:45:00","更新日時":"2024-11-15T14:45:00","作成者":"rec-u-042"},{"営業活動ID":"rec-001","ユーザーID":"usr-2847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社アルファテック","案件名":"基幹システム更新プロジェクト","活動内容":"前回の提案で見送られた基幹システム更新案件について、新たに機能要件を見直し、導入スケジュールを短縮した改善案を持参して顧客を訪問。IT部長の佐藤課長と経営企画部の鈴木部長に対して、ROI試算と導入リスク低減策について説明。顧客からは前向きな反応を得られ、来月の経営会議での検討を約束いただいた。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-12-10T10:00:00+09:00","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"usr-2847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2025-01-15T14:30:00","活動種別":"電話","顧客名":"株式会社ハイテックソリューションズ","案件名":"クラウド基幹システム導入プロジェクト","活動内容":"契約前最終確認電話。納期、支払い条件、導入スケジュール、保守サービス内容について顧客と最終調整を実施。顧客より契約書への署名承認を得た。契約日は1月22日に決定。","成果金額":2850000,"成果有無":true,"次回フォロー予定日":"2025-01-22T10:00:00","作成日時":"2025-01-15T14:45:00","更新日時":"2025-01-15T14:45:00","作成者":"usr-0847"},{"営業活動ID":"rec-001","ユーザーID":"user-2847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社アイテック","案件名":"営業管理システム導入プロジェクト","活動内容":"11月10日の納品完了に伴い、顧客先へ訪問。システムの初期設定確認、ユーザー教育の実施状況をヒアリング。導入後の運用について質問対応を行い、顧客満足度を確認。追加カスタマイズの要望は現時点ではなし。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-12-15T10:00:00+09:00","作成日時":"2024-11-15T16:45:00+09:00","更新日時":"2024-11-15T16:45:00+09:00","作成者":"user-2847"},{"営業活動ID":"rec-001","ユーザーID":"usr-0847","活動日":"2024-11-15T14:30:00+09:00","活動種別":"メール","顧客名":"株式会社ソリューション・パートナーズ","案件名":"営業支援システム導入案件","活動内容":"既存顧客である株式会社ソリューション・パートナーズに対し、現在導入済みの営業支援システムの利用状況を踏まえた追加機能の提案メールを送付。AI分析機能とレポート自動生成機能の2つの追加オプションを提案し、導入によるコスト削減効果を具体的に試算した資料を添付。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-11-29T10:00:00+09:00","作成日時":"2024-11-15T14:35:00+09:00","更新日時":"2024-11-15T14:35:00+09:00","作成者":"usr-0847"},{"営業活動ID":"rec-20250115-001","ユーザーID":"usr-00847","活動日":"2025-01-15T14:30:00+09:00","活動種別":"電話","顧客名":"株式会社エステック工業","案件名":"生産管理システム導入提案","活動内容":"12月20日に提出した見積書（金額：2,850,000円）について確認のため電話連絡。担当者の佐藤課長に繋がり、現在経営会議で検討中とのこと。来週中に回答予定との確認を取得。導入スケジュール案についても簡潔に説明し、質問対応を行った。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2025-01-22T10:00:00+09:00","作成日時":"2025-01-15T14:45:00+09:00","更新日時":"2025-01-15T14:45:00+09:00","作成者":"usr-00847"},{"営業活動ID":"rec-001","ユーザーID":"usr-2024-001","活動日":"2024-11-15T14:30:00+09:00","活動種別":"訪問","顧客名":"株式会社テクノソリューション","案件名":"クラウドERPシステム導入検討","活動内容":"東京ビジネスエキスポ2024に出展していた当社ブースにて、同社の経営企画部長・鈴木健一氏と初めてお会いしました。同社は現在レガシーシステムの刷新を検討中で、当社のクラウドERP製品に高い関心を示されました。製品デモを30分間実施し、カスタマイズ対応可能な点が特に評価されました。同氏より、来月の経営会議で提案資料を使用したいとのご要望をいただきました。","成果金額":0,"成果有無":false,"次回フォロー予定日":"2024-12-10T10:00:00+09:00","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"usr-2024-001"}],"顧客企業":[{"顧客企業ID":"rec-001","企業名":"株式会社トヨタ部品工業","業種":"自動車部品製造","所在地":"愛知県豊田市","代表者名":"鈴木健一","電話番号":"0565-28-1234","メールアドレス":"info@toyota-buhin.co.jp","担当営業ユーザーID":"rec-u-0042","ステータス":"既存顧客","作成日時":"2023-06-15T09:30:00Z","更新日時":"2025-01-20T14:15:00Z","作成者ユーザーID":"rec-u-0015"},{"顧客企業ID":"rec-001","企業名":"株式会社グリーンロジスティクス","業種":"物流・運送業","所在地":"東京都江東区青海1-3-1","代表者名":"山田健一","電話番号":"03-5XXX-XXXX","メールアドレス":"yamada@greenlogistics.jp","担当営業ユーザーID":"rec-u-042","ステータス":"見込み客","作成日時":"2024-11-15T10:30:00+09:00","更新日時":"2024-11-15T10:30:00+09:00","作成者ユーザーID":"rec-u-008"},{"顧客企業ID":"rec-001","企業名":"株式会社ライフマート","業種":"小売業（衣料品・日用雑貨）","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"山田太郎","電話番号":"03-XXXX-5678","メールアドレス":"yamada@lifemart.co.jp","担当営業ユーザーID":"rec-u-0042","ステータス":"既存顧客","作成日時":"2024-03-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ユーザーID":"rec-u-0015"},{"顧客企業ID":"rec-001","企業名":"株式会社大成建設工業","業種":"建設業","所在地":"東京都千代田区丸の内1-1-1","代表者名":"山田太郎","電話番号":"03-1234-5678","メールアドレス":"info@taiseikensetu.co.jp","担当営業ユーザーID":"rec-102","ステータス":"既存顧客","作成日時":"2023-06-15T10:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ユーザーID":"rec-201"},{"顧客企業ID":"rec-001","企業名":"医療法人社団仁心会 東京中央病院","業種":"医療・福祉","所在地":"東京都渋谷区代々木2-1-1","代表者名":"山田健太郎","電話番号":"03-XXXX-XXXX","メールアドレ":"info@tokyochuuoubyouin.jp","担当営業ユーザーID":"rec-u-0042","ステータス":"見込み客","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者ユーザーID":"rec-u-0042"},{"顧客企業ID":"rec-001","企業名":"株式会社サンテック工業","業種":"精密機械製造","所在地":"神奈川県横浜市港北区新横浜3-18-1","代表者名":"鈴木健一","電話番号":"045-470-2841","メールアドレス":"info@suntech-ind.co.jp","担当営業ユーザーID":"rec-0234","ステータス":"休止中","作成日時":"2023-06-15T09:30:00Z","更新日時":"2024-11-22T14:15:00Z","作成者ユーザーID":"rec-0156"},{"顧客企業ID":"rec-001","企業名":"株式会社テクノソリューション","業種":"情報通信業","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"山田太郎","電話番号":"03-XXXX-5678","メールアドレス":"info@techno-solution.co.jp","担当営業ユーザーID":"rec-042","ステータス":"既存顧客","作成日時":"2024-03-15T10:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ユーザーID":"rec-028"},{"顧客企業ID":"rec-001","企業名":"株式会社関西銀行","業種":"金融機関・銀行","所在地":"大阪府大阪市北区中之島3-2-4","代表者名":"山田隆一","電話番号":"06-6208-1234","メールアドレス":"info@kansai-bank.co.jp","担当営業ユーザーID":"rec-u-0847","ステータス":"見込み客","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T09:30:00+09:00","作成者ユーザーID":"rec-u-0521"},{"顧客企業ID":"rec-001","企業名":"株式会社ウィンターストア","業種":"流通業","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"鈴木健一","電話番号":"03-XXXX-5678","メールアドレス":"info@winterstore.co.jp","担当営業ユーザーID":"rec-102","ステータス":"既存顧客","作成日時":"2024-03-15T10:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ユーザーID":"rec-201"},{"顧客企業ID":"rec-001","企業名":"株式会社テクノソリューション","業種":"情報通信業","所在地":"東京都渋谷区道玄坂1-2-3","代表者名":"山田太郎","電話番号":"03-XXXX-5678","メールアドレス":"info@techno-solution.jp","担当営業ユーザーID":"rec-042","ステータス":"既存顧客","作成日時":"2023-08-15T10:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ユーザーID":"rec-018"}],"成約":[{"成約ID":"rec-001","営業活動ID":"rec-002","ユーザーID":"rec-003","顧客企業ID":"rec-004","成約金額":4800000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"産業用機械設備年間保守契約パッケージ","契約期間開始日":"2025-01-01T00:00:00+09:00","契約期間終了日":"2025-12-31T23:59:59+09:00","備考":"既存顧客との継続契約。月次巡回点検、部品交換、24時間緊急対応サービスを含む。担当営業の継続対応により更新率向上が期待される。","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"rec-003"},{"成約ID":"rec-20250215-001","営業活動ID":"rec-20250110-act-001","ユーザーID":"rec-user-sales-0847","顧客企業ID":"rec-cust-it-2401","成約金額":2400000,"成約日":"2025-02-14T16:30:00+09:00","商品サービス名":"クラウドERPシステム Professional Plan","契約期間開始日":"2025-03-01T00:00:00+09:00","契約期間終了日":"2026-02-28T23:59:59+09:00","備考":"初回導入案件。既存システムからの移行支援を含む。導入期間は3ヶ月を予定。顧客企業の財務・人事部門を対象とした研修も実施予定。","作成日時":"2025-02-14T17:15:00+09:00","更新日時":"2025-02-14T17:15:00+09:00","作成者":"rec-user-sales-0847"},{"成約ID":"rec-001","営業活動ID":"rec-102","ユーザーID":"rec-205","顧客企業ID":"rec-308","成約金額":450000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"クラウド型プロジェクト管理ツール トライアルプラン","契約期間開始日":"2024-11-20T00:00:00+09:00","契約期間終了日":"2025-02-20T23:59:59+09:00","備考":"スタートアップ企業向けの3ヶ月トライアル契約。チーム最大5名まで利用可能。トライアル終了後の本契約化を想定。営業担当者：佐藤健一が提案。","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"rec-205"},{"成約ID":"rec-20250156","営業活動ID":"rec-20250089","ユーザーID":"rec-20240342","顧客企業ID":"rec-20240127","成約金額":850000,"成約日":"2025-01-28T14:30:00+09:00","商品サービス名":"クラウド勤怠管理システム追加ライセンス（50ユーザー分）","契約期間開始日":"2025-02-01T00:00:00+09:00","契約期間終了日":"2026-01-31T23:59:59+09:00","備考":"既存顧客（株式会社サンテック）の従業員増加に伴う追加ライセンス購入。初回導入は2024年3月。営業担当の佐藤による継続的なフォローアップにより追加受注に至った。","作成日時":"2025-01-28T15:45:22+09:00","更新日時":"2025-01-28T15:45:22+09:00","作成者":"rec-20240342"},{"成約ID":"rec-001","営業活動ID":"rec-002","ユーザーID":"rec-003","顧客企業ID":"rec-004","成約金額":45000000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"クラウド型文書管理システム（3年ライセンス）","契約期間開始日":"2025-01-01T00:00:00+09:00","契約期間終了日":"2027-12-31T23:59:59+09:00","備考":"◎省庁入札案件（一般競争入札）。2024年9月の入札公告から11月の評価委員会を経て成約。導入対象は全国の地方支分部局50箇所。保守サポート・ヘルプデスク対応含む。契約金額は予定価格の98.5%で落札。","作成日時":"2024-11-16T09:15:00+09:00","更新日時":"2024-11-16T09:15:00+09:00","作成者":"rec-005"},{"成約ID":"rec-20250115-001","営業活動ID":"rec-20241201-act-005","ユーザーID":"rec-user-0847","顧客企業ID":"rec-customer-1203","成約金額":8500000,"成約日":"2025-01-15T14:30:00+09:00","商品サービス名":"POSシステム統合パッケージ（15拠点ライセンス）","契約期間開始日":"2025-02-01T00:00:00+09:00","契約期間終了日":"2027-01-31T23:59:59+09:00","備考":"全国15店舗への導入。初期導入サポート3ヶ月間、月次保守費用別途。決済端末50台含む。顧客企業の既存在庫管理システムとの連携実装対応。","作成日時":"2025-01-15T15:45:22+09:00","更新日時":"2025-01-15T15:45:22+09:00","作成者":"rec-user-0847"},{"成約ID":"rec-001","営業活動ID":"rec-002","ユーザーID":"rec-003","顧客企業ID":"rec-004","成約金額":2400000,"成約日":"2025-01-15T10:30:00Z","商品サービス名":"金融システム長期保守サービス（3年契約）","契約期間開始日":"2025-02-01T00:00:00Z","契約期間終了日":"2028-01-31T23:59:59Z","備考":"既存契約の更新。前契約比で15%の値上げを承認。年間保守費800万円を3年一括払いで契約。障害対応時間帯は営業時間内（9:00-18:00）。","作成日時":"2025-01-15T11:45:00Z","更新日時":"2025-01-15T11:45:00Z","作成者":"rec-003"},{"成約ID":"rec-20250147","営業活動ID":"rec-20250089","ユーザーID":"rec-20250012","顧客企業ID":"rec-20250034","成約金額":8500000,"成約日":"2025-01-15T14:30:00+09:00","商品サービス名":"医療用高周波焼灼装置リース（3年契約）","契約期間開始日":"2025-02-01T00:00:00+09:00","契約期間終了日":"2028-01-31T23:59:59+09:00","備考":"医療法人社団仁心会グループ3施設への一括導入。保守点検・消耗品交換費用は別途月額契約。導入前研修実施予定日2025年1月28日。","作成日時":"2025-01-15T15:45:22+09:00","更新日時":"2025-01-15T15:45:22+09:00","作成者":"rec-20250012"},{"成約ID":"rec-001","営業活動ID":"rec-002","ユーザーID":"rec-003","顧客企業ID":"rec-004","成約金額":2400000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"飲食チェーン運営支援サービス（基本プラン）","契約期間開始日":"2024-12-01T00:00:00+09:00","契約期間終了日":"2025-11-30T23:59:59+09:00","備考":"ラーメンチェーン15店舗向け。POSシステム連携、仕入管理、スタッフシフト管理を含む。初期導入支援として3ヶ月間の専任コンサルタント配置予定。","作成日時":"2024-11-15T15:00:00+09:00","更新日時":"2024-11-15T15:00:00+09:00","作成者":"rec-005"},{"成約ID":"rec-001","営業活動ID":"rec-102","ユーザーID":"rec-203","顧客企業ID":"rec-304","成約金額":480000,"成約日":"2024-11-15T14:30:00+09:00","商品サービス名":"建設業務管理ツール Pro 年間ライセンス","契約期間開始日":"2025-01-01T00:00:00+09:00","契約期間終了日":"2025-12-31T23:59:59+09:00","備考":"初期導入支援として3回のオンボーディング研修を実施予定。現場管理者5名分のアカウントを含む。年間契約で月額40,000円相当。","作成日時":"2024-11-15T15:45:00+09:00","更新日時":"2024-11-15T15:45:00+09:00","作成者":"rec-203"}],"レポートテンプレート":[{"テンプレートID":"rec-001","テンプレート名":"月次営業成果レポート（全社集計）","説明":"営業部全体の月次成果を集計し、売上目標達成状況、顧客新規獲得数、既存顧客売上増加率、営業活動指標を営業部長に報告するレポート","レポート種別":"月次","対象ユーザーID":"user-2024-001","含含める指標":"月間売上高,売上目標達成率,新規顧客数,既存顧客売上,商談数,受注数,受注率,顧客満足度スコア,営業活動時間,地域別売上構成","フィルター条件":"決算日=当月末,対象部門=営業部,売上ステータス=確定,組織階層=全社","配信先メールアドレス":"yamada.taro@company.jp,suzuki.hanako@company.jp,tanaka.jiro@company.jp","配信スケジュール":"毎月1日 09:00","有効フラグ":true,"作成日時":"2024-04-15 14:30:00","更新日時":"2025-01-10 11:45:00","作成者ID":"user-2023-045"},{"テンプレートID":"rec-001","テンプレート名":"営業チームリーダー向け週次進捗レポート","説明":"営業チーム全体の週単位での売上実績、目標達成率、顧客開拓数、案件進捗状況をチーム別に集計し、リーダーが部下の成績管理と指導に活用するレポート","レポート種別":"週次","対象ユーザーID":"rec-u-0847","含含める指標":"週間売上高,売上目標達成率,新規顧客獲得数,受注件数,失注件数,平均受注単価,チーム別売上ランキング,個人別売上ランキング","フィルター条件":"部門:営業本部,対象週:当該週,ステータス:成約済み・進行中","配信先メールアドレス":"tanaka.taro@company.co.jp,suzuki.hanako@company.co.jp,yamamoto.jiro@company.co.jp","配信スケジュール":"毎週月曜日 09:00","有効フラグ":true,"作成日時":"2024-04-15 14:30:00","更新日時":"2025-01-20 10:15:00","作成者ID":"rec-u-0521"},{"テンプレートID":"rec-001-20250115-daily-sales","テンプレート名":"営業担当者向け日次活動レポート","説明":"営業担当者が担当する案件の進捗状況、当日の活動実績、翌日の予定を自動集計するレポート。案件ステージの遷移、商談金額、接触件数などを日次で可視化し、営業活動の効率化を支援します。","レポート種別":"日次","対象ユーザーID":"user-2024-001-tanaka-taro","含める指標":"新規案件数,進行中案件数,クローズ予定案件数,本日の商談件数,本日の架電件数,本日のメール送信件数,案件総額,受注確度別案件分類","フィルター条件":"対象ユーザーID=当該営業担当者 AND ステータス IN (新規,進行中,クローズ予定) AND 更新日時>=当日00:00:00","配信先メールアドレス":"tanaka.taro@company.jp,manager.suzuki@company.jp","配信スケジュール":"毎営業日 09:00","有効フラグ":true,"作成日時":"2024-12-01T14:30:00+09:00","更新日時":"2025-01-15T10:45:00+09:00","作成者ID":"user-2024-admin-yamamoto-hanako"},{"テンプレートID":"rec-001-kpi-monthly-exec","テンプレート名":"経営層向け月次KPIダッシュボード","説明":"経営層を対象とした月次の主要経営指標レポート。売上高、営業利益率、目標達成率を中心に、前月比・前年同月比の推移を可視化。意思決定に必要な重要メトリクスを網羅。","レポート種別":"月次","対象ユーザーID":"user-exec-001","含含める指標":"売上高,営業利益,営業利益率,売上目標達成率,顧客満足度スコア,新規顧客数,既存顧客売上,営業費用率,在庫回転率","フィルター条件":"対象期間:当月,対象部門:全社,売上金額>=0","配信先メールアドレス":"ceo@example.jp,cfo@example.jp,営業本部長@example.jp","配信スケジュール":"毎月1日 09:00","有効フラグ":true,"作成日時":"2024-04-15T10:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"user-admin-002"},{"テンプレートID":"rec-001","テンプレート名":"地域別売上成果レポート（関東エリア）","説明":"関東地域の月次売上実績、目標達成率、顧客別売上内訳、前月比較を含む営業マネージャー向けレポート","レポート種別":"月次","対象ユーザーID":"rec-u-0847","含含める指標":"総売上高,目標達成率,顧客数,新規顧客数,既存顧客売上,商品別売上,地域別売上内訳,前月比,YTD累計売上","フィルター条件":"地域=関東,期間=当月,売上ステータス=確定","配信先メールアドレス":"suzuki.takeshi@company.jp,nakamura.yuki@company.jp,regional.sales@company.jp","配信スケジュール":"毎月5日 09:00","有効フラグ":true,"作成日時":"2024-11-15T14:30:00+09:00","更新日時":"2025-01-10T10:15:00+09:00","作成者ID":"rec-u-0521"},{"テンプレートID":"rec-001-tmpl-2024-sales-category","テンプレート名":"商品カテゴリ別売上分析レポート（月次）","説明":"営業企画部向けの月次レポート。商品カテゴリ別の売上実績、前月比、目標達成率を分析し、カテゴリごとの成長トレンドと課題を可視化します。","レポート種別":"月次","対象ユーザーID":"rec-001-user-eisaku-yamamoto","含含める指標":"売上金額,売上数量,前月比率,目標達成率,利益率,顧客数,平均単価,カテゴリシェア","フィルター条件":"売上日付>=当月1日 AND 売上日付<=当月末日 AND 部門='営業' AND ステータス='確定'","配信先メールアドレス":"eisaku.yamamoto@company.jp,sales-planning@company.jp,director-sales@company.jp","配信スケジュール":"毎月5日 09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00+09:00","更新日時":"2025-01-22T10:45:00+09:00","作成者ID":"rec-001-user-taro-tanaka"},{"テンプレートID":"rec-001","テンプレート名":"新規営業チーム向け新規顧客獲得レポート","説明":"新規営業チームが週次で新規顧客の獲得状況を把握するためのレポート。リード件数、商談化率、成約件数、パイプライン金額などの主要指標を集計し、チーム全体のパフォーマンス分析と個別営業の進捗確認を支援します。","レポート種別":"週次","対象ユーザーID":"rec-user-045","含める指標":"新規リード件数,リード商談化率,新規商談件数,成約件数,成約金額,平均案件単価,パイプライン金額,失注理由別集計,営業担当者別成績","フィルター条件":"リード作成日時>=当週月曜日 AND リード作成日時<翌週月曜日 AND 部門='新規営業チーム'","配信先メールアドレス":"shinki-sales-team@example.jp,suzuki-taro@example.jp,yamamoto-hanako@example.jp,nakamura-jiro@example.jp","配信スケジュール":"毎週月曜日09:00","有効フラグ":true,"作成日時":"2024-10-15T14:30:00+09:00","更新日時":"2025-01-08T11:45:00+09:00","作成者ID":"rec-user-012"},{"テンプレートID":"rec-001","テンプレート名":"既存顧客更新率・解約リスク管理レポート","説明":"既存顧客の契約更新状況と解約リスク要因を可視化し、営業担当者が重点対応顧客を特定するための月次レポート。更新予定日、解約リスクスコア、サポートチケット件数などを集計。","レポート種別":"月次","対象ユーザーID":"user-2024-001","含める指標":"契約更新率,解約リスクスコア,更新予定件数,解約予定件数,平均サポートチケット件数,顧客満足度スコア,売上高前年比","フィルター条件":"契約ステータス=有効,契約期間開始日>=2023-01-01,解約リスクスコア>=3","配信先メールアドレス":"sales-team@company.co.jp,customer-success@company.co.jp","配信スケジュール":"毎月1日 09:00","有効フラグ":true,"作成日時":"2024-06-15T10:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"user-2024-admin-001"},{"テンプレートID":"rec-001","テンプレート名":"営業事務向け受注・請求状況確認レポート","説明":"営業事務チームが日次で確認すべき受注件数、請求額、入金状況、未処理案件を集約したレポート。営業プロセスの進捗管理と請求業務の効率化を支援します。","レポート種別":"日次","対象ユーザーID":"rec-user-0042","含める指標":"当日受注件数,受注金額合計,請求書発行件数,請求金額合計,入金確認件数,入金金額合計,未処理受注件数,期限切れ請求件数,顧客別受注内訳,商品カテゴリ別売上","フィルター条件":"対象日付=当日,ステータス IN (受注確定,請求済み,入金待機),部門=営業本部","配信先メールアドレス":"eigyo-jimu@company.jp,tanaka.hanako@company.jp,suzuki.jiro@company.jp","配信スケジュール":"毎営業日 08:30","有効フラグ":true,"作成日時":"2024-04-15T09:20:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-0015"},{"テンプレートID":"rec-001","テンプレート名":"CEO向けエグゼクティブサマリーレポート","説明":"四半期ごとの経営成績、主要KPI、市場動向、リスク分析をまとめた経営層向けの統合レポート","レポート種別":"四半期","対象ユーザーID":"user-c001","含める指標":"売上高,営業利益,営業利益率,顧客満足度,従業員満足度,市場シェア,新規顧客数,チャーンレート,ROI,キャッシュフロー","フィルター条件":"事業年度=2024年度,対象部門=全社,集計単位=四半期","配信先メールアドレス":"ceo@company.co.jp,cfo@company.co.jp,board@company.co.jp","配信スケジュール":"毎年1月15日,4月15日,7月15日,10月15日","有効フラグ":true,"作成日時":"2024-01-10T09:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者ID":"user-admin-001"}],"生成済みレポート":[{"レポートID":"rec-001-2024-01-sales-a","テンプレートID":"rec-tmpl-monthly-001","ユーザーID":"rec-user-sales-a-001","レポート期間開始日":"2024-01-01T00:00:00+09:00","レポート期間終了日":"2024-01-31T23:59:59+09:00","生成日時":"2024-02-01T09:30:00+09:00","レポートタイトル":"2024年1月度営業活動レポート","レポート内容":"【営業活動サマリー】\n1月度の営業活動を報告いたします。\n\n【成約実績】\n成約件数：3件\n・新規顧客A社：システム導入案件 150万円\n・既存顧客B社：追加ライセンス契約 45万円\n・既存顧客C社：保守契約更新 80万円\n合計契約金額：275万円\n\n【営業活動実績】\n営業活動件数：25件\n・初回訪問：8件\n・提案活動：10件\n・フォローアップ訪問：7件\n\n【今月の取り組み】\n重点顧客への定期訪問を強化し、既存顧客の追加受注に成功しました。新規開拓では3社と商談が進行中です。\n\n【来月の方針】\n進行中の案件3件のクローズを目指し、継続的なフォローアップを実施予定です。","配信ステータス":"配信済み","配信日時":"2024-02-01T10:15:00+09:00","配信先メールアドレス":"manager.yamada@company.jp","成約件数":3,"営業活動件数":25,"作成日時":"2024-02-01T09:30:00+09:00","更新日時":"2024-02-01T10:15:00+09:00","作成者ID":"rec-system-admin-001"},{"レポートID":"rec-20240201-001","テンプレートID":"rec-tmpl-monthly-001","ユーザーID":"rec-user-sales-002","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-01-31T23:59:59Z","生成日時":"2024-02-01T09:30:00Z","レポートタイトル":"2024年1月度営業活動レポート（営業担当者B）","レポート内容":"【営業活動サマリー】\n2024年1月度の営業活動を報告いたします。\n\n【成約実績】\n成約件数：8件\n成約金額：2,450万円\n\n【営業活動実績】\n営業活動件数：47件\n新規顧客接触：12件\n既存顧客フォロー：35件\n\n【主な成約案件】\n・株式会社フジコーポレーション様：340万円\n・田中建設工業様：520万円\n・その他6件\n\n【課題と対策】\n提案から成約までの期間が平均15日と短縮できました。\n次月は新規顧客層への営業活動を強化する予定です。","配信ステータス":"配信失敗","配信日時":null,"配信先メールアドレス":"suzuki.b@example-company.jp","成約件数":8,"営業活動件数":47,"作成日時":"2024-02-01T09:30:00Z","更新日時":"2024-02-01T14:45:00Z","作成者ID":"rec-user-admin-001"},{"レポートID":"rec-001","テンプレートID":"tpl-q4-2024","ユーザーID":"usr-mgr-001","レポート期間開始日":"2024-10-01T00:00:00Z","レポート期間終了日":"2024-12-31T23:59:59Z","生成日時":"2025-01-06T09:30:00Z","レポートタイトル":"2024年第4四半期 営業部門実績報告書","レポート内容":"2024年10月1日から12月31日までの営業部門全体の実績を報告いたします。本期間における営業活動は計画比103%を達成し、特に新規顧客開拓において目標を上回る成果を上げることができました。成約件数は前年同期比15%増加の127件となり、営業チーム全体の協力体制が功を奏しました。部門別では、法人営業チームが全体の58%、個人営業チームが42%の成約を担当しており、バランスの取れた営業活動が実現できています。課題としては、営業活動件数に対する成約率が前期比で2ポイント低下しており、今後のプロセス改善が必要です。","配信ステータス":"配信済み","配信日時":"2025-01-06T10:15:00Z","配信先メールアドレス":"director@company.jp","成約件数":127,"営業活動件数":1248,"作成日時":"2025-01-06T09:30:00Z","更新日時":"2025-01-06T10:15:00Z","作成者ID":"usr-sys-admin"},{"レポートID":"rec-20250115-001","テンプレートID":"tpl-monthly-sales-001","ユーザーID":"usr-sales-c-789","レポート期間開始日":"2025-01-01T00:00:00Z","レポート期間終了日":"2025-01-31T23:59:59Z","生成日時":"2025-02-03T10:30:00Z","レポートタイトル":"2025年1月度営業活動レポート（営業担当者C）","レポート内容":"【営業活動サマリー】\n1月度の営業活動を報告いたします。\n\n【成果】\n成約件数：3件\n成約金額：850万円\n\n【活動実績】\n営業活動件数：24件\n新規訪問：8件\n既存顧客フォロー：16件\n\n【主な成約案件】\n・A社システム導入案件（280万円）\n・B社コンサルティング案件（350万円）\n・C社保守契約（220万円）\n\n【課題と改善予定】\n初回レポート作成のため、今後さらに効率的な営業活動を心がけます。","配信ステータス":"未配信","配信日時":null,"配信先メールアドレス":"manager-yamada@company.jp","成約件数":3,"営業活動件数":24,"作成日時":"2025-02-03T10:30:00Z","更新日時":"2025-02-03T10:30:00Z","作成者ID":"usr-admin-system-001"},{"レポートID":"rec-001-2024-02-sales-a","テンプレートID":"rec-tpl-001-monthly","ユーザーID":"rec-user-001-sales-a","レポート期間開始日":"2024-02-01T00:00:00Z","レポート期間終了日":"2024-02-29T23:59:59Z","生成日時":"2024-03-01T09:30:00Z","レポートタイトル":"2024年2月度営業活動レポート（営業担当者A）","レポート内容":"2024年2月度の営業活動をご報告いたします。本月は前月比で成約件数が増加し、目標達成に向けて順調に推移しております。営業活動件数は28件、成約件数は8件となり、前月比で成約件数が2件増加いたしました。特に既存顧客からの追加受注が3件、新規顧客からの受注が5件と、新規開拓が好調でした。今後も継続的な営業活動を通じて、目標達成に向けて邁進いたします。","配信ステータス":"配信済み","配信日時":"2024-03-01T10:15:00Z","配信先メールアドレス":"manager-tanaka@company.jp","成約件数":8,"営業活動件数":28,"作成日時":"2024-03-01T09:30:00Z","更新日時":"2024-03-01T10:15:00Z","作成者ID":"rec-user-admin-system"},{"レポートID":"rec-001","テンプレートID":"rec-tpl-0001","ユーザーID":"rec-usr-0004","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-01-31T23:59:59Z","生成日時":"2024-02-01T09:30:00Z","レポートタイトル":"2024年1月度営業活動レポート（営業担当者D）","レポート内容":"2024年1月度の営業活動結果をご報告いたします。\n\n【期間実績】\n成約件数：0件\n営業活動件数：15件\n\n【活動内容】\n新規顧客訪問：8件\n既存顧客フォローアップ：5件\nオンライン商談：2件\n\n【課題と対策】\n1月は成約に至らない状況が続いており、今月の実績は目標達成に向けて改善が必要です。各顧客との商談内容を振り返り、提案資料の改善と顧客ニーズの深掘りを重点的に取り組む予定です。2月以降の成約獲得に向けて、営業戦略を立て直し、積極的に活動を進めてまいります。","配信ステータス":"配信済み","配信日時":"2024-02-01T10:15:00Z","配信先メールアドレス":"suzuki.manager@company.jp","成約件数":0,"営業活動件数":15,"作成日時":"2024-02-01T09:30:00Z","更新日時":"2024-02-01T10:15:00Z","作成者ID":"rec-sys-admin"},{"レポートID":"rec-20250215-001","テンプレートID":"tpl-campaign-weekly","ユーザーID":"usr-sales-E-yamada","レポート期間開始日":"2025-02-01T00:00:00+09:00","レポート期間終了日":"2025-02-14T23:59:59+09:00","生成日時":"2025-02-15T09:30:00+09:00","レポートタイトル":"営業担当者E_特別キャンペーン期間レポート（2月1日～14日）","レポート内容":"【特別キャンペーン期間営業活動報告】\n\n対象期間：2025年2月1日～2月14日（14日間）\n\n【成果サマリー】\n成約件数：18件\n営業活動件数：87件\n成約率：20.7%\n\n【活動内容の詳細】\n・新規顧客訪問：32件\n・既存顧客フォローアップ：28件\n・電話営業：18件\n・メール営業：9件\n\n【成約内訳】\nA商品：8件（契約金額：2,400,000円）\nB商品：7件（契約金額：1,750,000円）\nC商品：3件（契約金額：450,000円）\n合計契約金額：4,600,000円\n\n【主な成功事例】\n・既存顧客からの追加受注5件\n・新規大型案件1件（800,000円）\n・紹介による契約3件\n\n【課題と改善案】\n初期接触後の提案資料作成に2～3日要している。テンプレート化により短縮予定。\n\n【次期予定】\n2月15日～28日は継続的フォローアップと新規開拓を強化予定。","配信ステータス":"配信済み","配信日時":"2025-02-15T10:15:00+09:00","配信先メールアドレス":"manager-suzuki@company.jp","成約件数":18,"営業活動件数":87,"作成日時":"2025-02-15T09:30:00+09:00","更新日時":"2025-02-15T10:15:00+09:00","作成者ID":"usr-admin-system"},{"レポートID":"rec-20240229-001","テンプレートID":"rec-tmpl-002","ユーザーID":"rec-user-sales-B","レポート期間開始日":"2024-02-01T00:00:00Z","レポート期間終了日":"2024-02-29T23:59:59Z","生成日時":"2024-03-01T09:15:30Z","レポートタイトル":"2024年2月営業活動レポート（営業担当者B）","レポート内容":"【2024年2月営業活動レポート】\n\n対象期間：2024年2月1日～2月29日\n担当者：営業担当者B\n\n【サマリー】\n本月の営業活動件数は42件、成約件数は8件となり、前月比で成約率が向上いたしました。特に既存顧客からのリピート受注が増加しており、顧客満足度の向上が見られます。\n\n【詳細分析】\n・新規案件開拓：18件\n・既存顧客フォローアップ：24件\n・成約件数：8件（成約率19.0%）\n・失注件数：5件\n・継続協議案件：29件\n\n【今月の実績】\n売上目標達成率：112%\n顧客満足度スコア：4.2/5.0\n\n【来月への課題】\n新規顧客開拓の強化、及び継続協議案件のクロージング促進に注力いたします。","配信ステータス":"配信済み","配信日時":"2024-03-01T10:30:00Z","配信先メールアドレス":"yamada.hanako@company.jp","成約件数":8,"営業活動件数":42,"作成日時":"2024-03-01T09:15:30Z","更新日時":"2024-03-01T10:30:00Z","作成者ID":"rec-system-admin"},{"レポートID":"rec-20250115-001","テンプレートID":"tpl-annual-review-001","ユーザーID":"usr-sales-team-all","レポート期間開始日":"2024-01-01T00:00:00Z","レポート期間終了日":"2024-12-31T23:59:59Z","生成日時":"2025-01-15T09:30:00Z","レポートタイトル":"2024年度営業成績統合レポート～営業担当者全員分析～","レポート内容":"【2024年度営業部門年初レビュー】\n\n対象期間：2024年1月1日～12月31日\n\n■全体成績概要\n営業担当者総数：12名\n合計成約件数：287件（前年比112%）\n合計営業活動件数：2,156件（前年比108%）\n\n■個別成績ランキング\n1位：田中太郎 成約件数：34件 活動件数：198件\n2位：佐藤花子 成約件数：31件 活動件数：187件\n3位：鈴木健太 成約件数：28件 活動件数：175件\n\n■部門別分析\n・首都圏営業所：成約率16.8%（業界平均15.2%）\n・関西営業所：成約率15.2%（業界平均15.2%）\n・中部営業所：成約率14.9%（業界平均15.2%）\n\n■課題と改善提案\n・成約率向上のための顧客フォローアップ強化\n・新規営業先開拓プロセスの最適化\n・営業スキル研修の実施（Q1予定）","配信ステータス":"配信済み","配信日時":"2025-01-15T10:15:00Z","配信先メールアドレス":"eigyo-buchō@company.co.jp","成約件数":287,"営業活動件数":2156,"作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T10:15:00Z","作成者ID":"usr-admin-system"},{"レポートID":"rec-20240215-001","テンプレートID":"rec-tmpl-monthly-001","ユーザーID":"rec-user-sales-c-003","レポート期間開始日":"2024-01-01T00:00:00+09:00","レポート期間終了日":"2024-01-31T23:59:59+09:00","生成日時":"2024-02-15T10:30:00+09:00","レポートタイトル":"2024年1月営業活動レポート（営業担当者C：佐藤花子）","レポート内容":"【営業活動概要】\n1月度の営業活動を報告いたします。\n\n【成績サマリー】\n成約件数：8件\n営業活動件数：42件\nコンバージョンレート：19.0%\n\n【主要成果】\n・新規顧客開拓：3社\n・既存顧客フォローアップ：5件成約\n・提案資料作成・提出：12件\n\n【課題と改善方針】\n訪問活動を増加させることで、さらなる成約率向上を目指します。\n次月は営業活動件数50件以上を目標とします。","配信ステータス":"配信済み","配信日時":"2024-02-15T11:00:00+09:00","配信先メールアドレス":"satoh.hanako@company.jp","成約件数":8,"営業活動件数":42,"作成日時":"2024-02-15T10:30:00+09:00","更新日時":"2024-02-15T10:55:00+09:00","作成者ID":"rec-user-admin-001"}],"レポート配信履歴":[{"配信履歴ID":"rec-20250116-0847","生成済みレポートID":"rep-2025w03-sales","配信先ユーザーID":"usr-tanaka-taro-001","配信先ユーザー":"田中太郎","配信先メールアドレス":"tanaka.taro@company.co.jp","配信日時":"2025-01-16 08:00:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2025-01-16 09:15:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2025-01-16 08:00:00","更新日時":"2025-01-16 09:15:00","作成者ID":"sys-auto-report-001"},{"配信履歴ID":"rec-20250215-001","生成済みレポートID":"rep-202502-sales-monthly","配信先ユーザーID":"usr-tanaka-taro-001","配信先ユーザー":"田中太郎","配信先メールアドレス":"tanaka.taro@oldomain.co.jp","配信日時":"2025-02-15 09:30:00","配信ステータス":"失敗","配信方法":"メール","エラーメッセージ":"メールアドレスが無効です。ドメインが存在しません。（oldomain.co.jp）","開封日時":null,"開封フラグ":false,"再配信フラグ":true,"再配信回数":0,"作成日時":"2025-02-15 09:30:00","更新日時":"2025-02-15 09:30:15","作成者ID":"sys-automated-distribution"},{"配信履歴ID":"rec-001-20250115-a7f3","生成済みレポートID":"rep-2024-q4-sales-001","配信先ユーザーID":"usr-tanaka-taro-001","配信先メールアドレス":"tanaka.taro@company.jp","配信日時":"2025-01-15 14:32:18","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2025-01-15 15:47:52","開封フラグ":true,"再配信フラグ":false,"再配信回数":1,"作成日時":"2025-01-15 09:00:00","更新日時":"2025-01-15 14:32:18","作成者ID":"sys-automated-001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-1547","配信先ユーザーID":"usr-0892","配信先メールアドレス":"tanaka.taro@company.jp","配信日時":"2024-11-15T09:30:45+09:00","配信ステータス":"成功","配信方法":"システム内通知","エラーメッセージ":null,"開封日時":"2024-11-15T09:47:12+09:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-11-15T09:30:45+09:00","更新日時":"2024-11-15T09:47:12+09:00","作成者ID":"sys-auto-001"},{"配信履歴ID":"rec-20250115-0847","生成済みレポートID":"rep-2024Q4-sales-001","配信先ユーザーID":"usr-yamada-hanako","配信対象ユーザー":"山田花子","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":"2025-01-15 09:30:45","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2025-01-15 10:22:18","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2025-01-15 09:30:45","更新日時":"2025-01-15 10:22:18","作成者ID":"sys-auto-delivery"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-0847","配信先ユーザーID":"usr-5429","配信先メールアドレス":"tanaka.taro@example.com","配信日時":"2024-11-15 09:30:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2024-11-15 14:22:35","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 14:22:35","作成者ID":"sys-auto-001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-0847","配信先ユーザーID":"usr-5234","配信先メールアドレス":"suzuki.hanako@company.jp","配信日時":"2025-01-15 14:32:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2025-01-16 09:18:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":2,"作成日時":"2025-01-13 10:00:00","更新日時":"2025-01-16 09:18:00","作成者ID":"sys-0001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-0847","配信先ユーザーID":"usr-0523","配信先メールアドレス":"yamada.hanako@company.jp","配信日時":null,"配信ステータス":"保留中","配信方法":"メール","エラーメッセージ":"受信者が2025年1月15日から1月28日まで休暇中のため配信を保留しています","開封日時":null,"開封フラグ":false,"再配信フラグ":false,"再配信回数":0,"作成日時":"2025-01-10 09:30:00","更新日時":"2025-01-10 09:30:00","作成者ID":"sys-auto"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-2024-0847","配信先ユーザーID":"usr-5632","配信先メールアドレス":"tanaka.taro.old@example.co.jp","配信日時":"2024-11-15T09:30:00+09:00","配信ステータス":"成功","配信方法":"メール","エラーメッセージ":null,"開封日時":"2024-11-15T10:45:23+09:00","開封フラグ":true,"再配信フラグ":false,"再配信回数":0,"作成日時":"2024-11-15T09:25:00+09:00","更新日時":"2024-11-15T10:45:23+09:00","作成者ID":"sys-auto-001"},{"配信履歴ID":"rec-001","生成済みレポートID":"rep-0847","配信先ユーザーID":"usr-2341","配信先ユーザー":"佐藤花子","配信先メールアドレス":"satoh.hanako@company.jp","配信日時":"2025-01-15 09:30:00","配信ステータス":"失敗","配信方法":"メール","エラーメッセージ":"SMTPサーバー接続タイムアウト（システム障害ID: SYS-20250115-001）","開封日時":null,"開封フラグ":false,"再配信フラグ":true,"再配信回数":0,"作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 14:22:00","作成者ID":"sys-batch-001"}],"成果指標":[{"成果指標ID":"rec-001","指標名":"月間売上高","指標コード":"MONTHLY_SALES_REVENUE","説明":"当月における全営業部門の売上高合計。商品販売およびサービス提供による収益を集計し、経営目標達成度を測定する基本KPI","単位":"円","計算方法":"全営業拠点の売上実績を合算。返品・値引きを控除した純売上高として計上。月末確定時点での数値を採用","目標値":50000000,"警告閾値":40000000,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00Z","更新日時":"2025-01-10T14:22:00Z","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"営業担当者別新規受注件数","指標コード":"SALES_NEW_ORDERS_BY_PERSON","説明":"各営業担当者が月間に獲得した新規顧客からの受注件数。営業活動の生産性と営業力を測定する重要な指標。","単位":"件","計算方法":"当月に新規顧客から受注した案件の件数を営業担当者ごとに集計。既存顧客からの追加受注は除外。","目標値":15,"警告閾値":10,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者":"rec-u-0042"},{"成果指標ID":"rec-001","指標名":"既存顧客リピート受注率","指標コード":"REPEAT_ORDER_RATE","説明":"前年度に受注実績のある既存顧客からの当期受注件数を、既存顧客総数で除した指標。顧客ロイヤルティと事業の安定性を測定する。","単位":"％","計算方法":"（当期既存顧客からの受注件数 ÷ 既存顧客総数） × 100","目標値":75,"警告閾値":65,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:20:00+09:00","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"提案件数","指標コード":"PROPOSAL_COUNT","説明":"営業活動の初期段階における顧客への提案件数。新規案件開拓および既存顧客への追加提案を含む。営業パイプラインの充実度を測定する重要指標。","単位":"件","計算方法":"月間に営業担当者が作成・提出した提案書の総数。同一顧客への複数提案は個別にカウント。キャンセル・差し戻しされた提案は対象外。","目標値":120,"警告閾値":90,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2025-01-10T14:45:00+09:00","作成者":"rec-user-0042"},{"成果指標ID":"rec-001","指標名":"提案から受注への成約率","指標コード":"PROPOSAL_CONVERSION_RATE","説明":"営業部門が提出した提案書から実際に受注に至った案件の比率を測定する品質指標。営業活動の効率性と提案品質を評価するための重要なKPI。","単位":"％","計算方法":"（当月受注件数 ÷ 当月提案件数）× 100。提案件数は提案書を顧客に提出した件数、受注件数は同月内に契約締結した件数を対象とする。","目標値":35,"警告閾値":25,"表示順序":5,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:20:00+09:00","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"顧客満足度スコア","指標コード":"CSAT_SCORE","説明":"サービス利用後のアンケート調査に基づいて算出される顧客満足度。5段階評価（非常に満足=5、満足=4、普通=3、不満=2、非常に不満=1）の平均スコアで、サービス品質の向上を目指す重要な指標である。","単位":"点","計算方法":"月間に実施した顧客アンケート回答者全体の満足度評価の平均値。（各回答スコアの合計 ÷ 回答者数）で算出。小数点第2位まで表示。","目標値":42,"警告閾値":38,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-20T14:22:00Z","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"売上原価率","指標コード":"COGS_RATIO","説明":"売上高に対する売上原価の割合を示す指標。営業プロセス全体の効率性と収益性を測定する。低いほど利益率が高く、事業効率が良好であることを示す。","単位":"％","計算方法":"（売上原価 ÷ 売上高）× 100。月次の売上高から直接材料費、直接労務費、製造間接費を合算した売上原価を除算し、百分率で算出する。","目標値":58,"警告閾値":65,"表示順序":1,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00Z","更新日時":"2025-01-15T14:22:00Z","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"顧客獲得単価","指標コード":"CAC_COST","説明":"新規顧客1件を獲得するために要した平均的なマーケティング・営業コストを示す指標。マーケティング施策の効率性を評価し、顧客獲得戦略の最適化に活用される。","単位":"円/件","計算方法":"月間マーケティング・営業関連費用の合計 ÷ 当月新規顧客獲得件数。関連費用には広告費、人件費（営業・マーケティング部門）、ツール利用料を含む。","目標値":45000,"警告閾値":60000,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:22:30+09:00","作成者":"rec-user-0847"},{"成果指標ID":"rec-001","指標名":"四半期累積売上達成率","指標コード":"Q_SALES_ACHIEVEMENT_RATE","説明":"各四半期における累積売上高が目標売上に対してどの程度達成されているかを測定する指標。営業部門の業績評価に使用される重要なKPI。","単位":"％","計算方法":"（当四半期累積売上高 ÷ 当四半期売上目標 × 100）で算出。目標達成率100%以上を優秀、80%以上100%未満を良好、80%未満を要改善と判定。","目標値":100,"警告閾値":80,"表示順序":1,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-user-0042"},{"成果指標ID":"rec-001","指標名":"営業チーム平均案件単価","指標コード":"AVG_DEAL_VALUE","説明":"営業チーム全体が成約した案件の平均単価を追跡する指標。営業効率性と顧客層の質的向上を測定し、月次・四半期での成長性を評価する。","単位":"万円","計算方法":"当月成約案件の合計金額 ÷ 当月成約案件件数。前月比成長率は（当月平均単価 - 前月平均単価）÷ 前月平均単価 × 100で算出。","目標値":850,"警告閾値":765,"表示順序":3,"有効フラグ":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2025-01-15T14:22:00+09:00","作成者":"rec-user-042"}]};
 window.AIVIC_PAGE_SCREEN_ID = "scr-1782622981927";
 window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
 </script>
@@ -834,66 +769,67 @@ window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
 </head>
 <body>
 <nav style="display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg,var(--bg-sidebar,#0e1a31));border-bottom:1px solid var(--top-bar-border,var(--border,#2a3a5d));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--text,#e8eefc);white-space:nowrap;">匠の案件管理</span><a href="./scr-1782622835730.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:1;border-bottom:2px solid var(--primary,#2b66ff);font-weight:600;">営業成果レポート自動生成・配信システム</a><a href="./scr-1782623175064.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">契約・提案資料管理システム</a><a href="./scr-1782623533329.html" data-aivic-nav-system="itg-4" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">顧客企業向け契約・成果管理ポータル</a><a href="./scr-1782623848853.html" data-aivic-nav-system="itg-5" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">契約変更・請求検証管理システム</a><a href="./scr-1782622299760.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">営業データ品質管理・請求自動化システム</a></nav>
-  <header class="app-header">
-    <div class="app-logo">
-      <div class="app-logo-icon">📊</div>
-      <span>営業成果レポート</span>
-    </div>
-    <div class="header-actions">
-      <div class="user-menu">
-        <div class="user-avatar">U</div>
-        <span style="font-size: 12px;">ユーザー</span>
+  <div class="shell-container">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-icon">📊</div>
+        <span>営業成果レポート</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-menu">
+          <div class="user-avatar">A</div>
+          <span style="font-size: 12px;">Admin</span>
+        </div>
       </div>
     </div>
-  </header>
 
-  <div class="main-container">
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">ダッシュボード</div>
-        <div class="sidebar-item aivic-active" data-aivic-nav="scr-1782622888986" onclick="window.showScreen('scr-1782622888986')">
-          <span class="sidebar-icon">📈</span>
-          <span>成果指標</span>
+    <div class="main-wrapper">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">ダッシュボード</div>
+          <div class="nav-item aivic-active" data-aivic-nav="scr-1782622888986" onclick="window.showScreen('scr-1782622888986')">
+            <div class="nav-icon">📈</div>
+            <span>成果指標</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">レポート管理</div>
+          <div class="nav-item" data-aivic-nav="scr-1782622835730" onclick="window.showScreen('scr-1782622835730')">
+            <div class="nav-icon">📋</div>
+            <span>テンプレート管理</span>
+          </div>
+          <div class="nav-item" data-aivic-nav="scr-1782622862824" onclick="window.showScreen('scr-1782622862824')">
+            <div class="nav-icon">⚙️</div>
+            <span>生成・配信設定</span>
+          </div>
+          <div class="nav-item" data-aivic-nav="scr-1782622876283" onclick="window.showScreen('scr-1782622876283')">
+            <div class="nav-icon">✓</div>
+            <span>生成済みレポート</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">データ管理</div>
+          <div class="nav-item" data-aivic-nav="scr-1782622849185" onclick="window.showScreen('scr-1782622849185')">
+            <div class="nav-icon">🔍</div>
+            <span>データ検索・抽出</span>
+          </div>
         </div>
       </div>
 
-      <div class="sidebar-section">
-        <div class="sidebar-label">レポート管理</div>
-        <div class="sidebar-item" data-aivic-nav="scr-1782622835730" onclick="window.showScreen('scr-1782622835730')">
-          <span class="sidebar-icon">📋</span>
-          <span>テンプレート管理</span>
-        </div>
-        <div class="sidebar-item" data-aivic-nav="scr-1782622862824" onclick="window.showScreen('scr-1782622862824')">
-          <span class="sidebar-icon">⚙️</span>
-          <span>生成・配信設定</span>
-        </div>
-        <div class="sidebar-item" data-aivic-nav="scr-1782622996088" onclick="window.showScreen('scr-1782622996088')">
-          <span class="sidebar-icon">✓</span>
-          <span>生成済みレポート</span>
-        </div>
-      </div>
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">データ管理</div>
-        <div class="sidebar-item" data-aivic-nav="scr-1782622849185" onclick="window.showScreen('scr-1782622849185')">
-          <span class="sidebar-icon">🔍</span>
-          <span>営業データ検索</span>
-        </div>
-      </div>
-    </aside>
-
-    <main class="content-area">
-      <div data-aivic-panel="scr-1782622835730" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622849185" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622862824" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622996088" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622888986" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622902470" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622915250" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622926835" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622940985" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622968992" style="display:none"></div>
-      <div data-aivic-panel="scr-1782622981927" style="display:block"><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 100%; overflow: hidden;">
+      <main class="content-area">
+        <div data-aivic-panel="scr-1782622835730" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622849185" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622862824" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622876283" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622888986" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622902470" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622915250" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622926835" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622940985" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622968992" style="display:none"></div>
+        <div data-aivic-panel="scr-1782622981927" style="display:block"><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 100%; overflow: hidden;">
   
   <!-- 左パネル: フォーム入力 -->
   <div style="display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding: 12px; background: var(--bg-main);">
@@ -1200,11 +1136,12 @@ window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
     </div>
   </div>
 </div></div>
-      <div data-aivic-panel="scr-1782623009279" style="display:none"></div>
-      <div data-aivic-panel="scr-1782623023104" style="display:none"></div>
-      <div data-aivic-panel="scr-1782623035716" style="display:none"></div>
-<div data-aivic-panel="scr-1782622876283" style="display:none"></div>
-    </main>
+        <div data-aivic-panel="scr-1782622996088" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623009279" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623023104" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623035716" style="display:none"></div>
+      </main>
+    </div>
   </div>
 
   
