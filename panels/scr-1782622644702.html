@@ -1,0 +1,1460 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>匠の案件管理 - 営業データ品質管理・請求自動化システム</title>
+  <style>
+:root {
+  --primary: #d4af37;
+  --primary-hover: #c9a23e;
+  --bg-main: #0f0f0f;
+  --bg-card: #1a1a1a;
+  --bg-sidebar: #141414;
+  --top-bar-bg: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #e8e8e8;
+  --text-muted: #a0a0a0;
+  --top-bar-border: #3a3a3a;
+  --success: #4caf50;
+  --success-light: #81c784;
+  --error: #f44336;
+  --error-light: #ef5350;
+  --warning: #ff9800;
+  --warning-light: #ffb74d;
+  --info: #2196f3;
+  --info-light: #64b5f6;
+  --accent: #c0c0c0;
+  --accent-dark: #a8a8a8;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(212, 175, 55, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+  --opacity-disabled: 0.5;
+  --opacity-hover: 0.85;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition-fast: 150ms ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-main);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  background: var(--top-bar-bg);
+  border-bottom: 1px solid var(--top-bar-border);
+  padding: 0 var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--bg-main);
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logo-text .brand {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.logo-text .system {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.user-menu:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bg-main);
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-section:last-child {
+  border-bottom: none;
+}
+
+.sidebar-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 10px var(--spacing-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 13px;
+  border-left: 2px solid transparent;
+  margin: 0 var(--spacing-sm);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.nav-item:hover {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--text);
+}
+
+.nav-item.aivic-active {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.content-area {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-aivic-panel] {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.panel-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.panel-content {
+  flex: 1;
+  overflow: auto;
+  padding: var(--spacing-lg);
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.kpi-delta {
+  font-size: 12px;
+  color: var(--success);
+}
+
+.kpi-delta.negative {
+  color: var(--error);
+}
+
+.table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead {
+  background: rgba(212, 175, 55, 0.05);
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+tbody tr:hover {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-success {
+  background: rgba(76, 175, 80, 0.2);
+  color: var(--success-light);
+}
+
+.badge-error {
+  background: rgba(244, 67, 54, 0.2);
+  color: var(--error-light);
+}
+
+.badge-warning {
+  background: rgba(255, 152, 0, 0.2);
+  color: var(--warning-light);
+}
+
+.badge-info {
+  background: rgba(33, 150, 243, 0.2);
+  color: var(--info-light);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.button-primary {
+  background: var(--primary);
+  color: var(--bg-main);
+}
+
+.button-primary:hover {
+  background: var(--primary-hover);
+}
+
+.button-secondary {
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.button-secondary:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--primary);
+}
+
+.button:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.stepper {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  align-items: center;
+}
+
+.stepper-step {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+}
+
+.stepper-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.stepper-step.active .stepper-number {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--bg-main);
+}
+
+.stepper-step.completed .stepper-number {
+  background: var(--success);
+  border-color: var(--success);
+  color: var(--bg-main);
+}
+
+.stepper-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stepper-step.active .stepper-label {
+  color: var(--primary);
+}
+
+.stepper-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 var(--spacing-sm);
+}
+
+.stepper-step.completed ~ .stepper-step .stepper-connector {
+  background: var(--success);
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--spacing-lg);
+}
+
+.tab {
+  padding: 12px var(--spacing-md);
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--spacing-md);
+}
+
+.modal-footer {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  justify-content: flex-end;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: var(--spacing-sm);
+}
+
+.status-indicator.active {
+  background: var(--success);
+}
+
+.status-indicator.pending {
+  background: var(--warning);
+}
+
+.status-indicator.error {
+  background: var(--error);
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.metric-row:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: var(--text-muted);
+}
+
+.metric-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.search-box {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 6px 12px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  background: rgba(212, 175, 55, 0.2);
+}
+
+.filter-chip.active {
+  background: var(--primary);
+  color: var(--bg-main);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-text {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width var(--transition-fast);
+}
+
+.alert {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border-left: 3px solid;
+  font-size: 13px;
+  margin-bottom: var(--spacing-md);
+}
+
+.alert-success {
+  background: rgba(76, 175, 80, 0.1);
+  border-left-color: var(--success);
+  color: var(--success-light);
+}
+
+.alert-error {
+  background: rgba(244, 67, 54, 0.1);
+  border-left-color: var(--error);
+  color: var(--error-light);
+}
+
+.alert-warning {
+  background: rgba(255, 152, 0, 0.1);
+  border-left-color: var(--warning);
+  color: var(--warning-light);
+}
+
+.alert-info {
+  background: rgba(33, 150, 243, 0.1);
+  border-left-color: var(--info);
+  color: var(--info-light);
+}
+
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.split-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.split-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border);
+}
+
+.kanban-board {
+  display: flex;
+  gap: var(--spacing-lg);
+  overflow-x: auto;
+  padding: var(--spacing-md) 0;
+}
+
+.kanban-column {
+  flex: 0 0 300px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+}
+
+.kanban-header {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.kanban-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+}
+
+.kanban-card {
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  cursor: grab;
+  transition: all var(--transition-fast);
+}
+
+.kanban-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.kanban-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.kanban-card-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.footer {
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+  .split-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .sidebar-section {
+    padding: 0 var(--spacing-md);
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+  }
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .kanban-board {
+    flex-direction: column;
+  }
+  .kanban-column {
+    flex: 1;
+    max-height: none;
+  }
+}
+  </style>
+  
+<script>
+window.AIVIC_API_URL = "https://mkwmoife37uqyv4zhy4yhweozq0oddxn.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-1781935010162";
+window.AIVIC_APPLICATION_NAME = "匠の案件管理";
+window.AIVIC_SYSTEM_NAME = "営業データ品質管理・請求自動化システム";
+window.AIVIC_TABLES = [{"tableName":"営業データ","purpose":"営業活動の記録、売上追跡、請求自動化のための営業トランザクションデータを管理","columns":[{"name":"営業データID","type":"uuid","required":true,"description":"営業データの一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"営業担当者のユーザーID（外部キー）"},{"name":"顧客名","type":"varchar(100)","required":true,"description":"顧客の名称"},{"name":"顧客ID","type":"varchar(100)","required":false,"description":"顧客マスタの識別子"},{"name":"取引日","type":"timestamp","required":true,"description":"営業取引が発生した日時"},{"name":"商品名","type":"varchar(100)","required":true,"description":"販売商品の名称"},{"name":"数量","type":"integer","required":true,"description":"販売数量"},{"name":"単価","type":"integer","required":true,"description":"商品の単価（円）"},{"name":"売上金額","type":"integer","required":true,"description":"売上合計金額（円）"},{"name":"請求状態","type":"varchar(100)","required":true,"description":"請求ステータス（未請求/請求済/入金済等）"},{"name":"請求日","type":"timestamp","required":false,"description":"請求書発行日"},{"name":"入金日","type":"timestamp","required":false,"description":"入金確認日"},{"name":"備考","type":"text","required":false,"description":"営業データに関する備考"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"営業データ項目メタデータ","purpose":"営業データの各項目の定義、バリデーションルール、品質基準を一元管理し、データ品質チェックと請求自動化の基準を提供する","columns":[{"name":"項目ID","type":"uuid","required":true,"description":"営業データ項目メタデータの一意識別子"},{"name":"項目名","type":"varchar(100)","required":true,"description":"営業データ項目の名称（例：顧客名、売上金額）"},{"name":"項目コード","type":"varchar(100)","required":true,"description":"営業データ項目の一意コード（例：CUST_NAME、SALES_AMT）"},{"name":"データ型","type":"varchar(100)","required":true,"description":"項目のデータ型（varchar、integer、timestamp等）"},{"name":"最大文字数","type":"integer","required":false,"description":"文字列型の場合の最大文字数"},{"name":"必須フラグ","type":"boolean","required":true,"description":"営業データ入力時に必須かどうか"},{"name":"バリデーションルール","type":"text","required":false,"description":"項目のバリデーション条件（正規表現、範囲等）"},{"name":"品質基準","type":"text","required":false,"description":"データ品質チェックの基準（例：空白不可、重複不可）"},{"name":"請求対象フラグ","type":"boolean","required":true,"description":"請求自動化処理で使用する項目かどうか"},{"name":"説明","type":"text","required":false,"description":"項目の詳細説明"},{"name":"作成日時","type":"timestamp","required":true,"description":"メタデータ作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"メタデータ最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"メタデータ作成者（ユーザーテーブルへの外部キー）"},{"name":"更新者ID","type":"uuid","required":true,"description":"メタデータ最終更新者（ユーザーテーブルへの外部キー）"}]},{"tableName":"検証ルール","purpose":"営業データの品質検証とデータクレンジングのためのルール定義・管理。営業データ項目ごとの検証条件、エラーハンドリング、自動修正ロジックを一元管理し、請求自動化の前段階で不正なデータを検出・排除する。","columns":[{"name":"検証ルールID","type":"uuid","required":true,"description":"検証ルールの一意識別子"},{"name":"営業データ項目ID","type":"uuid","required":true,"description":"営業データ項目メタデータテーブルへの外部キー。検証対象の項目を特定"},{"name":"ルール名","type":"varchar(100)","required":true,"description":"検証ルールの名称（例：『金額は正の数値』『メールアドレス形式』）"},{"name":"ルール種別","type":"varchar(100)","required":true,"description":"ルールの分類（例：『必須チェック』『形式チェック』『範囲チェック』『重複チェック』『参照整合性チェック』）"},{"name":"検証条件","type":"text","required":true,"description":"検証ロジックの詳細定義（例：『値が空でない』『値が0以上999999以下の整数』『正規表現パターン』）"},{"name":"エラーレベル","type":"varchar(100)","required":true,"description":"検証失敗時の重大度（『エラー』『警告』『情報』）。エラーは処理停止、警告は記録のみ"},{"name":"エラーメッセージ","type":"text","required":true,"description":"検証失敗時に表示するメッセージ"},{"name":"自動修正フラグ","type":"boolean","required":true,"description":"検証失敗時に自動修正を試みるかどうか"},{"name":"修正ロジック","type":"text","required":false,"description":"自動修正フラグがtrueの場合の修正方法（例：『前後の空白を削除』『大文字に統一』『デフォルト値を設定』）"},{"name":"優先度","type":"integer","required":true,"description":"複数ルール適用時の実行順序（1が最優先）"},{"name":"有効フラグ","type":"boolean","required":true,"description":"ルールが現在有効かどうか"},{"name":"適用開始日","type":"timestamp","required":false,"description":"ルールの適用開始日時"},{"name":"適用終了日","type":"timestamp","required":false,"description":"ルールの適用終了日時（段階的廃止用）"},{"name":"作成日時","type":"timestamp","required":true,"description":"ルール作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"ルール作成者のユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"ルール最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"ルール最終更新者のユーザーID"},{"name":"備考","type":"text","required":false,"description":"ルール設定の背景・理由・注意事項など"}]},{"tableName":"検証ルール条件","purpose":"営業データの検証ルールに紐付く個別の条件を管理し、複数条件の組み合わせによる柔軟な検証ロジックを実現する","columns":[{"name":"検証ルール条件ID","type":"uuid","required":true,"description":"検証ルール条件の一意識別子"},{"name":"検証ルールID","type":"uuid","required":true,"description":"親テーブル検証ルールへの外部キー"},{"name":"営業データ項目ID","type":"uuid","required":true,"description":"検証対象の営業データ項目への外部キー"},{"name":"条件順序","type":"integer","required":true,"description":"複数条件がある場合の評価順序"},{"name":"演算子","type":"varchar(100)","required":true,"description":"比較演算子（等号、不等号、大小比較、含む、正規表現など）"},{"name":"期待値","type":"text","required":true,"description":"検証時に比較する期待値"},{"name":"論理演算子","type":"varchar(100)","required":false,"description":"次の条件との結合方法（AND/OR）"},{"name":"エラーメッセージ","type":"text","required":false,"description":"この条件が不合格の場合に表示するエラーメッセージ"},{"name":"有効フラグ","type":"boolean","required":true,"description":"この条件が検証に含まれるかどうか"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー"}]},{"tableName":"検証実行履歴","purpose":"営業データに対する検証ルール実行の履歴を記録し、検証結果の追跡可能性と監査証跡を確保するテーブル","columns":[{"name":"検証実行履歴ID","type":"uuid","required":true,"description":"検証実行履歴の一意識別子"},{"name":"営業データID","type":"uuid","required":true,"description":"検証対象の営業データを特定するための外部キー"},{"name":"検証ルールID","type":"uuid","required":true,"description":"実行された検証ルールを特定するための外部キー"},{"name":"実行日時","type":"timestamp","required":true,"description":"検証ルールが実行された日時"},{"name":"検証結果","type":"varchar(100)","required":true,"description":"検証結果（合格/不合格/エラー等）"},{"name":"エラーメッセージ","type":"text","required":false,"description":"検証失敗またはエラー時の詳細メッセージ"},{"name":"検証対象値","type":"text","required":false,"description":"検証時に評価された実際の値"},{"name":"実行ユーザーID","type":"uuid","required":false,"description":"検証を実行したユーザーの外部キー（自動実行の場合はNULL）"},{"name":"実行モード","type":"varchar(100)","required":true,"description":"実行モード（手動/自動/スケジュール等）"},{"name":"処理時間ミリ秒","type":"integer","required":false,"description":"検証処理にかかった時間（ミリ秒）"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"}]},{"tableName":"検証エラー","purpose":"営業データの検証ルール違反を記録し、エラー内容・原因・対応状況を管理するトランザクションテーブル","columns":[{"name":"検証エラーID","type":"uuid","required":true,"description":"検証エラーの一意識別子"},{"name":"検証実行履歴ID","type":"uuid","required":true,"description":"検証実行履歴テーブルへの外部キー"},{"name":"営業データID","type":"uuid","required":true,"description":"エラーが発生した営業データレコードへの外部キー"},{"name":"検証ルールID","type":"uuid","required":true,"description":"違反した検証ルールへの外部キー"},{"name":"営業データ項目メタデータID","type":"uuid","required":true,"description":"エラーが発生したデータ項目への外部キー"},{"name":"エラー種別","type":"varchar(100)","required":true,"description":"エラーの分類（例：必須項目不足、形式不正、値域外、重複、参照整合性違反）"},{"name":"エラーメッセージ","type":"text","required":true,"description":"ユーザーに表示するエラー内容"},{"name":"検出値","type":"text","required":false,"description":"エラーの原因となった実際の値"},{"name":"期待値","type":"text","required":false,"description":"検証ルールで期待される値または条件"},{"name":"重要度","type":"varchar(100)","required":true,"description":"エラーの重要度レベル（例：致命的、警告、情報）"},{"name":"対応状況","type":"varchar(100)","required":true,"description":"エラーの対応状況（例：未対応、対応中、修正済み、無視）"},{"name":"対応者ユーザーID","type":"uuid","required":false,"description":"エラーに対応したユーザーへの外部キー"},{"name":"対応コメント","type":"text","required":false,"description":"対応内容や理由に関するコメント"},{"name":"対応日時","type":"timestamp","required":false,"description":"エラーが対応された日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"エラーレコードが作成された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"エラーレコードが最後に更新された日時"},{"name":"作成者ユーザーID","type":"uuid","required":true,"description":"エラーレコードを作成したユーザーへの外部キー"}]},{"tableName":"サービス","purpose":"営業データ品質管理・請求自動化システムで提供するサービスのマスタ管理。営業データ検証ルール、請求対象サービス、顧客への提供内容を定義・管理する。","columns":[{"name":"サービスID","type":"uuid","required":true,"description":"サービスの一意識別子"},{"name":"サービス名","type":"varchar(100)","required":true,"description":"サービスの名称（例：データ品質検証、請求自動化）"},{"name":"説明","type":"text","required":false,"description":"サービスの詳細説明"},{"name":"サービスコード","type":"varchar(100)","required":true,"description":"請求・営業システムで使用するサービスコード"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"サービスの状態（有効/無効/廃止予定）"},{"name":"請求対象フラグ","type":"boolean","required":true,"description":"請求自動化の対象となるかどうか"},{"name":"月額料金","type":"integer","required":false,"description":"月額料金（円）"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"作成したユーザーID"},{"name":"更新者","type":"uuid","required":false,"description":"最後に更新したユーザーID"}]},{"tableName":"請求対象項目マッピング","purpose":"営業データ項目と請求システムの項目を紐付け、請求対象となるデータの変換ルールを管理する","columns":[{"name":"マッピングID","type":"uuid","required":true,"description":"請求対象項目マッピングの一意識別子"},{"name":"営業データ項目ID","type":"uuid","required":true,"description":"営業データ項目メタデータテーブルへの外部キー"},{"name":"請求項目コード","type":"varchar(100)","required":true,"description":"請求システム側の項目コード"},{"name":"請求項目名","type":"varchar(100)","required":true,"description":"請求システム側の項目名"},{"name":"マッピングタイプ","type":"varchar(100)","required":true,"description":"マッピング方式（直接マッピング/計算/集計/変換等）"},{"name":"変換ルール","type":"text","required":false,"description":"データ変換の詳細ルール（計算式、条件分岐等）"},{"name":"請求対象フラグ","type":"boolean","required":true,"description":"このマッピングが請求対象かどうか"},{"name":"有効フラグ","type":"boolean","required":true,"description":"マッピングが有効かどうか"},{"name":"優先度","type":"integer","required":false,"description":"複数マッピングがある場合の優先順位"},{"name":"備考","type":"text","required":false,"description":"マッピングに関する補足情報"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー"}]},{"tableName":"請求集計","purpose":"営業データの検証完了後、請求対象項目を集計し、請求額の計算・確定・履歴管理を行うトランザクションテーブル","columns":[{"name":"請求集計ID","type":"uuid","required":true,"description":"請求集計レコードの一意識別子"},{"name":"請求期間開始日","type":"timestamp","required":true,"description":"請求対象期間の開始日時"},{"name":"請求期間終了日","type":"timestamp","required":true,"description":"請求対象期間の終了日時"},{"name":"顧客ID","type":"uuid","required":true,"description":"請求対象の顧客ID（顧客テーブルへの外部キー）"},{"name":"集計ステータス","type":"varchar(100)","required":true,"description":"集計状態：下書き/確定/請求済み/キャンセル"},{"name":"集計対象件数","type":"integer","required":true,"description":"この集計に含まれる営業データレコード数"},{"name":"請求金額合計","type":"integer","required":true,"description":"集計された請求金額の合計（単位：円）"},{"name":"税金額","type":"integer","required":true,"description":"請求金額に対する税金額（単位：円）"},{"name":"請求金額合計税込","type":"integer","required":true,"description":"税金を含めた最終請求金額（単位：円）"},{"name":"検証エラー件数","type":"integer","required":true,"description":"この集計期間中に検出された検証エラーの件数"},{"name":"検証完了フラグ","type":"boolean","required":true,"description":"全営業データの検証が完了したかどうか"},{"name":"確定日時","type":"timestamp","required":false,"description":"請求集計が確定された日時"},{"name":"請求発行日","type":"timestamp","required":false,"description":"実際に請求が発行された日時"},{"name":"備考","type":"text","required":false,"description":"請求集計に関する備考・特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"請求集計レコードの作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"請求集計を作成したユーザーID（ユーザーテーブルへの外部キー）"},{"name":"更新日時","type":"timestamp","required":true,"description":"請求集計レコードの最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"請求集計を最後に更新したユーザーID（ユーザーテーブルへの外部キー）"}]},{"tableName":"顧客別請求額","purpose":"顧客ごとの請求額を集計・管理し、請求自動化プロセスの基礎データとなる。営業データから検証済みの請求対象項目を集計し、請求実行前の金額確定と履歴管理を行う。","columns":[{"name":"請求額ID","type":"uuid","required":true,"description":"顧客別請求額レコードの一意識別子"},{"name":"顧客ID","type":"uuid","required":true,"description":"請求対象の顧客を特定するID（顧客テーブルへの外部キー）"},{"name":"請求年月","type":"varchar(7)","required":true,"description":"請求対象期間（YYYY-MM形式）"},{"name":"請求額","type":"integer","required":true,"description":"確定した請求総額（税抜き、単位：円）"},{"name":"税額","type":"integer","required":true,"description":"消費税額（単位：円）"},{"name":"請求額合計","type":"integer","required":true,"description":"請求額 + 税額（税込み請求額、単位：円）"},{"name":"請求ステータス","type":"varchar(20)","required":true,"description":"請求状態（下書き/確定/請求済み/キャンセル）"},{"name":"集計対象営業データ件数","type":"integer","required":true,"description":"この請求額に含まれる営業データレコード数"},{"name":"検証エラー件数","type":"integer","required":false,"description":"集計時に検出された検証エラー件数"},{"name":"請求実行日時","type":"timestamp","required":false,"description":"請求が実行された日時（ステータスが請求済みの場合に設定）"},{"name":"備考","type":"text","required":false,"description":"請求に関する特記事項やキャンセル理由など"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"サービス別請求額","purpose":"顧客ごと、サービスごとの請求額を集計・管理し、請求自動化の基礎データとなる","columns":[{"name":"サービス別請求額ID","type":"uuid","required":true,"description":"サービス別請求額の一意識別子"},{"name":"顧客ID","type":"uuid","required":true,"description":"顧客テーブルへの外部キー"},{"name":"サービスID","type":"uuid","required":true,"description":"サービステーブルへの外部キー"},{"name":"請求集計ID","type":"uuid","required":true,"description":"請求集計テーブルへの外部キー"},{"name":"請求年月","type":"varchar(7)","required":true,"description":"請求対象年月（YYYY-MM形式）"},{"name":"請求額","type":"integer","required":true,"description":"サービス別の請求額（税抜き、単位：円）"},{"name":"税額","type":"integer","required":true,"description":"サービス別の税額（単位：円）"},{"name":"税込請求額","type":"integer","required":true,"description":"サービス別の税込請求額（単位：円）"},{"name":"利用数量","type":"integer","required":false,"description":"サービスの利用数量（単位はサービスにより異なる）"},{"name":"単価","type":"integer","required":false,"description":"サービスの単価（単位：円）"},{"name":"請求ステータス","type":"varchar(20)","required":true,"description":"請求ステータス（未請求/請求済/支払済等）"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"レコード作成者"}]},{"tableName":"月次サマリーテンプレート","purpose":"月次の営業データ品質管理と請求集計結果をサマリー化し、経営層への報告と監査証跡を保持するマスタテンプレート","columns":[{"name":"月次サマリーテンプレートID","type":"uuid","required":true,"description":"月次サマリーテンプレートの一意識別子"},{"name":"対象年月","type":"varchar(7)","required":true,"description":"サマリー対象の年月（YYYY-MM形式）"},{"name":"テンプレート名","type":"varchar(100)","required":true,"description":"月次サマリーテンプレートの名称"},{"name":"営業データ件数","type":"integer","required":true,"description":"対象月の営業データ総件数"},{"name":"検証実行件数","type":"integer","required":true,"description":"実行された検証ルールの総件数"},{"name":"検証エラー件数","type":"integer","required":true,"description":"検出された検証エラーの総件数"},{"name":"データ品質スコア","type":"integer","required":true,"description":"データ品質スコア（0-100）"},{"name":"請求対象顧客数","type":"integer","required":true,"description":"請求対象となった顧客数"},{"name":"請求総額","type":"integer","required":true,"description":"月次請求総額（円）"},{"name":"請求集計完了フラグ","type":"boolean","required":true,"description":"請求集計が完了したかどうか"},{"name":"摘要","type":"text","required":false,"description":"月次サマリーに関する備考・摘要"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"uuid","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"月次サマリーテンプレート項目","purpose":"月次サマリーテンプレートに含まれる個別項目の定義・設定を管理し、各項目の表示順序、計算ロジック、フォーマットを統制する","columns":[{"name":"項目ID","type":"uuid","required":true,"description":"月次サマリーテンプレート項目の一意識別子"},{"name":"テンプレートID","type":"uuid","required":true,"description":"親テンプレートへの外部キー（月次サマリーテンプレート.テンプレートID）"},{"name":"項目名","type":"varchar(100)","required":true,"description":"テンプレート内での項目表示名"},{"name":"項目コード","type":"varchar(100)","required":true,"description":"システム内での項目識別コード（一意性はテンプレート内で保証）"},{"name":"データソース種別","type":"varchar(100)","required":true,"description":"データ取得元（営業データ/請求集計/顧客別請求額/サービス別請求額等）"},{"name":"ソース項目ID","type":"uuid","required":false,"description":"営業データ項目メタデータ.項目IDへの参照（営業データ系の場合）"},{"name":"計算式","type":"text","required":false,"description":"複合項目の場合の計算ロジック（例：SUM(売上)/COUNT(件数)）"},{"name":"表示順序","type":"integer","required":true,"description":"テンプレート内での表示順序（昇順）"},{"name":"表示形式","type":"varchar(100)","required":false,"description":"数値フォーマット（通貨/パーセンテージ/整数等）"},{"name":"小数点桁数","type":"integer","required":false,"description":"表示時の小数点以下桁数"},{"name":"集計関数","type":"varchar(100)","required":false,"description":"集計方法（SUM/AVG/COUNT/MAX/MIN等）"},{"name":"フィルタ条件","type":"text","required":false,"description":"項目値取得時の絞り込み条件"},{"name":"必須フラグ","type":"boolean","required":true,"description":"月次サマリー生成時に必須項目か否か"},{"name":"有効フラグ","type":"boolean","required":true,"description":"項目が有効か否か"},{"name":"作成日時","type":"timestamp","required":true,"description":"項目定義の作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザー.ユーザーIDへの参照"},{"name":"更新日時","type":"timestamp","required":true,"description":"項目定義の最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"ユーザー.ユーザーIDへの参照"}]},{"tableName":"月次サマリー","purpose":"営業データ品質管理と請求自動化システムにおいて、月次単位での営業データ検証結果、請求集計結果、およびシステム処理状況を記録・管理する統合サマリーテーブル","columns":[{"name":"月次サマリーID","type":"uuid","required":true,"description":"月次サマリーの一意識別子"},{"name":"対象年月","type":"varchar(7)","required":true,"description":"サマリー対象の年月（YYYY-MM形式）"},{"name":"営業データ件数","type":"integer","required":true,"description":"対象月の営業データ総件数"},{"name":"検証実行件数","type":"integer","required":true,"description":"実行された検証ルール適用件数"},{"name":"検証エラー件数","type":"integer","required":true,"description":"検出されたエラー総件数"},{"name":"検証エラー率","type":"varchar(10)","required":true,"description":"エラー件数/検証実行件数の百分率（例：5.25%）"},{"name":"データ品質スコア","type":"integer","required":true,"description":"0～100の品質スコア"},{"name":"請求対象顧客数","type":"integer","required":true,"description":"請求集計対象の顧客数"},{"name":"請求対象サービス数","type":"integer","required":true,"description":"請求集計対象のサービス数"},{"name":"請求集計総額","type":"integer","required":true,"description":"月次請求集計総額（円、整数）"},{"name":"請求集計ステータス","type":"varchar(20)","required":true,"description":"請求集計の状態（未実行/実行中/完了/エラー）"},{"name":"処理開始日時","type":"timestamp","required":true,"description":"月次サマリー処理の開始日時"},{"name":"処理完了日時","type":"timestamp","required":false,"description":"月次サマリー処理の完了日時"},{"name":"処理ステータス","type":"varchar(20)","required":true,"description":"処理状態（未開始/実行中/完了/部分完了/失敗）"},{"name":"摘要","type":"text","required":false,"description":"処理結果の備考やエラーメッセージ"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"uuid","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"データ品質通知","purpose":"営業データの検証エラーや品質問題を通知・追跡し、ユーザーへのアラート管理と解決状況を記録するテーブル","columns":[{"name":"通知ID","type":"uuid","required":true,"description":"データ品質通知の一意識別子"},{"name":"検証エラーID","type":"uuid","required":true,"description":"検証エラーテーブルへの外部キー"},{"name":"通知対象ユーザーID","type":"uuid","required":true,"description":"通知を受け取るユーザーID"},{"name":"通知ステータス","type":"varchar(100)","required":true,"description":"通知状態（未読/既読/対応中/解決済み/無視）"},{"name":"通知タイプ","type":"varchar(100)","required":true,"description":"通知種別（エラー/警告/情報）"},{"name":"通知メッセージ","type":"text","required":true,"description":"ユーザーに表示される通知内容"},{"name":"優先度","type":"varchar(100)","required":true,"description":"優先度レベル（高/中/低）"},{"name":"初回通知日時","type":"timestamp","required":true,"description":"通知が最初に生成された日時"},{"name":"既読日時","type":"timestamp","required":false,"description":"ユーザーが通知を既読にした日時"},{"name":"対応完了日時","type":"timestamp","required":false,"description":"問題が解決された日時"},{"name":"対応コメント","type":"text","required":false,"description":"ユーザーによる対応内容やコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"通知を作成したシステムまたはユーザーID"}]}];
+window.AIVIC_PRESET_SEED = {"営業データ":[{"営業データID":"rec-20250147","ユーザーID":"usr-00892","顧客名":"株式会社ビジネスソリューション東京","顧客ID":"cust-0045","取引日":"2025-01-15T10:30:00","商品名":"オフィス用紙（A4コピー用紙 500枚×10冊）","数量":50,"単価":4500,"売上金額":225000,"請求状態":"入金済","請求日":"2025-01-20T09:00:00","入金日":"2025-02-05T14:22:00","備考":"毎月定期納品商品。前月分の継続注文。請求書番号：INV-2025-001547。振込済み確認。","作成日時":"2025-01-15T11:05:00","更新日時":"2025-02-05T15:30:00","作成者":"usr-00892"},{"営業データID":"rec-20250115-001","ユーザーID":"rec-user-0847","顧客名":"株式会社フューチャーテック","顧客ID":"rec-cust-5923","取引日":"2025-01-15T14:30:00+09:00","商品名":"クラウドストレージサービス（年間ライセンス）","数量":50,"単価":12000,"売上金額":600000,"請求状態":"未請求","請求日":null,"入金日":null,"備考":"新規顧客初回取引。営業担当者：山田太郎。導入予定日2025年2月1日。契約担当者：田中花子（tanaka.hanako@futuretech.co.jp）","作成日時":"2025-01-15T15:45:00+09:00","更新日時":"2025-01-15T15:45:00+09:00","作成者":"rec-user-0847"},{"営業データID":"rec-001","ユーザーID":"rec-user-042","顧客名":"株式会社ソリューション企画","顧客ID":"cust-2847","取引日":"2024-11-15T14:30:00","商品名":"クラウドストレージサービス 年間ライセンス","数量":50,"単価":12000,"売上金額":600000,"請求状態":"請求済","請求日":"2024-11-20T09:15:00","入金日":null,"備考":"11月分の月次契約更新。請求書発行済み、入金待ちの状態です。","作成日時":"2024-11-15T14:35:22","更新日時":"2024-11-20T09:20:15","作成者":"rec-user-042"},{"営業データID":"rec-20250145","ユーザーID":"rec-00087","顧客名":"株式会社山田物産","顧客ID":"rec-00234","取引日":"2024-11-15T10:30:00Z","商品名":"業務用OA用紙A4 2500枚","数量":5,"単価":3500,"売上金額":17500,"請求状態":"入金済","請求日":"2024-11-20T09:00:00Z","入金日":"2024-12-10T14:25:00Z","備考":"定期購入契約に基づく11月分納入。指定納期内に納品完了。顧客より納品品質について高評価をいただいた。","作成日時":"2024-11-15T11:45:00Z","更新日時":"2024-12-10T15:30:00Z","作成者":"rec-00087"},{"営業データID":"rec-20250147","ユーザーID":"rec-user-0842","顧客名":"株式会社ヤマト流通","顧客ID":"cust-0015","取引日":"2025-01-15T10:30:00+09:00","商品名":"業務用トイレットペーパー（シングル）","数量":5000,"単価":45,"売上金額":225000,"請求状態":"請求済","請求日":"2025-01-20T09:00:00+09:00","入金日":"2025-02-05T14:15:00+09:00","備考":"定期卸売契約に基づく月次納入。配送先は東京都内3箇所。","作成日時":"2025-01-15T11:45:00+09:00","更新日時":"2025-02-05T14:30:00+09:00","作成者":"rec-user-0501"},{"営業データID":"rec-20250115-0847","ユーザーID":"usr-0324","顧客名":"株式会社アクティブ製造","顧客ID":"cust-5821","取引日":"2025-01-10T14:30:00","商品名":"業務用複合機 MX-2500","数量":1,"単価":850000,"売上金額":0,"請求状態":"キャンセル","請求日":null,"入金日":null,"備考":"顧客都合によるキャンセル。2025年1月10日の受注後、同日中に顧客より納期変更不可のため契約解除の申し出があり、キャンセル対応を実施。売上計上なし。","作成日時":"2025-01-10T15:45:00","更新日時":"2025-01-10T16:20:00","作成者":"usr-0324"},{"営業データID":"rec-20250047","ユーザーID":"rec-00234","顧客名":"株式会社サンテック工業","顧客ID":"cust-1847","取引日":"2024-08-15T10:30:00","商品名":"精密機械部品セット","数量":150,"単価":8500,"売上金額":1275000,"請求状態":"入金済","請求日":"2024-09-05T14:20:00","入金日":"2025-02-18T09:15:00","備考":"顧客の資金繰り悪化により支払い遅延が発生。複数回の催促後に分割入金対応となった。","作成日時":"2024-08-16T08:45:00","更新日時":"2025-02-18T16:30:00","作成者":"rec-00234"},{"営業データID":"rec-001","ユーザーID":"usr-0847","顧客名":"株式会社テクノロジーソリューション","顧客ID":"cust-2024-0156","取引日":"2024-11-15T10:30:00+09:00","商品名":"複合機能プリンタ/トナーカートリッジセット/保守契約パッケージ","数量":"3","単価":"450000","売上金額":"1350000","請求状態":"請求済","請求日":"2024-11-16T09:00:00+09:00","入金日":"2024-12-10T14:20:00+09:00","備考":"営業担当者：田中太郎。複合機能プリンタ1台（450,000円）、トナーカートリッジセット1式（450,000円）、1年間保守契約パッケージ1式（450,000円）。顧客の本社オフィス移転に伴う一括購入。納期：2024年11月22日。請求書番号INV-2024-11-0847。","作成日時":"2024-11-15T11:05:00+09:00","更新日時":"2024-12-10T14:25:00+09:00","作成者":"usr-0847"},{"営業データID":"rec-20250145","ユーザーID":"rec-usr-0847","顧客名":"株式会社ヤマダ電器販売","顧客ID":"cust-2024-1523","取引日":"2025-01-15T14:30:00","商品名":"LED照明パネル 60W型","数量":-5,"単価":8500,"売上金額":-42500,"請求状態":"返品処理中","請求日":"2024-12-20T09:00:00","入金日":null,"備考":"2024年12月20日の納入分について、製品の色温度が仕様と異なるとのクレームにより、2025年1月15日に全数返品を受け付けた。返金手続き予定。","作成日時":"2025-01-15T15:45:00","更新日時":"2025-01-15T15:45:00","作成者":"rec-usr-0302"},{"営業データID":"rec-20250115-0847","ユーザーID":"usr-2024-0523","顧客名":"株式会社ハイテク機器工業","顧客ID":"cust-kanto-0156","取引日":"2024-11-22T14:30:00+09:00","商品名":"産業用制御盤システム","数量":3,"単価":850000,"売上金額":2550000,"請求状態":"請求済","請求日":"2024-12-05T09:00:00+09:00","入金日":"2025-01-10T16:45:00+09:00","備考":"営業担当者変更に伴う引継ぎ案件。前任者：佐藤健一より2025年1月15日付で引き継ぎ。顧客との関係良好。次期案件は3月納期予定。","作成日時":"2024-11-22T15:20:00+09:00","更新日時":"2025-01-10T17:15:00+09:00","作成者":"usr-2024-0523"}],"営業データ項目メタデータ":[{"項目ID":"rec-001","項目名":"顧客名","項目コード":"CUST_NAME","データ型":"varchar","最大文字数":100,"必須フラグ":true,"バリデーションルール":"^[ぁ-ん一-龯ー・ァ-ヴー\\s]{1,100}$","品質基準":"空白不可、先頭末尾の空白除去、重複チェック対象外","請求対象フラグ":true,"説明":"営業取引における顧客の正式名称。請求書発行時に使用される必須項目。日本語表記のみ対応。","作成日時":"2024-01-15T09:30:00Z","更新日時":"2024-11-20T14:45:00Z","作成者ID":"user-0001","更新者ID":"user-0003"},{"項目ID":"rec-001-sales-amt-20250115","項目名":"売上金額","項目コード":"SALES_AMT","データ型":"decimal","最大文字数":null,"必須フラグ":true,"バリデーションルール":"^[0-9]{1,10}(\\.[0-9]{1,2})?$ AND 値 >= 0 AND 値 <= 99999999.99","品質基準":"空白不可、負数不可、小数点第3位以下不可、請求対象案件では100以上の値が必須","請求対象フラグ":true,"説明":"顧客との取引における売上金額。請求自動化処理で請求書生成の基礎となる金額。税抜き価格で記録し、消費税計算時に使用される。","作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者ID":"rec-user-001-yamada","更新者ID":"rec-user-002-suzuki"},{"項目ID":"rec-001","項目名":"請求日","項目コード":"INVOICE_DATE","データ型":"timestamp","最大文字数":null,"必須フラグ":true,"バリデーションルール":"^\\d{4}-\\d{2}-\\d{2}$|YYYY-MM-DD形式、過去30日以内または未来90日以内の日付のみ許可","品質基準":"空白不可、NULL不可、システム日付より過去1年以内の日付、重複不可（同一顧客・同一金額の場合）","請求対象フラグ":true,"説明":"営業取引の請求日付。請求自動化処理において支払期限の算出基準となる重要項目。日本標準時(JST)での日付管理。","作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:30+09:00","作成者ID":"rec-u-001","更新者ID":"rec-u-002"},{"項目ID":"rec-001","項目名":"顧客ID","項目コード":"CUST_ID","データ型":"varchar","最大文字数":20,"必須フラグ":true,"バリデーションルール":"^CUST[0-9]{8}$","品質基準":"空白不可、重複不可、取引先マスタとの整合性確保","請求対象フラグ":true,"説明":"取引先マスタから参照される顧客の一意識別子。請求自動化処理で請求先特定に使用。重複排除と参照整合性の維持が必須。","作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"usr-0001","更新者ID":"usr-0003"},{"項目ID":"rec-001","項目名":"商品コード","項目コード":"PRODUCT_CODE","データ型":"varchar","最大文字数":20,"必須フラグ":true,"バリデーションルール":"^[A-Z]{3}-[0-9]{6}$","品質基準":"空白不可、重複不可、在庫システムとの照合必須","請求対象フラグ":true,"説明":"営業取引に使用する商品の一意識別コード。形式はPRD-000001のように3文字の英字プレフィックスと6桁の数字で構成される。在庫管理システムと連携し、商品マスタとの整合性を確保する必須項目。","作成日時":"2024-04-15T09:30:00Z","更新日時":"2024-11-20T14:45:30Z","作成者ID":"rec-u001","更新者ID":"rec-u002"},{"項目ID":"rec-001","項目名":"契約金額","項目コード":"CONTRACT_AMT","データ型":"numeric","最大文字数":null,"必須フラグ":true,"バリデーションルール":"^[0-9]{1,10}\\.[0-9]{2}$|^[0-9]{1,10}$","品質基準":"空白不可、小数点以下は2桁以下、負の値不可、会計システムとの金額一致必須","請求対象フラグ":true,"説明":"顧客との契約における契約金額。会計システムへの自動連携対象項目。消費税計算の基準となるため、小数点以下は2桁に統一。金額は円単位で記録。","作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-usr-0042","更新者ID":"rec-usr-0087"},{"項目ID":"rec-001","項目名":"請求担当者メールアドレス","項目コード":"BILLING_OFFICER_EMAIL","データ型":"varchar","最大文字数":255,"必須フラグ":true,"バリデーションルール":"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$","品質基準":"空白不可、重複不可、RFC 5322準拠のメールアドレス形式、ドメイン検証必須","請求対象フラグ":true,"説明":"請求書送付先および請求通知メール送信対象となる請求担当者のメールアドレス。請求自動化システムから請求確定通知、支払期限リマインダー、領収書等の書類送付に使用される。形式検証後、配信可能性確認を実施する。","作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:30+09:00","作成者ID":"rec-u-001","更新者ID":"rec-u-002"},{"項目ID":"rec-001","項目名":"納期","項目コード":"DELIVERY_DATE","データ型":"timestamp","最大文字数":null,"必須フラグ":true,"バリデーションルール":"^\\d{4}-\\d{2}-\\d{2}$|納期は注文日から30日以上365日以内の範囲で指定してください","品質基準":"空白不可、注文日時より後の日付であること、システム日付から過去日付は不可","請求対象フラグ":true,"説明":"顧客との契約に基づく商品・サービスの納期予定日。請求自動化処理では納期遅延フラグの判定に使用される。実績納期と比較して遅延判定を行う。","作成日時":"2024-04-15 09:30:00","更新日時":"2024-11-20 14:45:00","作成者ID":"rec-u001","更新者ID":"rec-u003"},{"項目ID":"rec-001","項目名":"割引率","項目コード":"DISCOUNT_RATE","データ型":"numeric","最大文字数":null,"必須フラグ":true,"バリデーションルール":"^([0-9]|[1-9][0-9]|100)(\\.\\d{1,2})?$","品質基準":"空白不可、0以上100以下の数値のみ許可、小数点第2位までの精度、負の値は不正値として検出","請求対象フラグ":true,"説明":"顧客に対する販売時の割引率を百分率で管理する項目。0～100の範囲内の数値を入力必須とし、不正な割引設定による請求エラーを防止する。小数点第2位までの精度で管理され、請求自動化処理で割引後金額の計算に使用される。","作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"user-0847","更新者ID":"user-0521"},{"項目ID":"rec-001","項目名":"支払条件コード","項目コード":"PAYMENT_TERM_CODE","データ型":"varchar","最大文字数":10,"必須フラグ":true,"バリデーションルール":"^(NET30|NET60|NET90|COD|PREPAY)$","品質基準":"空白不可、重複不可、定義値のみ許可（NET30:30日払い、NET60:60日払い、NET90:90日払い、COD:代金引換、PREPAY:前払い）","請求対象フラグ":true,"説明":"顧客との契約に基づく支払条件を識別するコード。請求自動化処理で請求期日と督促スケジュールの自動判定に使用される。営業契約時に営業担当者が設定し、与信管理部門が承認する。","作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"user-0847","更新者ID":"user-0512"}],"検証ルール":[{"検証ルールID":"rec-001","営業データ項目ID":"rec-0042","ルール名":"売上金額の必須チェック","ルール種別":"必須チェック","検証条件":"値が空でなく、かつNULLでない。0円の場合は警告対象","エラーレベル":"エラー","エラーメッセージ":"売上金額が入力されていません。請求対象外の場合は理由コードを指定してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":1,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T09:30:00Z","作成者":"rec-user-0008","更新日時":"2024-12-10T14:22:00Z","更新者":"rec-user-0012","備考":"売上計上プロセスの第一段階。請求対象外の案件は営業ステータスコード『保留中』または『キャンセル』を設定し、売上金額は空白のまま。2024年度より適用開始。山田花子により最終確認済み。"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-0042","ルール名":"売上金額の範囲チェック","ルール種別":"範囲チェック","検証条件":"値が0以上50000000以下の整数であり、負数および1000000を超える1件の取引は事前承認が必要","エラーレベル":"エラー","エラーメッセージ":"売上金額が無効です。金額は0円以上5000万円以下である必要があります。異常値の場合は営業部長の承認を取得してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":1,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T10:30:00Z","作成者":"rec-user-0087","更新日時":"2025-01-20T14:15:00Z","更新者":"rec-user-0156","備考":"2024年度より売上データの品質向上を目的に導入。負数の混入防止と異常な高額取引の検出が主目的。1000万円以上の売上は営業マネージャーによる二重確認を推奨。金融商品販売の場合は別途ルールを適用すること。"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-002","ルール名":"顧客コード形式チェック","ルール種別":"形式チェック","検証条件":"値が正規表現パターン '^[A-Z]{2}[0-9]{6}$' に合致すること。例：AB123456","エラーレベル":"エラー","エラーメッセージ":"顧客コードの形式が正しくありません。英大文字2文字 + 数字6文字の形式で入力してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":1,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T09:30:00Z","作成者":"rec-003","更新日時":"2024-11-20T14:45:00Z","更新者":"rec-004","備考":"顧客コードは営業システムの統一ルールに基づき、地域コード（英大文字2文字）+ 連番（6桁数字）で構成される。2024年度の営業データ品質向上施策の一環として導入。田中太郎営業部長の指示により実装。"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-042","ルール名":"請求先メールアドレス形式チェック","ルール種別":"形式チェック","検証条件":"値が空でなく、かつ正規表現 ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$ に一致すること。また、@マークが1つだけ含まれ、ローカル部分が1文字以上64文字以下、ドメイン部分が1文字以上255文字以下であること","エラーレベル":"エラー","エラーメッセージ":"請求先メールアドレスの形式が無効です。正しいメールアドレス形式（例：billing@company.co.jp）で入力してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":3,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T10:30:00Z","作成者":"rec-u-0087","更新日時":"2024-11-20T14:45:00Z","更新者":"rec-u-0091","備考":"請求書発送システムの配信失敗を防ぐため、メールアドレス形式を厳格に検証する。無効なアドレスはエラーとして処理を停止し、営業担当者に修正を促す。国内企業向けの.co.jp、.jp、.comドメインを主に想定。"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-042","ルール名":"請求日付の妥当性チェック","ルール種別":"範囲チェック","検証条件":"請求日付が当月1日以上かつ当月末日以下、かつ本日の日付から過去180日以内であること。未来日付は認めない","エラーレベル":"エラー","エラーメッセージ":"請求日付が無効です。請求日付は当月1日から末日の間で、本日から過去180日以内である必要があります。入力値を確認してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":2,"有効フラグ":true,"適用開始日":"2024-01-15T09:00:00Z","適用終了日":null,"作成日時":"2024-01-10T14:30:00Z","作成者":"rec-u-001","更新日時":"2024-12-01T10:15:00Z","更新者":"rec-u-003","備考":"請求業務における日付異常の早期発見を目的とした検証ルール。未来日付や過度に古い日付の入力は通常業務では発生しないため、エラーレベルとしている。営業部門からの要望により2024年1月から導入。定期的な監視ログの確認を推奨。"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-item-042","ルール名":"同一顧客同一期間の重複請求排除","ルール種別":"重複チェック","検証条件":"同一顧客ID、同一請求期間（年月）、同一商品コードの組み合わせが複数存在しないこと。過去データとの照合により、顧客ID + 請求年月 + 商品コード の複合キーが一意であることを確認","エラーレベル":"エラー","エラーメッセージ":"この顧客の同一期間における同一商品の請求が既に存在します。請求日時: {既存請求日時}、既存請求ID: {既存請求ID}。重複請求の可能性があります。確認後に再度実行してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":3,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T09:30:00Z","作成者":"rec-user-0087","更新日時":"2024-12-10T14:22:00Z","更新者":"rec-user-0156","備考":"売上計上ルール変更に伴い2024年4月より導入。月次請求と随時請求の混在環境での重複排除が主目的。同一顧客の複数拠点からの請求は別扱いとするため、拠点コードは複合キーに含めない。検証失敗時は営業部長への報告が必須。過去3年分のマスターデータとの照合を実施。"},{"検証ルールID":"rec-001-vrule-20250115-001","営業データ項目ID":"rec-001-item-20240601-012","ルール名":"顧客マスタ参照整合性チェック","ルール種別":"参照整合性チェック","検証条件":"請求対象の顧客IDが顧客マスタテーブルに存在し、かつ削除フラグがfalseであること","エラーレベル":"エラー","エラーメッセージ":"指定された顧客ID（{顧客ID}）は顧客マスタに存在しないか、既に削除済みです。請求処理を中止してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":2,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T09:30:00Z","作成者":"rec-001-user-20230101-045","更新日時":"2025-01-10T14:22:00Z","更新者":"rec-001-user-20230101-078","備考":"2024年度の誤請求問題（削除済み顧客への請求が3件発生）を受けて導入。顧客マスタの削除フラグ確認により削除済み顧客への請求を防止。月次請求処理の前段階で必ず実行すること。営業部門からの顧客削除依頼は経理部に通知されるため、タイムラグによる誤請求防止が目的。"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-0847","ルール名":"税率コードの有効性検証","ルール種別":"参照整合性チェック","検証条件":"税率コードが現在有効な税率マスタに存在し、適用期間内であること。廃止予定の税率コード（8%、軽減税率の旧コード）は許可されない","エラーレベル":"警告","エラーメッセージ":"指定された税率コード「{税率コード}」は廃止または無効です。現在有効な税率コード（10%、8%軽減）に自動修正しました","自動修正フラグ":true,"修正ロジック":"廃止税率コードが検出された場合、商品種別に基づいて自動的に対応する有効な税率コードに置き換える。食品・医薬品→8%軽減税率コード（TAX008L）、その他商品→10%標準税率コード（TAX010S）","優先度":3,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":"2025-12-31T23:59:59Z","作成日時":"2024-03-15T10:30:00Z","作成者":"rec-u0042","更新日時":"2024-11-20T14:15:00Z","更新者":"rec-u0089","備考":"2024年度の税制改正対応。旧税率コード（5%、6.24%等）の廃止に伴い、営業データの自動修正機能を実装。修正ログは監査用に別途記録される。食品・医薬品の判定は商品マスタの分類コードを参照"},{"検証ルールID":"rec-001","営業データ項目ID":"rec-012","ルール名":"請求金額と明細合計の一致確認","ルール種別":"参照整合性チェック","検証条件":"請求金額 = SUM(明細行の単価 × 数量) ± 許容誤差(±100円)","エラーレベル":"エラー","エラーメッセージ":"請求金額と明細合計が一致しません。請求金額: {請求金額}円、明細合計: {明細合計}円、差額: {差額}円。計算内容を確認してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":1,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T10:30:00Z","作成者":"rec-user-001","更新日時":"2024-12-10T14:45:00Z","更新者":"rec-user-002","備考":"売上請求書の金額誤りを防止するため、請求金額と明細行の合計が一致することを必須とする。消費税計算の丸め誤差を考慮し±100円の許容誤差を設定。不一致の場合は営業事務担当者による確認が必須。2024年度より全支店で適用開始。担当: 佐藤美咲"},{"検証ルールID":"rec-20250115-001","営業データ項目ID":"rec-item-0847","ルール名":"営業担当者IDの有効性チェック","ルール種別":"参照整合性チェック","検証条件":"営業担当者IDがユーザーマスタテーブルに存在し、かつ退職フラグがfalse、有効フラグがtrueであること","エラーレベル":"エラー","エラーメッセージ":"指定された営業担当者ID({value})は無効です。退職者または削除済みユーザーの可能性があります。有効な営業担当者を選択してください。","自動修正フラグ":false,"修正ロジック":null,"優先度":3,"有効フラグ":true,"適用開始日":"2024-04-01T00:00:00Z","適用終了日":null,"作成日時":"2024-03-15T09:30:00Z","作成者":"rec-user-0002","更新日時":"2025-01-10T14:22:00Z","更新者":"rec-user-0005","備考":"営業データの信頼性確保のため、営業担当者の有効性を厳密にチェック。ユーザーマスタの退職フラグと有効フラグの両方を確認することで、無効なユーザーによる営業記録の混入を防止。毎月のユーザーマスタ更新タイミングで検証ルールも見直し。"}],"検証ルール条件":[{"検証ルール条件ID":"rec-001","検証ルールID":"rec-042","営業データ項目ID":"rec-158","条件順序":1,"演算子":">=","期待値":"0","論理演算子":"AND","エラーメッセージ":"売上金額は0円以上の正の数値で入力してください。負の値は許可されません。","有効フラグ":true,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2024-11-20T14:45:30+09:00","作成者ID":"rec-203"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":">=","期待値":"{納品日}","論理演算子":"AND","エラーメッセージ":"請求日は納品日以降である必要があります。請求日が納品日より前の日付になっていないか確認してください。","有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","更新日時":"2024-10-15T09:30:00+09:00","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"EXISTS_IN","期待値":"顧客マスタ.顧客コード","論理演算子":"AND","エラーメッセージ":"顧客コード「C00012345」は顧客マスタに存在しません。営業データの登録前に顧客マスタへの登録を確認してください。","有効フラグ":true,"作成日時":"2024-10-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"含む","期待値":"電子機器,家庭用品,衣料品,食品,書籍,スポーツ用品,家具,美容用品","論理演算子":"AND","エラーメッセージ":"商品コードが有効な商品カテゴリに属していません。指定されたカテゴリ（電子機器、家庭用品、衣料品、食品、書籍、スポーツ用品、家具、美容用品）から選択してください。","有効フラグ":true,"作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-22T14:45:30Z","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"OR","期待値":"売上金額 * 0.08 OR 売上金額 * 0.10","論理演算子":"AND","エラーメッセージ":"消費税額が売上金額の8%または10%と一致しません。売上金額に対する正確な消費税計算をご確認ください。","有効フラグ":true,"作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"大于","期待値":"1000000","論理演算子":"AND","エラーメッセージ":"請求金額が100万円を超える場合は、承認者情報の入力が必須です。承認者名と承認日時を確認してください。","有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"含む","期待値":"当月営業活動実績者リスト","論理演算子":"AND","エラーメッセージ":"営業担当者ID：{value} は当月の営業活動実績者に含まれていません。営業活動報告書の提出を確認してください。","有効フラグ":true,"作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"正規表現","期待値":"^\\d{4}(0[1-9]|1[0-2])\\d{5}$","論理演算子":"AND","エラーメッセージ":"請求書番号がYYYYMMnnnnn形式に従っていません。正しい形式で入力してください。","有効フラグ":true,"作成日時":"2024-10-15T09:30:00Z","更新日時":"2024-10-15T09:30:00Z","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-002","営業データ項目ID":"rec-003","条件順序":1,"演算子":"日付差分","期待値":"30","論理演算子":"AND","エラーメッセージ":"返品理由が入力されている場合、返品日は売上日から30日以内である必要があります。現在の返品日は期限を超過しています。","有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者ID":"rec-004"},{"検証ルール条件ID":"rec-001","検証ルールID":"rec-vrule-0042","営業データ項目ID":"rec-item-0156","条件順序":1,"演算子":"等号","期待値":"新規","論理演算子":"AND","エラーメッセージ":"顧客区分が新規である必要があります","有効フラグ":true,"作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T09:30:00+09:00","作成者ID":"rec-user-0087"}],"検証実行履歴":[{"検証実行履歴ID":"rec-001-v-20250115-4782","営業データID":"rec-001-s-20250115-0342","検証ルールID":"rec-001-r-monthly-sales-amount","実行日時":"2025-01-15T02:30:45.000Z","検証結果":"不合格","エラーメッセージ":"月次売上金額が設定された上限値を超過しています。上限: 50,000,000円、実績: 52,350,000円","検証対象値":"52350000","実行ユーザーID":null,"実行モード":"自動","処理時間ミリ秒":187,"作成日時":"2025-01-15T02:30:45.000Z","更新日時":"2025-01-15T02:30:45.000Z"},{"検証実行履歴ID":"rec-20250214-001","営業データID":"rec-20250210-045","検証ルールID":"rec-rule-0012","実行日時":"2025-02-14T09:30:45Z","検証結果":"合格","エラーメッセージ":null,"検証対象値":"顧客ID: C-2024-001234, 顧客名: 山田商事株式会社, 代表者: 山田太郎, 住所: 東京都渋谷区道玄坂1-2-3, 電話: 03-XXXX-XXXX, 登録日: 2024-12-15","実行ユーザーID":"rec-user-0087","実行モード":"手動","処理時間ミリ秒":234,"作成日時":"2025-02-14T09:30:45Z","更新日時":"2025-02-14T09:30:45Z"},{"検証実行履歴ID":"rec-20250115-0847","営業データID":"rec-sales-2025-0342","検証ルールID":"rec-rule-revenue-omission-01","実行日時":"2025-01-15T09:30:45Z","検証結果":"不合格","エラーメッセージ":"売上計上漏れの可能性：2024年12月の契約額¥2,850,000に対して、売上計上額は¥1,900,000のみ。差分¥950,000の根拠が不明確です。","検証対象値":"計上売上: ¥1,900,000 / 契約額: ¥2,850,000","実行ユーザーID":"rec-user-tanaka-jiro","実行モード":"手動","処理時間ミリ秒":245,"作成日時":"2025-01-15T09:30:45Z","更新日時":"2025-01-15T09:30:45Z"},{"検証実行履歴ID":"rec-001","営業データID":"rec-002","検証ルールID":"rec-003","実行日時":"2024-11-15T06:00:00+09:00","検証結果":"合格","エラーメッセージ":null,"検証対象値":"2024-11-15","実行ユーザーID":null,"実行モード":"スケジュール","処理時間ミリ秒":245,"作成日時":"2024-11-15T06:00:15+09:00","更新日時":"2024-11-15T06:00:15+09:00"},{"検証実行履歴ID":"rec-20250115-8472","営業データID":"rec-sales-45821","検証ルールID":"rec-rule-invoice-match-001","実行日時":"2025-01-15T14:32:47+09:00","検証結果":"不合格","エラーメッセージ":"請求額(2,850,000円)が契約金額(2,500,000円)を超過しています。差分: 350,000円。営業担当者による確認が必要です。","検証対象値":"請求額: 2,850,000 / 契約金額: 2,500,000","実行ユーザーID":null,"実行モード":"自動","処理時間ミリ秒":245,"作成日時":"2025-01-15T14:32:47+09:00","更新日時":"2025-01-15T14:32:47+09:00"},{"検証実行履歴ID":"rec-001","営業データID":"rec-002","検証ルールID":"rec-003","実行日時":"2024-11-15T09:30:45.000Z","検証結果":"合格","エラーメッセージ":null,"検証対象値":"株式会社山田商事","実行ユーザーID":"rec-004","実行モード":"手動","処理時間ミリ秒":245,"作成日時":"2024-11-15T09:30:45.000Z","更新日時":"2024-11-15T09:30:45.000Z"},{"検証実行履歴ID":"rec-20250228-001","営業データID":"rec-sales-20250228-0847","検証ルールID":"rec-rule-duplicate-check-001","実行日時":"2025-02-28T23:30:15.000Z","検証結果":"不合格","エラーメッセージ":"売上伝票番号SL20250228-1523が既に登録済みです。登録日時: 2025-02-28 15:22:47、金額: 450000円、顧客: 株式会社山田電機","検証対象値":"SL20250228-1523","実行ユーザーID":null,"実行モード":"自動","処理時間ミリ秒":342,"作成日時":"2025-02-28T23:30:15.000Z","更新日時":"2025-02-28T23:30:15.000Z"},{"検証実行履歴ID":"rec-20250115-001","営業データID":"rec-sales-2025-0847","検証ルールID":"rec-rule-high-amount-001","実行日時":"2025-01-15T14:32:18Z","検証結果":"合格","エラーメッセージ":null,"検証対象値":"契約金額: 15,800,000円、顧客信用スコア: 92、過去取引実績: 5件","実行ユーザーID":"rec-user-mgr-0234","実行モード":"手動","処理時間ミリ秒":847,"作成日時":"2025-01-15T14:32:18Z","更新日時":"2025-01-15T14:32:18Z"},{"検証実行履歴ID":"rec-20250115-8742","営業データID":"rec-sales-2025-001834","検証ルールID":"rec-rule-mapping-0015","実行日時":"2025-01-15T02:30:45Z","検証結果":"不合格","エラーメッセージ":"マッピング対象の売上区分コードが旧システムの形式のままです。新システムコード『SAL-JP-001』への変換が未実行です。","検証対象値":"売上区分:旧形式コード『0001』、金額:¥2,850,000、計上日:2025-01-14","実行ユーザーID":null,"実行モード":"スケジュール","処理時間ミリ秒":1247,"作成日時":"2025-01-15T02:30:45Z","更新日時":"2025-01-15T02:30:45Z"},{"検証実行履歴ID":"rec-20250218-0847","営業データID":"rec-sales-2025-0156","検証ルールID":"rec-rule-invoice-amount","実行日時":"2025-02-18T09:15:32Z","検証結果":"合格","エラーメッセージ":null,"検証対象値":"¥1,250,000","実行ユーザーID":"rec-user-yamada-hanako","実行モード":"手動","処理時間ミリ秒":245,"作成日時":"2025-02-18T09:15:32Z","更新日時":"2025-02-18T09:15:32Z"}],"検証エラー":[{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"必須項目不足","エラーメッセージ":"顧客名は必須項目です。入力してください。","検出値":"","期待値":"顧客名（1文字以上100文字以内の文字列）","重要度":"致命的","対応状況":"修正済み","対応者ユーザーID":"rec-006","対応コメント":"営業担当者の佐藤に確認したところ、顧客は株式会社山田商事でした。顧客名を入力して再登録いたしました。","対応日時":"2025-01-15T14:30:00+09:00","作成日時":"2025-01-15T09:45:00+09:00","更新日時":"2025-01-15T14:30:00+09:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"値域外","エラーメッセージ":"請求金額は0以上の値を入力してください。負の数値は入力できません。","検出値":"-15000","期待値":"0以上の数値","重要度":"致命的","対応状況":"修正済み","対応者ユーザーID":"rec-006","対応コメント":"営業担当者の入力誤りが原因。返品処理として正の値に修正済み。","対応日時":"2024-11-15 14:30:00","作成日時":"2024-11-15 09:45:00","更新日時":"2024-11-15 14:30:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"参照整合性違反","エラーメッセージ":"顧客ID「CUST-999999」は顧客マスタに存在しません。正しい顧客IDを入力してください。","検出値":"CUST-999999","期待値":"顧客マスタに登録されている有効な顧客ID","重要度":"致命的","対応状況":"修正済み","対応者ユーザーID":"rec-006","対応コメント":"営業担当者に確認したところ、顧客IDの入力誤りが判明。正しい顧客ID「CUST-087543」に修正し、営業データを再登録しました。","対応日時":"2024-11-15T14:30:00+09:00","作成日時":"2024-11-15T09:45:00+09:00","更新日時":"2024-11-15T14:30:00+09:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"形式不正","エラーメッセージ":"電話番号の形式が正しくありません。ハイフンを含めた11桁（例：090-1234-5678）の形式で入力してください。","検出値":"09012345678","期待値":"ハイフン付き11桁形式（例：090-1234-5678または09-0123-45678）","重要度":"警告","対応状況":"修正済み","対応者ユーザーID":"rec-006","対応コメント":"顧客田中太郎より電話番号を090-1234-5678に修正済み。営業担当者による入力時の形式確認不足が原因。","対応日時":"2024-12-15T10:30:00Z","作成日時":"2024-12-14T14:22:00Z","更新日時":"2024-12-15T10:30:00Z","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"重複","エラーメッセージ":"営業機会ID「OPP-2024-00156」が既に存在します。同一の営業機会IDで複数レコードが登録されています。","検出値":"OPP-2024-00156","期待値":"営業機会IDは全レコード内で一意である必要があります","重要度":"致命的","対応状況":"対応中","対応者ユーザーID":"rec-006","対応コメント":"営業担当の鈴木が入力ミスで同じ営業機会を2件登録。重複レコードの統合を進めています。","対応日時":"2024-11-15T10:30:00+09:00","作成日時":"2024-11-14T16:45:00+09:00","更新日時":"2024-11-15T10:30:00+09:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"論理矛盾","エラーメッセージ":"請求日が契約日より前の日付となっています。請求日は契約日以降の日付を設定してください。","検出値":"2024-11-15","期待値":"契約日(2024-12-01)以降の日付","重要度":"致命的","対応状況":"対応中","対応者ユーザーID":"rec-006","対応コメント":"営業担当者に確認中。契約日が12月1日に変更される可能性あり。","対応日時":"2024-12-20T10:30:00","作成日時":"2024-12-19T14:15:00","更新日時":"2024-12-20T10:30:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"形式不正","エラーメッセージ":"メールアドレスの形式が正しくありません。@記号を含める必要があります。","検出値":"yamada.hanako.example.com","期待値":"メールアドレス形式（xxx@yyy.zzz）","重要度":"警告","対応状況":"修正済み","対応者ユーザーID":"rec-006","対応コメント":"顧客より正しいメールアドレス yamada.hanako@example.com の提供を受け、営業データを修正いたしました。","対応日時":"2024-11-15 14:30:00","作成日時":"2024-11-14 09:45:00","更新日時":"2024-11-15 14:30:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"値域外","エラーメッセージ":"取引額が企業の信用限度額を超過しています。承認前に営業責任者の確認が必要です。","検出値":"2850000","期待値":"2500000以下","重要度":"警告","対応状況":"対応中","対応者ユーザーID":"rec-006","対応コメント":"顧客の信用状況を再評価中。過去12ヶ月の取引実績が良好のため、信用限度額の引き上げを検討中。","対応日時":"2025-01-15T10:30:00+09:00","作成日時":"2025-01-14T16:45:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"値域外","エラーメッセージ":"消費税額が計算式に基づく期待値と一致していません。税率10%適用時の消費税額が不正です。","検出値":"15,000","期待値":"13,636","重要度":"致命的","対応状況":"対応中","対応者ユーザーID":"rec-006","対応コメント":"営業担当者の入力ミスが原因。元の売上金額136,360円に対して10%の消費税を正確に計算すると13,636円となるべき。営業担当者に訂正を依頼済み。","対応日時":"2024-11-15T10:30:00+09:00","作成日時":"2024-11-14T16:45:23+09:00","更新日時":"2024-11-15T10:30:00+09:00","作成者ユーザーID":"rec-007"},{"検証エラーID":"rec-001","検証実行履歴ID":"rec-002","営業データID":"rec-003","検証ルールID":"rec-004","営業データ項目メタデータID":"rec-005","エラー種別":"参照整合性違反","エラーメッセージ":"営業所コード「SH-0847」は廃止されており、マスタに存在しません。現在利用可能な営業所コードを選択してください。","検出値":"SH-0847","期待値":"営業所マスタに存在する有効な営業所コード（例：SH-0801, SH-0802等）","重要度":"致命的","対応状況":"修正済み","対応者ユーザーID":"rec-006","対応コメント":"営業所コードをSH-0847から統合先のSH-0801（東京営業所）に変更しました。2024年4月の組織再編に伴う廃止営業所の対応です。","対応日時":"2025-01-15T14:30:00Z","作成日時":"2025-01-14T09:45:00Z","更新日時":"2025-01-15T14:30:00Z","作成者ユーザーID":"rec-007"}],"サービス":[{"サービスID":"rec-001","サービス名":"営業データ品質検証・クレンジングサービス","説明":"営業部門で管理される顧客情報、商談データ、売上予測データなどの品質を自動検証し、重複排除、形式統一、欠損値補完などのクレンジング処理を実施するサービス。CRMシステムとの連携により、営業活動の効率化と意思決定精度の向上を実現します。","サービスコード":"SVC-SALES-QUALITY-001","ステータス":"有効","請求対象フラグ":true,"月額料金":98000,"作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-22T14:45:30Z","作成者":"rec-user-0001","更新者":"rec-user-0002"},{"サービスID":"rec-001","サービス名":"顧客マスタデータ自動検証サービス","説明":"顧客マスタデータの整合性を自動検証し、重複レコード、不正な形式、異常値を検知。リアルタイムでアラート通知し、データ品質を維持します。","サービスコード":"CUST-VALID-001","ステータス":"有効","請求対象フラグ":true,"月額料金":45000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:15:00+09:00","作成者":"rec-user-0001","更新者":"rec-user-0002"},{"サービスID":"rec-001","サービス名":"請求書自動生成・配信サービス","説明":"顧客データと契約情報から請求書を自動生成し、メール・郵送で配信するサービス。月次・年次請求に対応し、複数通貨・消費税計算にも対応しています。","サービスコード":"INVOICE-AUTO-001","ステータス":"有効","請求対象フラグ":true,"月額料金":25000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者":"rec-user-0001","更新者":"rec-user-0002"},{"サービスID":"rec-001","サービス名":"売上予測分析と営業支援ツール","説明":"AI機械学習を活用した売上予測モデルと営業活動の可視化・最適化を実現するクラウドサービス。過去の営業データから将来の売上を予測し、営業チームの活動効率向上と目標達成を支援します。リアルタイムダッシュボード、顧客セグメンテーション、提案機会の自動抽出機能を搭載。","サービスコード":"SALES-FORECAST-001","ステータス":"有効","請求対象フラグ":true,"月額料金":150000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2024-11-20T14:45:30+09:00","作成者":"rec-user-0847","更新者":"rec-user-1203"},{"サービスID":"rec-001-dqs-2024","サービス名":"データ品質スコアリングと改善提案","説明":"企業内のデータベースやデータレイクに蓄積されたデータの品質を多角的に評価し、スコアリングするサービス。完全性、正確性、一貫性、タイムリネスの4つの観点から自動診断を行い、品質低下の要因を特定。改善優先度付きレポートと具体的な改善提案を月次で提供します。","サービスコード":"DQS-SCORE-001","ステータス":"有効","請求対象フラグ":true,"月額料金":185000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者":"rec-user-0042","更新者":"rec-user-0157"},{"サービスID":"rec-001","サービス名":"データ連携プラットフォーム","説明":"複数の基幹システム間でのリアルタイムデータ同期を実現するサービス。ERP、CRM、会計システムなど異なるプラットフォーム間のデータ整合性を自動的に保証し、業務効率化と人的エラー削減を実現します。","サービスコード":"DCP-SYNC-001","ステータス":"有効","請求対象フラグ":true,"月額料金":150000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者":"rec-u-0042","更新者":"rec-u-0089"},{"サービスID":"rec-001","サービス名":"請求漏れ・過請求自動検出","説明":"顧客の利用実績と請求データを自動照合し、請求漏れや過請求を検出するサービス。月次で請求データの整合性を検証し、異常があれば営業担当者に通知します。","サービスコード":"BIL-AUDIT-001","ステータス":"有効","請求対象フラグ":true,"月額料金":45000,"作成日時":"2024-06-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"rec-usr-0847","更新者":"rec-usr-0521"},{"サービスID":"rec-001","サービス名":"営業プロセス自動化・ワークフロー管理","説明":"営業活動全体のプロセス自動化とワークフロー管理を実現するサービス。リード管理から案件クローズまでの営業パイプラインを可視化し、承認フロー、タスク割り当て、進捗追跡を自動化します。Salesforce連携、メール自動送信、レポート生成機能を含みます。","サービスコード":"SVC-SALES-AUTO-001","ステータス":"有効","請求対象フラグ":true,"月額料金":98000,"作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者":"rec-user-0042","更新者":"rec-user-0089"},{"サービスID":"rec-001","サービス名":"定期データ監査レポート作成","説明":"企業のデータベースおよびデータウェアハウスに対して月次の定期監査を実施し、データ品質、整合性、セキュリティ準拠状況を総合的に検証するサービス。監査結果を詳細レポートとして提供し、改善提案を含めて報告します。","サービスコード":"DAR-MONTHLY-001","ステータス":"有効","請求対象フラグ":true,"月額料金":150000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:15:00+09:00","作成者":"rec-user-0042","更新者":"rec-user-0087"},{"サービスID":"rec-001","サービス名":"顧客別請求ルール管理","説明":"複数の顧客に対して異なる請求ルール、割引率、請求サイクルを一元管理し、例外処理や特別料金設定に対応するサービス。月次請求、年間一括請求、従量課金など柔軟な請求方式をサポート。","サービスコード":"BILLING-RULE-MGT-001","ステータス":"有効","請求対象フラグ":true,"月額料金":45000,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者":"rec-u001","更新者":"rec-u002"}],"請求対象項目マッピング":[{"マッピングID":"rec-001","営業データ項目ID":"rec-sales-001","請求項目コード":"BILL_AMT_STD","請求項目名":"標準商品売上金額","マッピングタイプ":"直接マッピング","変換ルール":"営業システムの売上金額フィールドを請求システムの請求額フィールドにそのまま転記。税抜き金額を対象とする。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"標準商品の売上実績は毎月の請求額の主要項目。消費税は別途計算。","作成日時":"2024-04-15T09:30:00+09:00","作成者":"rec-user-001","更新日時":"2025-01-20T14:15:00+09:00","更新者":"rec-user-002"},{"マッピングID":"rec-001","営業データ項目ID":"rec-102","請求項目コード":"BILL-TOTAL-AMT","請求項目名":"請求対象合計金額","マッピングタイプ":"計算","変換ルール":"基本サービス料金(営業データ項目ID: rec-102) + オプション料金(営業データ項目ID: rec-103) + 保守費用(営業データ項目ID: rec-104) - 割引額(営業データ項目ID: rec-105)。消費税は別途計算。合計金額が100,000円を超える場合は早期割引5%を適用。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"月次請求の主要項目。営業データ項目102〜105の合算により請求対象額を算出。四半期ごとに金額妥当性を確認すること。","作成日時":"2024-04-15T09:30:00+09:00","作成者":"rec-user-001","更新日時":"2025-01-20T14:45:00+09:00","更新者":"rec-user-002"},{"マッピングID":"rec-001","営業データ項目ID":"rec-sales-0047","請求項目コード":"BILL_AMT_DISC","請求項目名":"割引適用後請求額","マッピングタイプ":"計算","変換ルール":"基本請求額 × (1 - 割引率) ※割引率は顧客マスタの割引区分により決定。VIP顧客:10%、大口顧客:5%、通常顧客:0%。端数は四捨五入。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"月次請求処理で使用。割引率の変更は営業部に確認後、顧客マスタを更新してから適用。2024年度より新ルール適用開始。","作成日時":"2024-04-01T09:30:00+09:00","作成者":"rec-user-0012","更新日時":"2025-01-15T14:22:00+09:00","更新者":"rec-user-0008"},{"マッピングID":"rec-001","営業データ項目ID":"rec-002","請求項目コード":"BILL_AMT_001","請求項目名":"請求金額","マッピングタイプ":"計算","変換ルール":"数量 × 単価 = 請求金額。数量は営業データ項目ID(rec-003)から、単価は営業データ項目ID(rec-004)から取得。小数点以下は四捨五入で整数化。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"毎月の請求額算出に使用する基本マッピング。税抜き金額として計算される。","作成日時":"2024-04-15T09:30:00","作成者":"rec-005","更新日時":"2024-12-20T14:45:00","更新者":"rec-006"},{"マッピングID":"rec-001-map-20250115","営業データ項目ID":"rec-001-sales-status","請求項目コード":"INV-STATUS-001","請求項目名":"請求対象ステータス判定","マッピングタイプ":"条件抽出","変換ルール":"営業ステータスが「受注確定」または「納品完了」の案件のみを請求対象とする。ステータスコード：01=受注確定、02=納品完了。それ以外のステータス（00=見積中、03=キャンセル、04=保留中）は請求対象外とする。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"営業システムのステータスマスタとの連携により、月次請求処理の前に自動抽出される。請求対象外のステータスが含まれた場合は請求処理エラーログに記録される。","作成日時":"2024-11-20T09:30:00+09:00","作成者":"rec-001-user-tanaka","更新日時":"2025-01-15T14:45:00+09:00","更新者":"rec-001-user-suzuki"},{"マッピングID":"rec-001","営業データ項目ID":"rec-sales-0047","請求項目コード":"TAX_AMOUNT","請求項目名":"消費税額","マッピングタイプ":"計算","変換ルール":"税抜き売上金額 × 消費税率(10%) = 消費税額。軽減税率対象商品は8%を適用。計算結果は円単位で四捨五入。","請求対象フラグ":true,"有効フラグ":true,"優先度":2,"備考":"消費税額は売上計上時に自動計算される。軽減税率対象フラグが立っている場合は別途ルール適用。月次請求書作成時に集計対象となる。","作成日時":"2024-04-15T09:30:00+09:00","作成者":"rec-user-0012","更新日時":"2025-01-20T14:22:00+09:00","更新者":"rec-user-0008"},{"マッピングID":"rec-001","営業データ項目ID":"rec-042","請求項目コード":"BILLING_DEDUCTION_001","請求項目名":"返品・キャンセル控除額","マッピングタイプ":"計算","変換ルール":"IF(返品フラグ=true OR キャンセルフラグ=true) THEN 請求額 - (返品数量 × 単価 + キャンセル手数料) ELSE 請求額","請求対象フラグ":true,"有効フラグ":true,"優先度":2,"備考":"返品・キャンセルが発生した場合、該当する商品代金と手数料を請求額から控除する。月次請求処理で優先度順に適用される。返品期限は商品発送日から30日以内。","作成日時":"2024-06-15T09:30:00Z","作成者":"rec-101","更新日時":"2025-01-20T14:15:00Z","更新者":"rec-102"},{"マッピングID":"rec-001-map-2024-11-15","営業データ項目ID":"rec-001-sales-monthly-2024","請求項目コード":"BIL-MTH-AGG-001","請求項目名":"月次売上集計額","マッピングタイプ":"集計","変換ルール":"営業データの月次売上を請求対象期間（当月1日～末日）でフィルタリングし、同一顧客・商品カテゴリごとに合算。消費税は別途計算。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"2024年11月より運用開始。請求対象期間は営業データの売上計上日を基準とする。返品・キャンセルは別途マッピング（rec-001-map-2024-11-16）で処理。","作成日時":"2024-10-28T09:30:00+09:00","作成者":"rec-001-user-yamada","更新日時":"2024-11-15T14:45:00+09:00","更新者":"rec-001-user-suzuki"},{"マッピングID":"rec-001","営業データ項目ID":"rec-sales-dept-revenue","請求項目コード":"BILL-001-TOTAL","請求項目名":"請求部門別統合売上","マッピングタイプ":"集計","変換ルール":"営業部門（東京営業部、関西営業部、中部営業部）の月次売上を請求部門（法人営業部門、小売営業部門）に再分類し、部門別売上の合計を算出。東京営業部と中部営業部は法人営業部門に、関西営業部は小売営業部門に分類。計算式：SUM(営業部門別売上) GROUP BY 請求部門","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"月次決算時に実行。営業部門の組織変更時はマッピングルールの見直しが必要。2024年度から新体制で運用開始。","作成日時":"2024-04-01T09:30:00+09:00","作成者":"rec-user-001","更新日時":"2024-12-15T14:45:00+09:00","更新者":"rec-user-002"},{"マッピングID":"rec-001","営業データ項目ID":"rec-0047","請求項目コード":"BILL_AMT_TOTAL","請求項目名":"請求対象額合計","マッピングタイプ":"計算","変換ルール":"前月繰越売上 + 当月売上 = 請求対象額。前月繰越売上は営業データ項目ID(rec-0045)の値、当月売上は営業データ項目ID(rec-0046)の値を参照。両項目が存在する場合は合算、前月繰越売上が0の場合は当月売上のみを請求対象額とする。","請求対象フラグ":true,"有効フラグ":true,"優先度":1,"備考":"月次請求の基本となる重要なマッピング。消費税計算前の金額。前月繰越分の消込状況により調整が必要な場合は別途対応。","作成日時":"2024-10-15T09:30:00Z","作成者":"rec-u001","更新日時":"2025-01-08T14:22:00Z","更新者":"rec-u002"}],"請求集計":[{"請求集計ID":"rec-001","請求期間開始日":"2025-01-01T00:00:00Z","請求期間終了日":"2025-01-31T23:59:59Z","顧客ID":"cust-0847","集計ステータス":"確定","集計対象件数":156,"請求金額合計":2850000,"税金額":285000,"請求金額合計税込":3135000,"検証エラー件数":0,"検証完了フラグ":true,"確定日時":"2025-02-03T14:30:00Z","請求発行日":"2025-02-05T09:15:00Z","備考":"大口顧客向け月次定期請求。前月比3.2%増。支払条件：翌月末払い。","作成日時":"2025-02-01T08:45:00Z","作成者":"user-0512","更新日時":"2025-02-03T14:30:00Z","更新者":"user-0512"},{"請求集計ID":"rec-20250115-001","請求期間開始日":"2024-10-01T00:00:00Z","請求期間終了日":"2024-12-31T23:59:59Z","顧客ID":"cust-20240501-042","集計ステータス":"下書き","集計対象件数":247,"請求金額合計":3850000,"税金額":385000,"請求金額合計税込":4235000,"検証エラー件数":8,"検証完了フラグ":false,"確定日時":null,"請求発行日":null,"備考":"第4四半期分の請求集計。営業データの重複登録8件を検出。データクレンジング後の再集計が必要。営業部の山田花子と協議済み。","作成日時":"2025-01-15T09:30:00Z","作成者":"user-emp-20230410-108","更新日時":"2025-01-15T14:45:00Z","更新者":"user-emp-20230410-108"},{"請求集計ID":"rec-20250115-001","請求期間開始日":"2024-12-01T00:00:00Z","請求期間終了日":"2024-12-31T23:59:59Z","顧客ID":"cust-startup-2024-001","集計ステータス":"確定","集計対象件数":47,"請求金額合計":450000,"税金額":45000,"請求金額合計税込":495000,"検証エラー件数":0,"検証完了フラグ":true,"確定日時":"2025-01-10T14:30:00Z","請求発行日":null,"備考":"初回請求。スタートアップ向けスターターパッケージ。12月分の利用料金。特別割引適用済み。","作成日時":"2025-01-08T09:15:00Z","作成者":"usr-yamada-taro","更新日時":"2025-01-10T14:30:00Z","更新者":"usr-suzuki-hanako"},{"請求集計ID":"rec-001","請求期間開始日":"2024-10-01T00:00:00Z","請求期間終了日":"2024-10-31T23:59:59Z","顧客ID":"cust-2847","集計ステータス":"請求済み","集計対象件数":47,"請求金額合計":385000,"税金額":38500,"請求金額合計税込":423500,"検証エラー件数":0,"検証完了フラグ":true,"確定日時":"2024-11-05T14:30:00Z","請求発行日":"2024-11-08T09:15:00Z","備考":"クラウドストレージ追加容量サービス（100GB×3ヶ月分）及びサポートプラン拡張の追加請求。顧客より10月15日に申し込み。","作成日時":"2024-11-01T10:45:00Z","作成者":"user-0534","更新日時":"2024-11-08T09:15:00Z","更新者":"user-0534"},{"請求集計ID":"rec-20250215-001","請求期間開始日":"2025-01-01T00:00:00Z","請求期間終了日":"2025-01-31T23:59:59Z","顧客ID":"cust-rec-2024-0847","集計ステータス":"キャンセル","集計対象件数":23,"請求金額合計":385000,"税金額":38500,"請求金額合計税込":423500,"検証エラー件数":3,"検証完了フラグ":true,"確定日時":"2025-02-05T10:30:00Z","請求発行日":"2025-02-06T14:15:00Z","備考":"顧客より2025年2月3日に商品の初期不良に関するクレーム報告があり、返品対応を実施。返品確認完了に伴い、本請求集計全額をキャンセル処理。返金予定額：423,500円。対応担当：営業部 鈴木花子。","作成日時":"2025-02-01T09:00:00Z","作成者":"user-rec-2024-0312","更新日時":"2025-02-10T16:45:00Z","更新者":"user-rec-2024-0508"},{"請求集計ID":"rec-20250115-001","請求期間開始日":"2024-12-01T00:00:00Z","請求期間終了日":"2024-12-31T23:59:59Z","顧客ID":"cust-rec-2024-0847","集計ステータス":"確定","集計対象件数":8547,"請求金額合計":45680000,"税金額":4568000,"請求金額合計税込":50248000,"検証エラー件数":12,"検証完了フラグ":true,"確定日時":"2025-01-10T14:30:00Z","請求発行日":"2025-01-15T09:00:00Z","備考":"東京・大阪・名古屋3拠点の12月分統合請求。軽微な検証エラー12件は既に確認済みで請求額に影響なし。前月比3.2%増。","作成日時":"2025-01-08T10:15:00Z","作成者":"usr-rec-2024-0521","更新日時":"2025-01-10T14:30:00Z","更新者":"usr-rec-2024-0521"},{"請求集計ID":"rec-20250115-001","請求期間開始日":"2024-12-01T00:00:00Z","請求期間終了日":"2024-12-31T23:59:59Z","顧客ID":"cust-20240815-042","集計ステータス":"請求済み","集計対象件数":487,"請求金額合計":2850000,"税金額":285000,"請求金額合計税込":3135000,"検証エラー件数":0,"検証完了フラグ":true,"確定日時":"2025-01-10T14:30:00Z","請求発行日":"2025-01-15T09:00:00Z","備考":"試用期間終了後の本格請求。12月分の営業データ全件検証完了。特に問題なし。","作成日時":"2025-01-08T10:15:00Z","作成者":"user-20230401-015","更新日時":"2025-01-15T09:05:00Z","更新者":"user-20230401-015"},{"請求集計ID":"rec-20250215-001","請求期間開始日":"2025-01-01T00:00:00Z","請求期間終了日":"2025-02-28T23:59:59Z","顧客ID":"cust-rec-2024-0847","集計ステータス":"下書き","集計対象件数":287,"請求金額合計":1850000,"税金額":185000,"請求金額合計税込":2035000,"検証エラー件数":12,"検証完了フラグ":false,"確定日時":null,"請求発行日":null,"備考":"1月末締め処理漏れにより1月分営業データを2月集計に含める。再検証中。検証エラーは主に売上計上日の不整合（12件）。確定前に営業部門への確認が必要。","作成日時":"2025-03-03T09:15:00Z","作成者":"user-rec-佐藤花子","更新日時":"2025-03-05T14:42:00Z","更新者":"user-rec-鈴木一郎"},{"請求集計ID":"rec-001","請求期間開始日":"2024-01-01T00:00:00Z","請求期間終了日":"2024-12-31T23:59:59Z","顧客ID":"cust-2024-0847","集計ステータス":"請求済み","集計対象件数":156,"請求金額合計":2850000,"税金額":285000,"請求金額合計税込":3135000,"検証エラー件数":0,"検証完了フラグ":true,"確定日時":"2025-01-15T10:30:00Z","請求発行日":"2025-01-20T14:45:00Z","備考":"2024年度年間契約分。全営業データの検証完了。請求書発行済み。","作成日時":"2024-12-20T09:15:00Z","作成者":"user-佐藤花子","更新日時":"2025-01-20T14:45:00Z","更新者":"user-鈴木次郎"},{"請求集計ID":"rec-20250215-001","請求期間開始日":"2025-01-01T00:00:00Z","請求期間終了日":"2025-01-31T23:59:59Z","顧客ID":"cust-20240501-042","集計ステータス":"確定","集計対象件数":47,"請求金額合計":1250000,"税金額":137500,"請求金額合計税込":1387500,"検証エラー件数":0,"検証完了フラグ":true,"確定日時":"2025-02-14T10:30:00Z","請求発行日":"2025-02-15T09:15:00Z","備考":"前月請求額から営業データの追加確認に伴い、サービス利用料金を350,000円修正。差分請求として発行。修正理由：1月15日～20日の追加導入分が初回集計時に漏れていたため。顧客確認済み。","作成日時":"2025-02-10T14:20:00Z","作成者":"user-emp-20220315-008","更新日時":"2025-02-14T10:30:00Z","更新者":"user-emp-20220315-008"}],"顧客別請求額":[{"請求額ID":"rec-001","顧客ID":"cust-0847","請求年月":"2024-12","請求額":2850000,"税額":285000,"請求額合計":3135000,"請求ステータス":"確定","集計対象営業データ件数":127,"検証エラー件数":0,"請求実行日時":null,"備考":"12月分通常請求。大口顧客割引5%適用済み。","作成日時":"2024-12-25 09:15:00","作成者":"user-0312","更新日時":"2024-12-27 14:30:00","更新者":"user-0156"},{"請求額ID":"rec-001","顧客ID":"cust-047","請求年月":"2025-01","請求額":1850000,"税額":185000,"請求額合計":2035000,"請求ステータス":"下書き","集計対象営業データ件数":127,"検証エラー件数":3,"請求実行日時":null,"備考":"営業データの日付ズレ3件あり。顧客確認待ち。修正後に確定予定。","作成日時":"2025-01-15 09:30:00","作成者":"user-012","更新日時":"2025-01-16 14:22:00","更新者":"user-008"},{"請求額ID":"rec-001","顧客ID":"rec-cust-0847","請求年月":"2025-01","請求額":1250000,"税額":137500,"請求額合計":1387500,"請求ステータス":"確定","集計対象営業データ件数":47,"検証エラー件数":5,"請求実行日時":null,"備考":"営業データの日付不整合3件、単価未設定2件。確定前に営業部門で修正対応が必要。修正完了後に請求実行予定。","作成日時":"2025-01-15 09:30:00","作成者":"rec-user-0234","更新日時":"2025-01-22 14:15:00","更新者":"rec-user-0156"},{"請求額ID":"rec-001","顧客ID":"rec-cust-047","請求年月":"2025-01","請求額":385000,"税額":38500,"請求額合計":423500,"請求ステータス":"確定","集計対象営業データ件数":47,"検証エラー件数":0,"請求実行日時":null,"備考":"2024年12月分の請求漏れを2025年1月請求分に合算。前月営業データ24件を含む。","作成日時":"2025-01-15 09:30:00","作成者":"rec-user-012","更新日時":"2025-01-20 14:15:00","更新者":"rec-user-008"},{"請求額ID":"rec-001","顧客ID":"rec-102","請求年月":"2024-11","請求額":450000,"税額":45000,"請求額合計":495000,"請求ステータス":"キャンセル","集計対象営業データ件数":28,"検証エラー件数":0,"請求実行日時":"2024-12-05 09:30:00","備考":"顧客からのクレーム対応による請求キャンセル。2024年11月分の請求において、営業担当者による過度な割引適用が判明。顧客との協議の結果、当月請求を取り消し、正規料金での再請求予定。対応者：営業部長 山田太郎","作成日時":"2024-11-28 14:15:00","作成者":"rec-201","更新日時":"2024-12-10 11:45:00","更新者":"rec-202"},{"請求額ID":"rec-001","顧客ID":"rec-cust-042","請求年月":"2025-01","請求額":0,"税額":0,"請求額合計":0,"請求ステータス":"下書き","集計対象営業データ件数":0,"検証エラー件数":1,"請求実行日時":null,"備考":"営業データが0件のため請求保留中。営業データの確認と再集計が必要です。","作成日時":"2025-01-15T10:30:00","作成者":"rec-user-008","更新日時":"2025-01-15T10:30:00","更新者":"rec-user-008"},{"請求額ID":"rec-001","顧客ID":"rec-cust-0847","請求年月":"2025-01","請求額":450000,"税額":45000,"請求額合計":495000,"請求ステータス":"請求済み","集計対象営業データ件数":24,"検証エラー件数":0,"請求実行日時":"2025-02-03 09:15:32","備考":"2025年1月分通常請求。営業活動に基づく標準請求。","作成日時":"2025-01-31 14:22:18","作成者":"rec-user-0512","更新日時":"2025-02-03 09:15:32","更新者":"rec-user-0512"},{"請求額ID":"rec-20250215-001","顧客ID":"cust-00847","請求年月":"2024-03","請求額":450000,"税額":45000,"請求額合計":495000,"請求ステータス":"確定","集計対象営業データ件数":28,"検証エラー件数":0,"請求実行日時":null,"備考":"2024年4月の税率変更に伴い、3月分請求を修正。消費税率8%→10%適用により税額を36000円から45000円に修正。差額9000円は2024年4月請求分に加算予定。","作成日時":"2024-04-05T09:30:00Z","作成者":"usr-admin-001","更新日時":"2025-02-15T14:22:30Z","更新者":"usr-yamada-002"},{"請求額ID":"rec-001","顧客ID":"cust-2847","請求年月":"2024-12","請求額":450000,"税額":45000,"請求額合計":495000,"請求ステータス":"請求済み","集計対象営業データ件数":28,"検証エラー件数":0,"請求実行日時":"2024-12-05T09:30:00Z","備考":"12月度定期請求。前月比3%増。支払期限は2025年1月15日。","作成日時":"2024-12-01T08:00:00Z","作成者":"user-1203","更新日時":"2024-12-05T09:30:00Z","更新者":"user-1205"},{"請求額ID":"rec-20250215-001","顧客ID":"cust-rec-00847","請求年月":"2025-01","請求額":4850000,"税額":485000,"請求額合計":5335000,"請求ステータス":"請求済み","集計対象営業データ件数":23,"検証エラー件数":0,"請求実行日時":"2025-02-15T09:30:00+09:00","備考":"2024年度Q4営業案件（案件A：システム導入2,500万円、案件B：保守契約1,850万円、案件C：コンサル500万円）の合算請求。全案件納品確認済み。","作成日時":"2025-01-31T14:22:15+09:00","作成者":"usr-rec-00312","更新日時":"2025-02-15T09:30:00+09:00","更新者":"usr-rec-00156"}],"サービス別請求額":[{"サービス別請求額ID":"rec-001","顧客ID":"rec-cust-0847","サービスID":"rec-svc-0312","請求集計ID":"rec-bill-2024-12","請求年月":"2024-12","請求額":2850000,"税額":285000,"税込請求額":3135000,"利用数量":1200,"単価":2375,"請求ステータス":"請求済","作成日時":"2024-12-01 09:15:32","更新日時":"2024-12-15 14:22:18","作成者":"山田花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-cust-2024-0847","サービスID":"rec-svc-cloud-basic","請求集計ID":"rec-bill-2025-01-0847","請求年月":"2025-01","請求額":15000,"税額":1500,"税込請求額":16500,"利用数量":5,"単価":3000,"請求ステータス":"請求済","作成日時":"2025-01-05 09:30:00","更新日時":"2025-01-05 09:30:00","作成者":"田中太郎"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-c-0847","サービスID":"rec-s-0312","請求集計ID":"rec-b-2024-12","請求年月":"2024-12","請求額":145000,"税額":14500,"税込請求額":159500,"利用数量":2900,"単価":50,"請求ステータス":"請求済","作成日時":"2024-12-01 09:15:32","更新日時":"2024-12-05 14:28:47","作成者":"鈴木花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-cust-0847","サービスID":"rec-svc-0312","請求集計ID":"rec-bill-2025-01","請求年月":"2025-01","請求額":150000,"税額":15000,"税込請求額":165000,"利用数量":100,"単価":1500,"請求ステータス":"請求済","作成日時":"2025-01-05 09:30:00","更新日時":"2025-01-10 14:15:00","作成者":"山田花子"},{"サービス別請求額ID":"rec-20250115-001","顧客ID":"cust-20240501-087","サービスID":"svc-0012","請求集計ID":"bill-202501-156","請求年月":"2025-01","請求額":8750,"税額":875,"税込請求額":9625,"利用数量":25,"単価":350,"請求ステータス":"請求済","作成日時":"2025-01-15 09:30:45","更新日時":"2025-01-15 09:30:45","作成者":"鈴木花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-cust-0847","サービスID":"rec-svc-0312","請求集計ID":"rec-bill-2024-12","請求年月":"2024-12","請求額":45000,"税額":4500,"税込請求額":49500,"利用数量":150,"単価":300,"請求ステータス":"請求済","作成日時":"2024-12-01 09:15:32","更新日時":"2024-12-15 14:22:18","作成者":"鈴木花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-c-0847","サービスID":"rec-s-0312","請求集計ID":"rec-b-2024-11","請求年月":"2024-11","請求額":9800,"税額":980,"税込請求額":10780,"利用数量":10,"単価":980,"請求ステータス":"請求済","作成日時":"2024-11-01 09:15:32","更新日時":"2024-11-05 14:22:18","作成者":"山田花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-c-0847","サービスID":"rec-s-0312","請求集計ID":"rec-b-2024-11","請求年月":"2024-11","請求額":150000,"税額":15000,"税込請求額":165000,"利用数量":50,"単価":3000,"請求ステータス":"支払済","作成日時":"2024-11-05 09:30:00","更新日時":"2024-12-15 14:22:30","作成者":"鈴木花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-cust-0847","サービスID":"rec-svc-0312","請求集計ID":"rec-bill-2024-10","請求年月":"2024-10","請求額":50000,"税額":5500,"税込請求額":55500,"利用数量":100,"単価":500,"請求ステータス":"請求済","作成日時":"2024-10-15 09:30:00","更新日時":"2025-01-20 14:22:00","作成者":"山田花子"},{"サービス別請求額ID":"rec-001","顧客ID":"rec-cust-0847","サービスID":"rec-svc-0312","請求集計ID":"rec-bill-2024-11","請求年月":"2024-11","請求額":285000,"税額":28500,"税込請求額":313500,"利用数量":150,"単価":1900,"請求ステータス":"未請求","作成日時":"2024-11-25 09:15:32","更新日時":"2025-01-20 14:42:18","作成者":"鈴木花子"}],"月次サマリーテンプレート":[{"月次サマリーテンプレートID":"rec-001","対象年月":"2024-11","テンプレート名":"2024年11月度月次サマリー","営業データ件数":1247,"検証実行件数":3741,"検証エラー件数":18,"データ品質スコア":94,"請求対象顧客数":287,"請求総額":45680000,"請求集計完了フラグ":true,"摘要":"11月度は営業活動が好調で前月比115%の売上実績。データ品質スコア94点で良好。検証エラー18件はすべて軽微な項目不備で対応完了。請求集計は予定通り完了。","作成日時":"2024-12-01T09:15:30Z","更新日時":"2024-12-03T14:42:15Z","作成者":"rec-usr-0847","更新者":"rec-usr-0847"},{"月次サマリーテンプレートID":"rec-2024-11-001","対象年月":"2024-11","テンプレート名":"2024年11月度月次サマリー（大型案件追加対応版）","営業データ件数":2847,"検証実行件数":14235,"検証エラー件数":487,"データ品質スコア":68,"請求対象顧客数":156,"請求総額":45820000,"請求集計完了フラグ":false,"摘要":"11月中旬に大型案件（A社向けシステム導入プロジェクト）が追加され、営業データ件数が前月比+32%増加。データ品質スコアが前月の82から68に低下。11月25日に再検証ルールを実行し、487件のエラーを検出。請求対象顧客数の確定待ちのため集計完了フラグはFalse。12月1日までに全件検証完了予定。","作成日時":"2024-11-20T09:15:00","更新日時":"2024-11-26T16:45:30","作成者":"rec-user-佐藤花子","更新者":"rec-user-鈴木一郎"},{"月次サマリーテンプレートID":"rec-001","対象年月":"2025-01","テンプレート名":"2025年1月月次サマリー（障害後復旧版）","営業データ件数":4850,"検証実行件数":24500,"検証エラー件数":187,"データ品質スコア":82,"請求対象顧客数":342,"請求総額":18750000,"請求集計完了フラグ":true,"摘要":"2025年1月15日のシステム障害により、1月1日～14日分のデータ取り込みが遅延。1月20日に全遅延データの取り込みを完了。再検証実施により、初期スコア68から82へ改善。請求対象外顧客15社の判定ロジック修正完了。","作成日時":"2025-02-03T09:15:00Z","更新日時":"2025-02-05T14:32:00Z","作成者":"rec-user-001","更新者":"rec-user-002"},{"月次サマリーテンプレートID":"rec-2024-12-001","対象年月":"2024-12","テンプレート名":"2024年度期末決算対応サマリー","営業データ件数":2847,"検証実行件数":14235,"検証エラー件数":183,"データ品質スコア":87,"請求対象顧客数":542,"請求総額":285640000,"請求集計完了フラグ":true,"摘要":"期末決算対応に伴い、前月比で請求総額が約32%増加。年度末の追加サービス利用料および保守契約更新に基づく請求額変動。監査法人による外部監査対応済み。検証エラーの大部分は請求額の四捨五入処理に関連するもので、監査上の指摘事項なし。","作成日時":"2025-01-10T09:30:00+09:00","更新日時":"2025-01-15T14:22:00+09:00","作成者":"rec-user-001","更新者":"rec-user-002"},{"月次サマリーテンプレートID":"rec-001","対象年月":"2024-11","テンプレート名":"2024年11月営業データ月次サマリー","営業データ件数":1250,"検証実行件数":3750,"検証エラー件数":487,"データ品質スコア":42,"請求対象顧客数":156,"請求総額":4820000,"請求集計完了フラグ":false,"摘要":"新入営業担当者・鈴木健一による入力ミスが多発。顧客名の誤字、金額の桁間違い、日付形式の統一不備が主因。特に営業データ件数の約39%に検証エラーが発生。11月中の修正対応予定。","作成日時":"2024-12-01T09:15:00+09:00","更新日時":"2024-12-02T14:30:00+09:00","作成者":"rec-u001","更新者":"rec-u002"},{"月次サマリーテンプレートID":"rec-001","対象年月":"2025-01","テンプレート名":"顧客マスタ統合後データ品質改善レポート","営業データ件数":12847,"検証実行件数":58932,"検証エラー件数":3214,"データ品質スコア":82,"請求対象顧客数":1156,"請求総額":87540000,"請求集計完了フラグ":true,"摘要":"顧客マスタ統合プロジェクト完了に伴い、重複顧客レコード2,341件を統合。データクレンジング実施により前月比でエラー件数を35%削減。請求データの整合性確認完了。残存する3,214件のエラーは軽微な住所表記ゆれで、次月中に修正予定。","作成日時":"2025-02-03T09:15:00","更新日時":"2025-02-05T14:42:30","作成者":"rec-u-0847","更新者":"rec-u-0921"},{"月次サマリーテンプレートID":"rec-20250215-001","対象年月":"2025-01","テンプレート名":"2025年1月営業データ月次サマリー（修正版）","営業データ件数":1247,"検証実行件数":5890,"検証エラー件数":23,"データ品質スコア":87,"請求対象顧客数":342,"請求総額":45680000,"請求集計完了フラグ":true,"摘要":"初回集計後の監査で請求漏れ12件（約2,340,000円）を検出。対象顧客：大手製造業A社、流通企業B社ほか。2月15日に追加請求書を発行済み。営業データ件数と請求対象顧客数を修正。","作成日時":"2025-02-01T09:30:00+09:00","更新日時":"2025-02-15T14:45:00+09:00","作成者":"rec-user-0847","更新者":"rec-user-0523"},{"月次サマリーテンプレートID":"rec-20250201-001","対象年月":"2025-01","テンプレート名":"1月度月次サマリー（新春キャンペーン期間）","営業データ件数":8750,"検証実行件数":35000,"検証エラー件数":2840,"データ品質スコア":62,"請求対象顧客数":1240,"請求総額":45680000,"請求集計完了フラグ":false,"摘要":"新春キャンペーン期間中のため取引件数が前月比156%増加。大量発注に伴い顧客入力ミスが増加し、データ品質スコアが前月の78から62へ低下。特に商品コード誤記と数量入力誤りが全エラーの68%を占める。品質改善タスク実施予定。","作成日時":"2025-02-01T09:30:00+09:00","更新日時":"2025-02-03T14:15:00+09:00","作成者":"rec-user-0847","更新者":"rec-user-0847"},{"月次サマリーテンプレートID":"rec-001","対象年月":"2025-01","テンプレート名":"2025年1月営業データ月次サマリー","営業データ件数":2847,"検証実行件数":14235,"検証エラー件数":23,"データ品質スコア":94,"請求対象顧客数":156,"請求総額":8750000,"請求集計完了フラグ":true,"摘要":"前月（2024年12月）の検証エラー47件について修正作業を完了。データクレンジング実施により品質スコアが82から94へ改善。請求集計に支障なし。","作成日時":"2025-02-01T09:30:00","更新日時":"2025-02-03T14:15:00","作成者":"rec-user-0042","更新者":"rec-user-0089"},{"月次サマリーテンプレートID":"rec-202502-0847","対象年月":"2025-02","テンプレート名":"2025年2月度月次請求サマリー（年度末特別対応）","営業データ件数":2847,"検証実行件数":28470,"検証エラー件数":156,"データ品質スコア":94,"請求対象顧客数":487,"請求総額":18750000,"請求集計完了フラグ":false,"摘要":"年度末特別対応による請求集計遅延。複数顧客の追加請求対象判定及び契約変更に伴う金額調整が進行中。経理部門の承認待ち状態。3月5日までの確定予定。","作成日時":"2025-02-28T14:32:15Z","更新日時":"2025-03-02T09:18:47Z","作成者":"rec-user-0521","更新者":"rec-user-0521"}],"月次サマリーテンプレート項目":[{"項目ID":"rec-001","テンプレートID":"rec-tpl-2024-001","項目名":"月次売上高合計","項目コード":"MONTHLY_SALES_TOTAL","データソース種別":"請求集計","ソース項目ID":"rec-src-0042","計算式":"SUM(請求金額)","表示順序":1,"表示形式":"通貨","小数点桁数":0,"集計関数":"SUM","フィルタ条件":"請求ステータス = '確定' AND 請求日 BETWEEN '2024-01-01' AND '2024-01-31'","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","作成者":"rec-usr-0001","更新日時":"2024-12-20T14:45:00+09:00","更新者":"rec-usr-0003"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"請求済み案件比率","項目コード":"INVOICED_PROJECT_RATIO","データソース種別":"請求集計","ソース項目ID":"rec-003","計算式":"SUM(請求済み売上) / SUM(総売上) * 100","表示順序":5,"表示形式":"パーセンテージ","小数点桁数":1,"集計関数":"SUM","フィルタ条件":"案件ステータス IN ('完了', '請求済み') AND 売上計上月 = 当月","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","作成者":"rec-004","更新日時":"2025-01-20T14:45:00+09:00","更新者":"rec-005"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"月次請求件数","項目コード":"monthly_invoice_count","データソース種別":"請求集計","ソース項目ID":null,"計算式":"COUNT(請求書ID)","表示順序":3,"表示形式":"整数","小数点桁数":0,"集計関数":"COUNT","フィルタ条件":"請求ステータス = '確定' AND 請求年月 = 当月","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","作成者":"rec-003","更新日時":"2024-11-20T14:45:00+09:00","更新者":"rec-004"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"上位5顧客売上構成比","項目コード":"TOP5_CUSTOMER_REVENUE_RATIO","データソース種別":"顧客別請求額","ソース項目ID":null,"計算式":"SUM(顧客別請求額 WHERE RANK <= 5) / SUM(全顧客請求額) * 100","表示順序":3,"表示形式":"パーセンテージ","小数点桁数":2,"集計関数":"SUM","フィルタ条件":"請求ステータス = '確定' AND 請求年月 = 当月 AND 顧客ランク IN (SELECT TOP 5 顧客ID FROM 顧客別請求額 ORDER BY 請求額 DESC)","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","作成者":"rec-003","更新日時":"2025-01-08T14:22:00+09:00","更新者":"rec-004"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"サービス別平均請求単価","項目コード":"AVG_BILLING_PRICE_BY_SERVICE","データソース種別":"サービス別請求額","ソース項目ID":"rec-003","計算式":"SUM(請求額) / COUNT(請求件数)","表示順序":5,"表示形式":"通貨","小数点桁数":2,"集計関数":"AVG","フィルタ条件":"請求状態 = '確定' AND 請求月 = 当月","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","作成者":"rec-004","更新日時":"2025-01-20T14:45:00+09:00","更新者":"rec-005"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"未収金額","項目コード":"UNCOLLECTED_AMOUNT","データソース種別":"請求集計","ソース項目ID":"rec-003","計算式":"SUM(請求金額)","表示順序":5,"表示形式":"通貨","小数点桁数":0,"集計関数":"SUM","フィルタ条件":"支払状況='未払い' AND 請求日 >= '2024-12-01' AND 請求日 < '2025-01-01'","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-11-15T09:30:00+09:00","作成者":"rec-004","更新日時":"2024-12-20T14:45:00+09:00","更新者":"rec-005"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"前月比売上成長率","項目コード":"SALES_GROWTH_RATE_MOM","データソース種別":"営業データ","ソース項目ID":"rec-003","計算式":"(当月売上 - 前月売上) / 前月売上 * 100","表示順序":5,"表示形式":"パーセンテージ","小数点桁数":1,"集計関数":"SUM","フィルタ条件":"売上ステータス = '確定' AND 計上日時 >= 当月初日 AND 計上日時 < 翌月初日","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-10-15T09:30:00Z","作成者":"rec-004","更新日時":"2025-01-20T14:45:00Z","更新者":"rec-005"},{"項目ID":"rec-001-stage-count","テンプレートID":"rec-tpl-202501","項目名":"営業ステージ別案件数","項目コード":"PIPELINE_STAGE_COUNT","データソース種別":"営業データ","ソース項目ID":"rec-src-pipeline-stage","計算式":"COUNT(案件ID) GROUP BY ステージ区分","表示順序":5,"表示形式":"整数","小数点桁数":0,"集計関数":"COUNT","フィルタ条件":"ステージ区分 IN ('初期接触','提案準備','提案済','交渉中','成約予定','成約') AND 案件作成日 >= 当月初日 AND 案件作成日 <= 当月末日","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-12-15T09:30:00+09:00","作成者":"rec-user-yamada","更新日時":"2025-01-10T14:20:00+09:00","更新者":"rec-user-suzuki"},{"項目ID":"rec-001","テンプレートID":"rec-tmpl-2024-001","項目名":"請求自動化による削減時間","項目コード":"BILLING_AUTO_SAVED_HOURS","データソース種別":"請求集計","ソース項目ID":"rec-src-billing-001","計算式":"SUM(手動処理予定時間) - SUM(実際の処理時間)","表示順序":5,"表示形式":"整数","小数点桁数":0,"集計関数":"SUM","フィルタ条件":"処理区分 = '請求書発行' AND 自動化フラグ = true AND 処理月 = 当月","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-10-15T09:30:00+09:00","作成者":"rec-user-yamada-001","更新日時":"2025-01-08T14:22:00+09:00","更新者":"rec-user-suzuki-002"},{"項目ID":"rec-001","テンプレートID":"rec-002","項目名":"新規顧客獲得数","項目コード":"NEW_CUSTOMER_COUNT","データソース種別":"営業データ","ソース項目ID":"rec-003","計算式":"COUNT(DISTINCT 顧客ID)","表示順序":1,"表示形式":"整数","小数点桁数":0,"集計関数":"COUNT","フィルタ条件":"顧客ステータス = '新規' AND 契約日 >= 当月初日 AND 契約日 <= 当月末日","必須フラグ":true,"有効フラグ":true,"作成日時":"2024-01-15T09:30:00+09:00","作成者":"rec-004","更新日時":"2024-11-20T14:45:00+09:00","更新者":"rec-005"}],"月次サマリー":[{"月次サマリーID":"rec-20250215-001","対象年月":"2025-01","営業データ件数":12847,"検証実行件数":12847,"検証エラー件数":342,"検証エラー率":"2.66%","データ品質スコア":97,"請求対象顧客数":1523,"請求対象サービス数":3847,"請求集計総額":45680000,"請求集計ステータス":"完了","処理開始日時":"2025-02-01T00:30:00+09:00","処理完了日時":"2025-02-01T02:15:30+09:00","処理ステータス":"完了","摘要":"通常月の処理が正常に完了しました。検出されたエラーは軽微な形式不正3件、重複データ2件等で、いずれも自動修正済みです。請求集計も予定通り完了し、全顧客への請求書発行準備が整いました。","作成日時":"2025-02-01T00:30:00+09:00","更新日時":"2025-02-01T02:15:30+09:00","作成者":"rec-user-0847","更新者":"rec-user-0847"},{"月次サマリーID":"rec-20250215-001","対象年月":"2025-01","営業データ件数":15847,"検証実行件数":15847,"検証エラー件数":2156,"検証エラー率":"13.61%","データ品質スコア":62,"請求対象顧客数":487,"請求対象サービス数":1243,"請求集計総額":48750000,"請求集計ステータス":"完了","処理開始日時":"2025-02-01T00:15:00+09:00","処理完了日時":"2025-02-03T14:32:45+09:00","処理ステータス":"部分完了","摘要":"顧客マスタ連携エラー（156件）、請求金額の計算ロジックエラー（1243件）、サービス終了日の不整合（757件）を検出。請求集計は完了したが、データ品質が基準値（70以上）を下回るため検証確認が必要。詳細は別紙エラーレポートを参照してください。","作成日時":"2025-02-01T00:15:00+09:00","更新日時":"2025-02-03T14:32:45+09:00","作成者":"rec-user-0847","更新者":"rec-user-0847"},{"月次サマリーID":"rec-202501-0847","対象年月":"2025-01","営業データ件数":15847,"検証実行件数":15847,"検証エラー件数":312,"検証エラー率":"1.97%","データ品質スコア":87,"請求対象顧客数":2341,"請求対象サービス数":5892,"請求集計総額":0,"請求集計ステータス":"エラー","処理開始日時":"2025-02-01 08:30:00","処理完了日時":null,"処理ステータス":"部分完了","摘要":"検証処理は正常に完了しました。請求集計処理において、顧客ID:cust-8847の複数サービス間での料金重複計算エラーが検出されたため、処理を中断しました。該当顧客データの修正後、再実行が必要です。","作成日時":"2025-02-01 08:30:00","更新日時":"2025-02-01 11:15:30","作成者":"rec-user-0521","更新者":"rec-user-0521"},{"月次サマリーID":"rec-20250201-001","対象年月":"2025-02","営業データ件数":487250,"検証実行件数":1945000,"検証エラー件数":156800,"検証エラー率":"8.06%","データ品質スコア":78,"請求対象顧客数":3420,"請求対象サービス数":8750,"請求集計総額":45680000,"請求集計ステータス":"完了","処理開始日時":"2025-02-01 00:15:00","処理完了日時":"2025-02-01 08:42:30","処理ステータス":"部分完了","摘要":"月初大量取込により検証ルール適用件数が通常の2.8倍に増加。検証エラー率が平均6.2%から8.06%に上昇。請求集計は正常完了したが、データ品質改善対応が必要。詳細は品質管理部門に報告済み。","作成日時":"2025-02-01 00:15:00","更新日時":"2025-02-01 08:42:30","作成者":"rec-user-0847","更新者":"rec-user-0847"},{"月次サマリーID":"rec-20250201-001","対象年月":"2025-01","営業データ件数":15847,"検証実行件数":15847,"検証エラー件数":1203,"検証エラー率":"7.59%","データ品質スコア":68,"請求対象顧客数":342,"請求対象サービス数":589,"請求集計総額":28540000,"請求集計ステータス":"エラー","処理開始日時":"2025-02-01 00:15:00","処理完了日時":"2025-02-01 02:47:30","処理ステータス":"失敗","摘要":"データベース接続タイムアウトにより請求集計処理が中断。営業データの検証までは完了したが、請求額集計ロジックでエラーが発生。手動による請求データの再検証と集計が必要。詳細ログはシステム管理者に報告済み。","作成日時":"2025-02-01 00:15:00","更新日時":"2025-02-01 14:30:15","作成者":"rec-user-0847","更新者":"rec-user-0521"},{"月次サマリーID":"rec-202501-0847","対象年月":"2025-01","営業データ件数":18750,"検証実行件数":18750,"検証エラー件数":892,"検証エラー率":"4.75%","データ品質スコア":85,"請求対象顧客数":342,"請求対象サービス数":1205,"請求集計総額":47850000,"請求集計ステータス":"完了","処理開始日時":"2025-02-01 08:30:00","処理完了日時":"2025-02-01 14:22:15","処理ステータス":"完了","摘要":"新規顧客45社が1月に追加され、請求対象顧客数が前月比15%増加。請求対象サービス数も1205件と大幅増。データ品質スコアは良好範囲内だが、新規顧客データの一部に住所表記ゆれによる検証エラー892件を検出。請求集計総額は前月比23%増の47,850,000円。","作成日時":"2025-02-01 08:30:00","更新日時":"2025-02-01 14:22:15","作成者":"rec-user-0521","更新者":"rec-user-0521"},{"月次サマリーID":"rec-001-2025-02-ms","対象年月":"2025-02","営業データ件数":15847,"検証実行件数":15847,"検証エラー件数":287,"検証エラー率":"1.81%","データ品質スコア":94,"請求対象顧客数":523,"請求対象サービス数":1847,"請求集計総額":28650000,"請求集計ステータス":"完了","処理開始日時":"2025-03-01 00:15:00","処理完了日時":"2025-03-01 02:47:30","処理ステータス":"完了","摘要":"前月比でエラー率が3.42%から1.81%に低下。データ品質スコアが87から94に向上。2月実施の顧客マスタ統一化及び営業プロセス改善の効果が確認された。請求集計は正常に完了。","作成日時":"2025-03-01 02:47:30","更新日時":"2025-03-01 09:30:15","作成者":"rec-usr-0847","更新者":"rec-usr-0847"},{"月次サマリーID":"rec-20250156","対象年月":"2024-11","営業データ件数":2847,"検証実行件数":2847,"検証エラー件数":89,"検証エラー率":"3.13%","データ品質スコア":78,"請求対象顧客数":342,"請求対象サービス数":1156,"請求集計総額":45820000,"請求集計ステータス":"完了","処理開始日時":"2024-12-01T08:30:00","処理完了日時":"2024-12-01T14:22:00","処理ステータス":"部分完了","摘要":"請求集計は正常に完了しましたが、12月5日の追加検証で消費税計算エラー（89件）が後発的に検出されました。対象レコードは既に請求済みのため、修正請求書の発行が必要です。詳細は別途確認してください。","作成日時":"2024-12-01T08:30:00","更新日時":"2024-12-05T16:45:00","作成者":"rec-user-0847","更新者":"rec-user-0923"},{"月次サマリーID":"rec-20250215-001","対象年月":"2025-01","営業データ件数":12847,"検証実行件数":12847,"検証エラー件数":687,"検証エラー率":"5.34%","データ品質スコア":84,"請求対象顧客数":523,"請求対象サービス数":1847,"請求集計総額":47850000,"請求集計ステータス":"完了","処理開始日時":"2025-02-01 18:30:00","処理完了日時":"2025-02-05 14:22:00","処理ステータス":"完了","摘要":"月末駆け込み営業データ3,200件が2/1朝に追加入力され、処理延長。顧客マスタ不一致エラー687件は営業部と協調し修正完了。最終的にデータ品質スコア84で請求処理に進行。","作成日時":"2025-02-01 18:30:00","更新日時":"2025-02-05 14:22:00","作成者":"rec-user-0847","更新者":"rec-user-0847"},{"月次サマリーID":"rec-20250115-0847","対象年月":"2025-01","営業データ件数":2847,"検証実行件数":2847,"検証エラー件数":156,"検証エラー率":"5.48%","データ品質スコア":82,"請求対象顧客数":423,"請求対象サービス数":1056,"請求集計総額":47850000,"請求集計ステータス":"完了","処理開始日時":"2025-02-01 00:30:00","処理完了日時":"2025-02-01 08:45:00","処理ステータス":"部分完了","摘要":"前月繰越案件87件を含む複雑な請求集計。うち前月未確定分18件は別途調整予定。検証エラーの大部分は請求金額の端数処理（156件中142件）で、ビジネスロジック上の問題なし。請求集計総額は繰越分を含めた確定額。","作成日時":"2025-02-01 00:30:00","更新日時":"2025-02-01 08:45:00","作成者":"rec-user-0512","更新者":"rec-user-0512"}],"データ品質通知":[{"通知ID":"rec-001","検証エラーID":"rec-002","通知対象ユーザーID":"rec-003","通知ステータス":"対応中","通知タイプ":"エラー","通知メッセージ":"売上計上日(2024-11-15)が請求日(2024-11-20)より前になっています。営業案件ID:SLS-2024-001156の時系列エラーをご確認ください。","優先度":"高","初回通知日時":"2024-11-21 09:30:00","既読日時":"2024-11-21 10:15:00","対応完了日時":null,"対応コメント":"営業部の鈴木から確認。顧客の支払条件変更により意図的な日付設定。請求日を2024-11-15に修正予定。","作成日時":"2024-11-21 09:30:00","更新日時":"2024-11-21 14:45:00","作成者":"rec-004"},{"通知ID":"rec-20250115-0847","検証エラーID":"rec-20250115-0846","通知対象ユーザーID":"rec-user-0234","通知ステータス":"対応中","通知タイプ":"警告","通知メッセージ":"顧客マスタに登録漏れがあるため、請求書生成処理が失敗しました。顧客ID:CUST-2024-1847（株式会社ビジネスパートナー）の請求先住所が未登録です。至急修正してください。","優先度":"高","初回通知日時":"2025-01-15 08:47:32","既読日時":"2025-01-15 09:12:15","対応完了日時":null,"対応コメント":"顧客マスタを確認中。住所情報を営業部に照会済み。本日中に修正予定。","作成日時":"2025-01-15 08:47:32","更新日時":"2025-01-15 10:23:48","作成者":"rec-system-0001"},{"通知ID":"rec-20250115-001","検証エラーID":"rec-20250115-err-042","通知対象ユーザーID":"rec-user-billing-001","通知ステータス":"対応中","通知タイプ":"エラー","通知メッセージ":"顧客ID:C-2024-0087(株式会社テクノロジー)に対して2025年1月15日に同一内容の請求書2件が検出されました。請求金額:¥850,000、請求日:2025-01-14。重複請求の可能性があります。早急な確認と対応をお願いします。","優先度":"高","初回通知日時":"2025-01-15T09:47:32Z","既読日時":"2025-01-15T09:52:18Z","対応完了日時":null,"対応コメント":"確認中です。請求書番号INV-2025-0156とINV-2025-0157について、発行元システムの確認を進めています。本日中に原因特定予定。","作成日時":"2025-01-15T09:47:32Z","更新日時":"2025-01-15T10:15:45Z","作成者":"rec-system-validation-001"},{"通知ID":"rec-001","検証エラーID":"rec-002","通知対象ユーザーID":"rec-003","通知ステータス":"対応中","通知タイプ":"エラー","通知メッセージ":"案件『A社システム構築プロジェクト』の受注金額が予算上限を超過しました。受注金額: 15,800,000円、予算上限: 15,000,000円、超過額: 800,000円。早急な対応をお願いします。","優先度":"高","初回通知日時":"2025-01-15 09:30:00","既読日時":"2025-01-15 09:45:00","対応完了日時":null,"対応コメント":"営業担当者（山田花子）に確認中。クライアント側の追加要件による増額のため、契約書修正手続きを進めています。","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 10:15:00","作成者":"rec-004"},{"通知ID":"rec-001","検証エラーID":"rec-002","通知対象ユーザーID":"rec-003","通知ステータス":"対応中","通知タイプ":"エラー","通知メッセージ":"請求先メールアドレス『tanaka-company@example』が無効形式のため、請求書の自動送信に失敗しました。アドレスの修正をお願いします。","優先度":"高","初回通知日時":"2024-11-15 09:30:00","既読日時":"2024-11-15 09:45:00","対応完了日時":null,"対応コメント":"顧客に確認中。正しいメールアドレスは tanaka-company@example.co.jp の予定","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 10:20:00","作成者":"rec-004"},{"通知ID":"rec-20250115-001","検証エラーID":"rec-20250115-err-042","通知対象ユーザーID":"rec-user-005","通知ステータス":"対応中","通知タイプ":"警告","通知メッセージ":"売掛金回収期限超過の顧客が3件検出されました。株式会社山田製造所（回収期限超過日数：45日）、有限会社鈴木商事（回収期限超過日数：28日）、株式会社佐藤工業（回収期限超過日数：12日）。至急対応をお願いします。","優先度":"高","初回通知日時":"2025-01-15 09:30:00","既読日時":"2025-01-15 10:15:00","対応完了日時":null,"対応コメント":"山田製造所に電話連絡済み。支払予定日は1月20日との確認。鈴木商事には督促状を発送予定。","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 14:45:00","作成者":"rec-system-001"},{"通知ID":"rec-20250115-001","検証エラーID":"rec-20250115-err-042","通知対象ユーザーID":"rec-user-0847","通知ステータス":"対応中","通知タイプ":"警告","通知メッセージ":"契約ID:CTR-2024-0156（顧客:株式会社山田商事）の契約期間が2025年3月31日で満了となります。更新手続きは2025年2月末までに完了してください。","優先度":"高","初回通知日時":"2025-01-15 09:30:00","既読日時":"2025-01-15 10:15:00","対応完了日時":null,"対応コメント":"顧客に連絡済み。更新条件の見積書を1月20日までに提出予定。","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 14:22:00","作成者":"rec-system-auto"},{"通知ID":"rec-001","検証エラーID":"rec-102","通知対象ユーザーID":"rec-2024-001","通知ステータス":"対応中","通知タイプ":"エラー","通知メッセージ":"2024年11月15日のデータインポート処理で、売上伝票ID SL-20241115-0847 の通貨コード 'JPY2' が不正な形式で検出されました。正規の通貨コードに修正してください。","優先度":"高","初回通知日時":"2024-11-15T14:32:00+09:00","既読日時":"2024-11-15T14:35:00+09:00","対応完了日時":null,"対応コメント":"確認中です。ソースシステムの設定を確認しております。","作成日時":"2024-11-15T14:32:00+09:00","更新日時":"2024-11-15T15:20:00+09:00","作成者":"rec-system-001"},{"通知ID":"rec-001","検証エラーID":"rec-102","通知対象ユーザーID":"rec-usr-045","通知ステータス":"対応中","通知タイプ":"エラー","通知メッセージ":"2024年11月分請求明細において、消費税計算に誤差が検出されました。対象請求書：INV-2024-11-0847、計上税額と実計算値の差異：¥2,340。検証と対応をお願いします。","優先度":"高","初回通知日時":"2024-12-02 09:15:00","既読日時":"2024-12-02 09:47:00","対応完了日時":null,"対応コメント":"請求書を確認中。消費税率の適用誤りが原因と判明。修正請求書を12月3日に発行予定です。","作成日時":"2024-12-02 09:15:00","更新日時":"2024-12-02 14:22:00","作成者":"rec-sys-001"},{"通知ID":"rec-001","検証エラーID":"rec-102","通知対象ユーザーID":"rec-5847","通知ステータス":"対応中","通知タイプ":"警告","通知メッセージ":"顧客ID「C-20250115-0847」の案件について、必須項目「納期」と「見積金額」が未記入です。本日中に入力してください。","優先度":"高","初回通知日時":"2025-01-15 09:30:00","既読日時":"2025-01-15 10:12:00","対応完了日時":null,"対応コメント":"納期は2月28日、見積金額は850,000円で入力予定です。本日中に完了します。","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 14:45:00","作成者":"rec-9001"}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1782622644702";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  // State management\n  let currentData = [];\n  let filteredData = [];\n  let baseAmount = 0;\n  let discountRate = 0;\n  let discountAmount = 0;\n  let finalAmount = 0;\n  let taxAmount = 0;\n\n  // Mock discount rules\n  const discountRules = [\n    { id: 'rule-001', name: '新規顧客割引', rate: 10 },\n    { id: 'rule-002', name: '大口割引', rate: 5 },\n    { id: 'rule-003', name: '長期契約割引', rate: 8 }\n  ];\n\n  // Initialize\n  async function init() {\n    // Load sales data\n    const salesData = await window.aivicApi.list(0);\n    if (salesData) {\n      currentData = salesData.map(row => ({\n        id: row.id,\n        customerName: row.顧客名 || row.customer_name || 'N/A',\n        customerId: row.顧客ID || row.customer_id || '',\n        serviceName: row.商品名 || row.product_name || 'N/A',\n        serviceId: row.service_id || '',\n        quantity: row.数量 || row.quantity || 0,\n        amount: row.売上金額 || row.sales_amount || 0,\n        billingStatus: row.請求状態 || row.billing_status || '未請求'\n      }));\n    }\n\n    // Populate discount rules\n    const rulesList = container.querySelector('#discount-rules-list');\n    discountRules.forEach(rule => {\n      const ruleEl = document.createElement('div');\n      ruleEl.style.cssText = 'padding: 6px 8px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; transition: all 150ms; font-size: 11px; color: var(--text);';\n      ruleEl.innerHTML = `<strong>${rule.name}</strong><br><span style=\"color: var(--text-muted);\">${rule.rate}% 割引</span>`;\n      ruleEl.addEventListener('click', () => {\n        container.querySelector('#discount-rate').value = rule.rate;\n        updateCalculation();\n      });\n      ruleEl.addEventListener('mouseover', () => {\n        ruleEl.style.background = 'var(--bg-card)';\n        ruleEl.style.borderColor = 'var(--primary)';\n      });\n      ruleEl.addEventListener('mouseout', () => {\n        ruleEl.style.background = 'var(--bg-main)';\n        ruleEl.style.borderColor = 'var(--border)';\n      });\n      rulesList.appendChild(ruleEl);\n    });\n\n    // Set default date range (current month)\n    const now = new Date();\n    const startMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;\n    container.querySelector('#billing-start').value = startMonth;\n    container.querySelector('#billing-end').value = startMonth;\n\n    // Event listeners\n    container.querySelector('#apply-filter-btn').addEventListener('click', applyFilter);\n    container.querySelector('#apply-discount-btn').addEventListener('click', applyDiscount);\n    container.querySelector('#confirm-btn').addEventListener('click', showConfirmModal);\n    container.querySelector('#reset-btn').addEventListener('click', resetForm);\n    container.querySelector('#confirm-ok-btn').addEventListener('click', confirmBilling);\n    container.querySelector('#confirm-cancel-btn').addEventListener('click', closeConfirmModal);\n\n    // Initial calculation\n    updateCalculation();\n  }\n\n  function applyFilter() {\n    const customerFilter = container.querySelector('#customer-filter').value;\n    const serviceFilter = container.querySelector('#service-filter').value;\n\n    filteredData = currentData.filter(row => {\n      const matchCustomer = !customerFilter || row.customerId === customerFilter;\n      const matchService = !serviceFilter || row.serviceId === serviceFilter;\n      return matchCustomer && matchService && row.billingStatus === '未請求';\n    });\n\n    renderPreviewTable();\n    updateCalculation();\n  }\n\n  function renderPreviewTable() {\n    const tbody = container.querySelector('#preview-tbody');\n    tbody.innerHTML = '';\n\n    if (filteredData.length === 0) {\n      tbody.innerHTML = '<tr style=\"border-bottom: 1px solid var(--border);\"><td colspan=\"4\" style=\"padding: 12px; text-align: center; color: var(--text-muted); font-size: 11px;\">該当データなし</td></tr>';\n      return;\n    }\n\n    filteredData.forEach(row => {\n      const tr = document.createElement('tr');\n      tr.style.cssText = 'border-bottom: 1px solid var(--border);';\n      tr.innerHTML = `\n        <td style=\"padding: 6px 8px; color: var(--text); border-right: 1px solid var(--border);\">${row.customerName}</td>\n        <td style=\"padding: 6px 8px; color: var(--text); border-right: 1px solid var(--border);\">${row.serviceName}</td>\n        <td style=\"padding: 6px 8px; text-align: right; color: var(--text); border-right: 1px solid var(--border);\">${row.quantity}</td>\n        <td style=\"padding: 6px 8px; text-align: right; color: var(--text);\">¥${row.amount.toLocaleString()}</td>\n      `;\n      tbody.appendChild(tr);\n    });\n  }\n\n  function updateCalculation() {\n    // Calculate base amount\n    baseAmount = filteredData.reduce((sum, row) => sum + row.amount, 0);\n\n    // Get discount inputs\n    const rateInput = parseFloat(container.querySelector('#discount-rate').value) || 0;\n    const amountInput = parseInt(container.querySelector('#discount-amount').value) || 0;\n\n    // Calculate discount\n    discountRate = rateInput;\n    const rateDiscount = Math.round(baseAmount * (discountRate / 100));\n    discountAmount = Math.max(rateDiscount, amountInput);\n\n    // Calculate final amount\n    const discountedAmount = Math.max(0, baseAmount - discountAmount);\n    taxAmount = Math.round(discountedAmount * 0.1);\n    finalAmount = discountedAmount + taxAmount;\n\n    // Update display\n    container.querySelector('#base-amount').textContent = `¥${baseAmount.toLocaleString()}`;\n    container.querySelector('#discount-display').textContent = `¥${discountAmount.toLocaleString()}`;\n    container.querySelector('#final-amount').textContent = `¥${finalAmount.toLocaleString()}`;\n    container.querySelector('#tax-amount').textContent = `¥${taxAmount.toLocaleString()}`;\n\n    // Update customer billing table\n    renderCustomerBillingTable();\n\n    // Update service billing table\n    renderServiceBillingTable();\n  }\n\n  function renderCustomerBillingTable() {\n    const tbody = container.querySelector('#customer-billing-tbody');\n    tbody.innerHTML = '';\n\n    const customerMap = {};\n    filteredData.forEach(row => {\n      if (!customerMap[row.customerId]) {\n        customerMap[row.customerId] = { name: row.customerName, amount: 0 };\n      }\n      customerMap[row.customerId].amount += row.amount;\n    });\n\n    Object.values(customerMap).forEach(customer => {\n      const discountRatio = baseAmount > 0 ? discountAmount / baseAmount : 0;\n      const customerDiscount = Math.round(customer.amount * discountRatio);\n      const customerFinal = customer.amount - customerDiscount;\n\n      const tr = document.createElement('tr');\n      tr.style.cssText = 'border-bottom: 1px solid var(--border);';\n      tr.innerHTML = `\n        <td style=\"padding: 4px 6px; color: var(--text);\">${customer.name}</td>\n        <td style=\"padding: 4px 6px; text-align: right; color: var(--primary); font-weight: 600;\">¥${customerFinal.toLocaleString()}</td>\n      `;\n      tbody.appendChild(tr);\n    });\n  }\n\n  function renderServiceBillingTable() {\n    const tbody = container.querySelector('#service-billing-tbody');\n    tbody.innerHTML = '';\n\n    const serviceMap = {};\n    filteredData.forEach(row => {\n      if (!serviceMap[row.serviceId]) {\n        serviceMap[row.serviceId] = { name: row.serviceName, amount: 0 };\n      }\n      serviceMap[row.serviceId].amount += row.amount;\n    });\n\n    Object.values(serviceMap).forEach(service => {\n      const discountRatio = baseAmount > 0 ? discountAmount / baseAmount : 0;\n      const serviceDiscount = Math.round(service.amount * discountRatio);\n      const serviceFinal = service.amount - serviceDiscount;\n\n      const tr = document.createElement('tr');\n      tr.style.cssText = 'border-bottom: 1px solid var(--border);';\n      tr.innerHTML = `\n        <td style=\"padding: 4px 6px; color: var(--text);\">${service.name}</td>\n        <td style=\"padding: 4px 6px; text-align: right; color: var(--primary); font-weight: 600;\">¥${serviceFinal.toLocaleString()}</td>\n      `;\n      tbody.appendChild(tr);\n    });\n  }\n\n  function applyDiscount() {\n    updateCalculation();\n  }\n\n  function showConfirmModal() {\n    const modal = container.querySelector('#confirm-modal');\n    container.querySelector('#confirm-base').textContent = `¥${baseAmount.toLocaleString()}`;\n    container.querySelector('#confirm-discount').textContent = `¥${discountAmount.toLocaleString()}`;\n    container.querySelector('#confirm-final').textContent = `¥${finalAmount.toLocaleString()}`;\n    modal.style.display = 'flex';\n  }\n\n  function closeConfirmModal() {\n    const modal = container.querySelector('#confirm-modal');\n    modal.style.display = 'none';\n  }\n\n  async function confirmBilling() {\n    // Save billing aggregation\n    const billingData = {\n      billing_period_start: container.querySelector('#billing-start').value,\n      billing_period_end: container.querySelector('#billing-end').value,\n      base_amount: baseAmount,\n      discount_rate: discountRate,\n      discount_amount: discountAmount,\n      final_amount: finalAmount,\n      tax_amount: taxAmount,\n      status: '確定',\n      created_at: new Date().toISOString()\n    };\n\n    const saved = await window.aivicApi.save(1, billingData);\n    if (saved) {\n      alert('請求額が確定されました');\n      closeConfirmModal();\n      resetForm();\n    }\n  }\n\n  function resetForm() {\n    container.querySelector('#customer-filter').value = '';\n    container.querySelector('#service-filter').value = '';\n    container.querySelector('#discount-rate').value = '';\n    container.querySelector('#discount-amount').value = '';\n    filteredData = [];\n    baseAmount = 0;\n    discountAmount = 0;\n    finalAmount = 0;\n    updateCalculation();\n    renderPreviewTable();\n  }\n\n  // Initialize on load\n  init();\n}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav style="display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg,var(--bg-sidebar,#0e1a31));border-bottom:1px solid var(--top-bar-border,var(--border,#2a3a5d));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--text,#e8eefc);white-space:nowrap;">匠の案件管理</span><a href="./scr-1782622835730.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">営業成果レポート自動生成・配信システム</a><a href="./scr-1782623175064.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">契約・提案資料管理システム</a><a href="./scr-1782623533329.html" data-aivic-nav-system="itg-4" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">顧客企業向け契約・成果管理ポータル</a><a href="./scr-1782623848853.html" data-aivic-nav-system="itg-5" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">契約変更・請求検証管理システム</a><a href="./scr-1782622299760.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:1;border-bottom:2px solid var(--primary,#2b66ff);font-weight:600;">営業データ品質管理・請求自動化システム</a></nav>
+  <div class="top-bar">
+    <div class="logo-section">
+      <div class="logo-icon">匠</div>
+      <div class="logo-text">
+        <div class="brand">匠の案件管理</div>
+        <div class="system">営業データ品質管理・請求自動化</div>
+      </div>
+    </div>
+    <div class="top-bar-actions">
+      <div class="user-menu">
+        <div class="user-avatar">U</div>
+        <span style="font-size: 12px;">ユーザー</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">📊 ダッシュボード</div>
+        <div class="nav-item aivic-active" data-aivic-nav="scr-1782622299760" onclick="window.showScreen('scr-1782622299760')">
+          <span class="nav-icon">✓</span>
+          <span>営業データ検証・異常検出</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622312596" onclick="window.showScreen('scr-1782622312596')">
+          <span class="nav-icon">💰</span>
+          <span>請求額集計・確認</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">⚙️ 設定・マスタ</div>
+        <div class="nav-item" data-aivic-nav="scr-1782622325321" onclick="window.showScreen('scr-1782622325321')">
+          <span class="nav-icon">📋</span>
+          <span>データ項目メタデータ</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622340604" onclick="window.showScreen('scr-1782622340604')">
+          <span class="nav-icon">📄</span>
+          <span>月次サマリーテンプレート</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622353937" onclick="window.showScreen('scr-1782622353937')">
+          <span class="nav-icon">🔍</span>
+          <span>検証ルール定義・実行</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622562418" onclick="window.showScreen('scr-1782622562418')">
+          <span class="nav-icon">💳</span>
+          <span>請求ロジック・割引基準</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">🔔 通知・確認</div>
+        <div class="nav-item" data-aivic-nav="scr-1782622369261" onclick="window.showScreen('scr-1782622369261')">
+          <span class="nav-icon">📬</span>
+          <span>データ品質通知・確認</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">📥 入力・検索</div>
+        <div class="nav-item" data-aivic-nav="scr-1782622448575" onclick="window.showScreen('scr-1782622448575')">
+          <span class="nav-icon">✏️</span>
+          <span>営業データ入力画面</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622601821" onclick="window.showScreen('scr-1782622601821')">
+          <span class="nav-icon">🔎</span>
+          <span>営業データ検索・照会</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">🔄 処理・自動化</div>
+        <div class="nav-item" data-aivic-nav="scr-1782622382318" onclick="window.showScreen('scr-1782622382318')">
+          <span class="nav-icon">⚡</span>
+          <span>品質検証処理</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622396273" onclick="window.showScreen('scr-1782622396273')">
+          <span class="nav-icon">📊</span>
+          <span>請求対象項目抽出</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622409415" onclick="window.showScreen('scr-1782622409415')">
+          <span class="nav-icon">🧮</span>
+          <span>請求額自動計算</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622505751" onclick="window.showScreen('scr-1782622505751')">
+          <span class="nav-icon">🚀</span>
+          <span>請求自動化処理</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622549499" onclick="window.showScreen('scr-1782622549499')">
+          <span class="nav-icon">📮</span>
+          <span>請求書生成・配信</span>
+        </div>
+        <div class="nav-item" data-aivic-nav="scr-1782622660642" onclick="window.showScreen('scr-1782622660642')">
+          <span class="nav-icon">🔗</span>
+          <span>会計システム連携</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">📈 分析・レポート</div>
+        <div class="nav-item" data-aivic-nav="scr-1782622575438" onclick="window.showScreen('scr-1782622575438')">
+          <span class="nav-icon">📑</span>
+          <span>請求書作成画面</span>
+        </div>
+      </div>
+    </div>
+
+    <main class="content-area">
+      <div data-aivic-panel="scr-1782622299760" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622312596" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622325321" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622340604" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622353937" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622369261" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622382318" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622396273" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622409415" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622423265" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622436178" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622448575" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622461982" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622477456" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622491540" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622505751" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622520108" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622536600" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622549499" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622562418" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622575438" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622588711" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622601821" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622618090" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622631379" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622644702" style="display:block"><div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-main); color: var(--text);">
+  <!-- Header with breadcrumb -->
+  <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-card);">
+    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+      匠の案件管理 / 営業データ品質管理・請求自動化システム / 請求額計算・割引適用処理
+    </div>
+    <h1 style="font-size: 20px; font-weight: 600; margin: 0; color: var(--text);">請求額計算・割引適用処理</h1>
+  </div>
+
+  <!-- Main content area -->
+  <div style="display: flex; flex: 1; overflow: hidden; gap: 12px; padding: 12px;">
+    
+    <!-- Left Panel: Filters & Discount Rules -->
+    <div style="width: 280px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+      
+      <div>
+        <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">請求期間</label>
+        <div style="display: flex; gap: 6px;">
+          <input type="month" id="billing-start" data-testid="billing-start" style="flex: 1; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--bg-main); color: var(--text); border-radius: 4px; font-size: 12px;" />
+          <span style="color: var(--text-muted); padding: 6px 0;">〜</span>
+          <input type="month" id="billing-end" data-testid="billing-end" style="flex: 1; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--bg-main); color: var(--text); border-radius: 4px; font-size: 12px;" />
+        </div>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">顧客フィルター</label>
+        <select id="customer-filter" data-testid="customer-filter" style="width: 100%; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--bg-main); color: var(--text); border-radius: 4px; font-size: 12px;">
+          <option value="">全顧客</option>
+          <option value="cust-001">顧客A</option>
+          <option value="cust-002">顧客B</option>
+          <option value="cust-003">顧客C</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">サービスフィルター</label>
+        <select id="service-filter" data-testid="service-filter" style="width: 100%; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--bg-main); color: var(--text); border-radius: 4px; font-size: 12px;">
+          <option value="">全サービス</option>
+          <option value="svc-001">データ品質検証</option>
+          <option value="svc-002">請求自動化</option>
+          <option value="svc-003">監査ログ管理</option>
+        </select>
+      </div>
+
+      <button id="apply-filter-btn" data-testid="apply-filter-btn" style="padding: 8px 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 150ms;">
+        フィルター適用
+      </button>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 8px 0;" />
+
+      <div>
+        <h3 style="font-size: 12px; font-weight: 600; color: var(--text); margin: 0 0 8px 0;">適用可能割引ルール</h3>
+        <div id="discount-rules-list" style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 8px 0;" />
+
+      <div>
+        <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">割引率 (%)</label>
+        <input type="number" id="discount-rate" data-testid="discount-rate" min="0" max="100" step="0.1" style="width: 100%; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--bg-main); color: var(--text); border-radius: 4px; font-size: 12px;" placeholder="0.0" />
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">割引額 (円)</label>
+        <input type="number" id="discount-amount" data-testid="discount-amount" min="0" step="1" style="width: 100%; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--bg-main); color: var(--text); border-radius: 4px; font-size: 12px;" placeholder="0" />
+      </div>
+
+      <button id="apply-discount-btn" data-testid="apply-discount-btn" style="padding: 8px 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 150ms;">
+        割引を適用
+      </button>
+
+    </div>
+
+    <!-- Center Panel: Preview & Summary -->
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; overflow: hidden;">
+      
+      <!-- Preview Table -->
+      <div style="flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <h3 style="font-size: 12px; font-weight: 600; color: var(--text); margin: 0 0 8px 0;">請求対象データプレビュー</h3>
+        <div style="flex: 1; overflow-y: auto;">
+          <table data-testid="preview-table" style="width: 100%; border-collapse: collapse; font-size: 11px;">
+            <thead>
+              <tr style="background: var(--bg-main); border-bottom: 1px solid var(--border);">
+                <th style="padding: 6px 8px; text-align: left; color: var(--text); font-weight: 600; border-right: 1px solid var(--border);">顧客名</th>
+                <th style="padding: 6px 8px; text-align: left; color: var(--text); font-weight: 600; border-right: 1px solid var(--border);">サービス</th>
+                <th style="padding: 6px 8px; text-align: right; color: var(--text); font-weight: 600; border-right: 1px solid var(--border);">数量</th>
+                <th style="padding: 6px 8px; text-align: right; color: var(--text); font-weight: 600;">金額</th>
+              </tr>
+            </thead>
+            <tbody id="preview-tbody">
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td colspan="4" style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 11px;">フィルター適用後のデータが表示されます</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">基本請求額（税抜）</div>
+          <div id="base-amount" data-testid="base-amount" style="font-size: 18px; font-weight: 700; color: var(--primary);">¥0</div>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 12px;">
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">割引額</div>
+          <div id="discount-display" data-testid="discount-display" style="font-size: 18px; font-weight: 700; color: var(--accent);">¥0</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Panel: Final Amount & Tables -->
+    <div style="width: 320px; display: flex; flex-direction: column; gap: 12px; overflow: hidden;">
+      
+      <!-- Final Amount Card -->
+      <div style="background: var(--bg-card); border: 2px solid var(--primary); border-radius: 6px; padding: 12px;">
+        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">割引後請求額（税込）</div>
+        <div id="final-amount" data-testid="final-amount" style="font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">¥0</div>
+        <div style="font-size: 10px; color: var(--text-muted);">
+          <div>税額: <span id="tax-amount" style="color: var(--text);">¥0</span></div>
+        </div>
+      </div>
+
+      <!-- Customer Billing Table -->
+      <div style="flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <h3 style="font-size: 12px; font-weight: 600; color: var(--text); margin: 0 0 8px 0;">顧客別請求額</h3>
+        <div style="flex: 1; overflow-y: auto;">
+          <table data-testid="customer-billing-table" style="width: 100%; border-collapse: collapse; font-size: 10px;">
+            <thead>
+              <tr style="background: var(--bg-main); border-bottom: 1px solid var(--border);">
+                <th style="padding: 4px 6px; text-align: left; color: var(--text); font-weight: 600;">顧客</th>
+                <th style="padding: 4px 6px; text-align: right; color: var(--text); font-weight: 600;">請求額</th>
+              </tr>
+            </thead>
+            <tbody id="customer-billing-tbody">
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td colspan="2" style="padding: 8px; text-align: center; color: var(--text-muted); font-size: 10px;">データなし</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Service Billing Table -->
+      <div style="flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <h3 style="font-size: 12px; font-weight: 600; color: var(--text); margin: 0 0 8px 0;">サービス別請求額</h3>
+        <div style="flex: 1; overflow-y: auto;">
+          <table data-testid="service-billing-table" style="width: 100%; border-collapse: collapse; font-size: 10px;">
+            <thead>
+              <tr style="background: var(--bg-main); border-bottom: 1px solid var(--border);">
+                <th style="padding: 4px 6px; text-align: left; color: var(--text); font-weight: 600;">サービス</th>
+                <th style="padding: 4px 6px; text-align: right; color: var(--text); font-weight: 600;">請求額</th>
+              </tr>
+            </thead>
+            <tbody id="service-billing-tbody">
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td colspan="2" style="padding: 8px; text-align: center; color: var(--text-muted); font-size: 10px;">データなし</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 8px;">
+        <button id="confirm-btn" data-testid="confirm-btn" style="flex: 1; padding: 8px 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 150ms;">
+          確定
+        </button>
+        <button id="reset-btn" data-testid="reset-btn" style="flex: 1; padding: 8px 12px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 150ms;">
+          リセット
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirm-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.55); display: flex; align-items: center; justify-content: center;">
+  <div style="background: var(--bg-card); color: var(--text); padding: 24px; border-radius: 8px; max-width: 400px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+    <h2 style="font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">請求額を確定しますか？</h2>
+    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+      <div style="margin-bottom: 8px;">基本請求額: <span id="confirm-base" style="color: var(--text); font-weight: 600;">¥0</span></div>
+      <div style="margin-bottom: 8px;">割引額: <span id="confirm-discount" style="color: var(--text); font-weight: 600;">¥0</span></div>
+      <div style="border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px;">
+        最終請求額（税込）: <span id="confirm-final" style="color: var(--primary); font-weight: 700; font-size: 14px;">¥0</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button id="confirm-ok-btn" data-testid="confirm-ok-btn" style="flex: 1; padding: 8px 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">
+        確定
+      </button>
+      <button id="confirm-cancel-btn" data-testid="confirm-cancel-btn" style="flex: 1; padding: 8px 12px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">
+        キャンセル
+      </button>
+    </div>
+  </div>
+</div></div>
+      <div data-aivic-panel="scr-1782622660642" style="display:none"></div>
+      <div data-aivic-panel="scr-1782622673624" style="display:none"></div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>© 2024 匠の案件管理 - 営業データ品質管理・請求自動化システム</span>
+  </div>
+
+  
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>

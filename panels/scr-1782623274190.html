@@ -1,0 +1,1242 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>契約・提案資料管理システム</title>
+  <style>
+:root {
+  --primary: #d4af37;
+  --primary-hover: #c9a23e;
+  --bg-main: #0f0f0f;
+  --bg-card: #1a1a1a;
+  --bg-sidebar: #141414;
+  --top-bar-bg: #1f1f1f;
+  --border: #3a3a3a;
+  --text: #f0f0f0;
+  --text-muted: #a8a8a8;
+  --top-bar-border: #2a2a2a;
+  --success: #4caf50;
+  --warning: #ff9800;
+  --error: #f44336;
+  --info: #2196f3;
+  --gold-light: #e6c200;
+  --gold-dark: #b8860b;
+  --silver: #c0c0c0;
+  --silver-dark: #808080;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-main);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  background: var(--top-bar-bg);
+  border-bottom: 1px solid var(--top-bar-border);
+  padding: 0 20px;
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, var(--primary), var(--gold-dark));
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--bg-main);
+  font-weight: 700;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-menu:hover {
+  background: var(--border);
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bg-main);
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-section:last-child {
+  border-bottom: none;
+}
+
+.sidebar-label {
+  padding: 0 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  margin: 0 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover {
+  background: var(--bg-card);
+  color: var(--text);
+}
+
+.nav-item.aivic-active {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--primary);
+  border-left-color: var(--primary);
+}
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+[data-aivic-panel] {
+  width: 100%;
+  height: 100%;
+}
+
+.page-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-main);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.page-content {
+  padding: 20px 28px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.kpi-change {
+  font-size: 12px;
+  color: var(--success);
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead {
+  background: var(--bg-main);
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+tbody tr:hover {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.status-active {
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--success);
+}
+
+.status-draft {
+  background: rgba(255, 152, 0, 0.15);
+  color: var(--warning);
+}
+
+.status-archived {
+  background: rgba(168, 168, 168, 0.15);
+  color: var(--text-muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--bg-main);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: 100%;
+}
+
+.split-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.split-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-main);
+}
+
+.split-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.diff-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px 28px;
+}
+
+.diff-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.diff-header {
+  padding: 12px 16px;
+  background: var(--bg-main);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.diff-content {
+  padding: 16px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.diff-line {
+  padding: 2px 0;
+  margin: 0;
+}
+
+.diff-added {
+  background: rgba(76, 175, 80, 0.1);
+  color: var(--success);
+}
+
+.diff-removed {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--error);
+}
+
+.stepper {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.step {
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.step:last-child {
+  border-right: none;
+}
+
+.step.active {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.step:hover {
+  background: var(--bg-main);
+}
+
+.version-list {
+  list-style: none;
+}
+
+.version-item {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.version-item:hover {
+  background: var(--bg-main);
+}
+
+.version-item:last-child {
+  border-bottom: none;
+}
+
+.version-info {
+  flex: 1;
+}
+
+.version-number {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.version-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.version-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 4px 8px;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--primary);
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.content-area {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+  </style>
+  
+<script>
+window.AIVIC_API_URL = "https://mkwmoife37uqyv4zhy4yhweozq0oddxn.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-1781935010162";
+window.AIVIC_APPLICATION_NAME = "匠の案件管理";
+window.AIVIC_SYSTEM_NAME = "契約・提案資料管理システム";
+window.AIVIC_TABLES = [{"tableName":"ユーザー","purpose":"営業データ品質管理・請求自動化システムのユーザー管理。ユーザーの認証、権限管理、組織所属、請求情報の関連付けを行う。","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーの一意識別子"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーのメールアドレス（ログイン用、一意）"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ユーザーの表示名"},{"name":"パスワードハッシュ","type":"varchar(100)","required":true,"description":"ハッシュ化されたパスワード"},{"name":"組織ID","type":"uuid","required":true,"description":"所属する組織の識別子"},{"name":"役割","type":"varchar(100)","required":true,"description":"ユーザーの役割（管理者、営業、請求担当者等）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"ユーザーのステータス（有効、無効、保留中）"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"最後にログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザーレコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザーレコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーレコードを作成したユーザーID"}]},{"tableName":"契約書","purpose":"契約・提案資料管理システムにおける契約書の基本情報を管理するマスタテーブル","columns":[{"name":"契約書ID","type":"uuid","required":true,"description":"契約書の一意識別子"},{"name":"契約書名","type":"varchar(100)","required":true,"description":"契約書のタイトル"},{"name":"契約書説明","type":"text","required":false,"description":"契約書の詳細説明"},{"name":"契約種別","type":"varchar(100)","required":true,"description":"契約の種類（例：売買契約、サービス契約、NDA等）"},{"name":"契約相手先ID","type":"uuid","required":true,"description":"契約相手先企業の識別子"},{"name":"契約開始日","type":"timestamp","required":true,"description":"契約の開始日"},{"name":"契約終了日","type":"timestamp","required":false,"description":"契約の終了日"},{"name":"契約金額","type":"integer","required":false,"description":"契約金額（円）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"契約状態（例：草案、承認待ち、有効、終了、キャンセル）"},{"name":"担当者ID","type":"uuid","required":true,"description":"契約の担当ユーザーID"},{"name":"ファイルパス","type":"varchar(100)","required":false,"description":"契約書ファイルの保存パス"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"提案資料","purpose":"契約・提案資料管理システムにおいて、顧客への提案資料の情報を一元管理し、提案から契約への進捗を追跡するためのマスタテーブル","columns":[{"name":"提案資料ID","type":"uuid","required":true,"description":"提案資料の一意識別子"},{"name":"提案資料名","type":"varchar(100)","required":true,"description":"提案資料のタイトル・名称"},{"name":"説明","type":"text","required":false,"description":"提案資料の詳細説明"},{"name":"ユーザーID","type":"uuid","required":true,"description":"提案資料を作成・管理するユーザーの外部キー"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"提案資料のステータス（下書き、提案中、承認待ち、契約済み、却下等）"},{"name":"提案日","type":"timestamp","required":true,"description":"顧客への提案実施日時"},{"name":"契約書ID","type":"uuid","required":false,"description":"関連する契約書の外部キー（契約成立時に設定）"},{"name":"作成日時","type":"timestamp","required":true,"description":"提案資料レコードの作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"提案資料レコードの最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"提案資料を作成したユーザーの外部キー"}]},{"tableName":"契約書バージョン","purpose":"契約書の版管理。同一契約書の複数バージョンを追跡し、変更履歴と承認状況を記録する。","columns":[{"name":"バージョンID","type":"uuid","required":true,"description":"バージョンレコードの一意識別子"},{"name":"契約書ID","type":"uuid","required":true,"description":"親契約書テーブルへの外部キー"},{"name":"バージョン番号","type":"integer","required":true,"description":"同一契約書内での版番号（1, 2, 3...）"},{"name":"ファイルパス","type":"varchar(100)","required":true,"description":"契約書ドキュメントの保存先パスまたはURL"},{"name":"変更内容","type":"text","required":false,"description":"前バージョンからの変更点の説明"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"バージョンの状態（下書き/レビュー中/承認済み/却下等）"},{"name":"作成者ID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー。バージョン作成者"},{"name":"作成日時","type":"timestamp","required":true,"description":"バージョン作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"バージョン最終更新日時"},{"name":"承認者ID","type":"uuid","required":false,"description":"ユーザーテーブルへの外部キー。承認実施者"},{"name":"承認日時","type":"timestamp","required":false,"description":"承認実施日時"}]},{"tableName":"提案資料バージョン","purpose":"提案資料の変更履歴を管理し、各バージョンの内容、ステータス、作成者を追跡する","columns":[{"name":"バージョンID","type":"uuid","required":true,"description":"提案資料バージョンの一意識別子"},{"name":"提案資料ID","type":"uuid","required":true,"description":"親の提案資料を参照する外部キー"},{"name":"バージョン番号","type":"integer","required":true,"description":"提案資料内での連番（1, 2, 3...）"},{"name":"タイトル","type":"varchar(100)","required":true,"description":"このバージョンの提案資料タイトル"},{"name":"内容","type":"text","required":true,"description":"提案資料の本文・詳細内容"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"バージョンのステータス（下書き、承認待ち、承認済み、却下等）"},{"name":"作成者ID","type":"uuid","required":true,"description":"このバージョンを作成したユーザーを参照する外部キー"},{"name":"作成日時","type":"timestamp","required":true,"description":"バージョンの作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"バージョンの最終更新日時"},{"name":"備考","type":"text","required":false,"description":"このバージョンの変更内容や特記事項"}]},{"tableName":"変更履歴","purpose":"契約書と提案資料の変更内容を追跡・監査するための履歴管理テーブル","columns":[{"name":"変更履歴ID","type":"uuid","required":true,"description":"変更履歴レコードの一意識別子"},{"name":"対象テーブル","type":"varchar(100)","required":true,"description":"変更対象のテーブル名（契約書 または 提案資料）"},{"name":"対象ID","type":"uuid","required":true,"description":"変更対象レコードのID（契約書ID または 提案資料ID）"},{"name":"変更種別","type":"varchar(100)","required":true,"description":"変更の種類（作成/更新/削除/ステータス変更 等）"},{"name":"変更フィールド","type":"varchar(100)","required":false,"description":"変更されたフィールド名"},{"name":"変更前値","type":"text","required":false,"description":"変更前の値"},{"name":"変更後値","type":"text","required":false,"description":"変更後の値"},{"name":"変更理由","type":"text","required":false,"description":"変更の理由・備考"},{"name":"作成者ID","type":"uuid","required":true,"description":"変更を実施したユーザーID"},{"name":"作成日時","type":"timestamp","required":true,"description":"変更が記録された日時"}]}];
+window.AIVIC_PRESET_SEED = {"ユーザー":[{"ユーザーID":"rec-001","メールアドレス":"admin@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr","組織ID":"rec-org-001","役割":"システム管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-01T08:00:00Z","更新日時":"2025-01-10T14:20:30Z","作成者":"rec-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890","組織ID":"rec-org-0042","役割":"営業","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00Z","作成日時":"2024-04-10T14:22:15Z","更新日時":"2025-01-15T09:30:00Z","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.yuki@company.jp","ユーザー名":"鈴木由紀","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz123456789","組織ID":"rec-org-0042","役割":"請求担当者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:15:00+09:00","更新日時":"2025-01-10T14:45:00+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"tanaka.taro@company.jp","ユーザー名":"田中太郎","パスワードハッシュ":"$2b$12$8qJ9vK3mL2pQ5rS6tU7vWe9xY0zA1bC2dE3fG4hI5jK6lM7nO8pP","組織ID":"rec-org-0042","役割":"営業マネージャー","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-10T14:20:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@company.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-0042","役割":"営業","ステータス":"試用期間中","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2025-01-06T10:15:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.yuki@company.jp","ユーザー名":"鈴木由紀","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRST","組織ID":"rec-org-045","役割":"営業","ステータス":"無効","最終ログイン日時":"2024-11-15T09:30:00+09:00","作成日時":"2023-04-10T14:20:00+09:00","更新日時":"2024-12-01T16:45:00+09:00","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"tanaka.jiro@company.jp","ユーザー名":"田中次郎","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz123456789","組織ID":"rec-org-042","役割":"営業","ステータス":"無効","最終ログイン日時":"2024-11-15 14:32:00","作成日時":"2022-04-01 09:15:00","更新日時":"2025-01-20 10:45:00","作成者":"rec-admin-001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@corporate-management.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-001","役割":"経営管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-10T14:22:30Z","更新日時":"2025-01-15T09:30:45Z","作成者":"rec-002"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@example.co.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","組織ID":"rec-org-0001","役割":"営業","ステータス":"保留中","最終ログイン日時":null,"作成日時":"2024-12-15T10:30:00+09:00","更新日時":"2024-12-15T10:30:00+09:00","作成者":"rec-admin-0001"},{"ユーザーID":"rec-001","メールアドレス":"suzuki.hanako@partner-corp.jp","ユーザー名":"鈴木花子","パスワードハッシュ":"$2b$12$8kL9mP2qR5vN3xY7wZ1aOeJhF4gKsT6uVwXyZ2aB3cD4eF5gH6iJ7","組織ID":"rec-002","役割":"営業","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00Z","作成日時":"2024-08-20T14:15:00Z","更新日時":"2025-01-10T16:45:00Z","作成者":"rec-003"}],"契約書":[{"契約書ID":"rec-001","契約書名":"2024年度商品供給契約書（イオンリテール株式会社）","契約書説明":"大手流通企業イオンリテール株式会社との年間商品供給契約。食品・日用雑貨の継続的な供給に関する基本契約。納期、品質基準、支払条件等を規定。","契約種別":"供給契約","契約相手先ID":"rec-cust-0847","契約開始日":"2024-04-01T00:00:00Z","契約終了日":"2025-03-31T23:59:59Z","契約金額":850000000,"ステータス":"有効","担当者ID":"rec-user-0312","ファイルパス":"/contracts/2024/supply_aeon_retail_2024.pdf","作成日時":"2024-02-15T09:30:00Z","更新日時":"2024-03-28T14:22:00Z","作成者ID":"rec-user-0156"},{"契約書ID":"rec-001","契約書名":"クラウドERPシステム利用契約書","契約書説明":"SaaS型クラウドERPシステムの月額利用に関する契約。ユーザー数100名、標準サポート付き。","契約種別":"サービス契約","契約相手先ID":"rec-002","契約開始日":"2024-04-01T00:00:00Z","契約終了日":"2025-03-31T23:59:59Z","契約金額":1800000,"ステータス":"有効","担当者ID":"rec-003","ファイルパス":"/contracts/2024/saas_erp_agreement_20240401.pdf","作成日時":"2024-03-15T10:30:00Z","更新日時":"2024-03-28T14:15:00Z","作成者ID":"rec-004"},{"契約書ID":"rec-001","契約書名":"業務委託先との機密保持契約書","契約書説明":"システム開発業務における機密情報の保護及び秘密保持義務に関する契約。委託先企業が業務遂行過程で知得する当社の営業秘密、技術情報、顧客情報等の機密情報について、適切な管理と秘密保持を義務付けるもの。","契約種別":"NDA","契約相手先ID":"rec-002","契約開始日":"2024-04-01T00:00:00Z","契約終了日":"2026-03-31T23:59:59Z","契約金額":0,"ステータス":"有効","担当者ID":"rec-003","ファイルパス":"/contracts/2024/nda_20240401_abc123.pdf","作成日時":"2024-03-15T10:30:00Z","更新日時":"2024-03-28T14:20:00Z","作成者ID":"rec-004"},{"契約書ID":"rec-001","契約書名":"渋谷ビジネスビル3階テナント賃貸借契約書（更新版）","契約書説明":"渋谷ビジネスビル3階の事務所スペース約150坪に関する賃貸借契約。2025年3月31日の契約満了に伴う更新手続き中。賃料改定率3.5%を反映。","契約種別":"不動産賃貸借契約","契約相手先ID":"rec-002","契約開始日":"2025-04-01T00:00:00Z","契約終了日":"2028-03-31T23:59:59Z","契約金額":5400000,"ステータス":"承認待ち","担当者ID":"rec-003","ファイルパス":"/contracts/real_estate/2024/shibuya_biz_bldg_renewal_20250115.pdf","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"rec-004"},{"契約書ID":"rec-001-2024-sys-dev-001","契約書名":"システム開発委託契約書（2024年度）","契約書説明":"新規パートナー企業であるテックソリューション株式会社との間で、基幹システムの開発・保守業務を委託する契約。開発期間は12ヶ月間で、段階的な納品を予定している。","契約種別":"開発委託契約","契約相手先ID":"rec-partner-2024-001","契約開始日":"2024-04-01T00:00:00Z","契約終了日":"2025-03-31T23:59:59Z","契約金額":24000000,"ステータス":"有効","担当者ID":"rec-user-2024-yamada","ファイルパス":"/contracts/2024/system_dev_techsolution_001.pdf","作成日時":"2024-03-15T10:30:00Z","更新日時":"2024-04-01T09:00:00Z","作成者ID":"rec-user-2024-tanaka"},{"契約書ID":"rec-001","契約書名":"システム保守サービス契約書（2025年度更新）","契約書説明":"既存顧客である株式会社ビジネスソリューションズとの間で、保有システムの保守・運用サービスに関する契約を更新。24時間体制でのサポート、月次定期メンテナンス、セキュリティパッチ適用を含む。","契約種別":"保守サービス契約","契約相手先ID":"rec-102","契約開始日":"2025-01-01T00:00:00Z","契約終了日":"2025-12-31T23:59:59Z","契約金額":2400000,"ステータス":"有効","担当者ID":"rec-201","ファイルパス":"/contracts/maintenance/2025/biz_solutions_maintenance_2025.pdf","作成日時":"2024-12-15T10:30:00Z","更新日時":"2024-12-20T14:45:00Z","作成者ID":"rec-301"},{"契約書ID":"rec-001","契約書名":"株式会社テックイノベーション買収契約書","契約書説明":"テックイノベーション社の全株式取得に関する買収契約。対価として現金払いおよび株式交換による取得。クロージング条件、表明保証、補償条項を含む。","契約種別":"買収契約","契約相手先ID":"rec-c-001","契約開始日":"2025-04-01T00:00:00Z","契約終了日":"2026-03-31T23:59:59Z","契約金額":2500000000,"ステータス":"承認待ち","担当者ID":"rec-u-001","ファイルパス":"/contracts/2025/M&A/tech-innovation-acquisition-20250115.pdf","作成日時":"2025-01-15T10:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者ID":"rec-u-002"},{"契約書ID":"rec-001-2024-0847","契約書名":"2025年度デジタル広告媒体購買契約書","契約書説明":"当社のデジタルマーケティング活動に必要なディスプレイ広告、検索連動型広告、SNS広告等の媒体購買に関する契約。年間予算枠3,500万円でYahoo!、Google、Meta等の主要プラットフォームにおける広告配信を実施。","契約種別":"媒体購買契約","契約相手先ID":"rec-partner-2024-1203","契約開始日":"2025-01-01T00:00:00Z","契約終了日":"2025-12-31T23:59:59Z","契約金額":35000000,"ステータス":"有効","担当者ID":"rec-user-2024-0521","ファイルパス":"/contracts/2025/media_purchase_agreement_20250101.pdf","作成日時":"2024-11-15T10:30:00Z","更新日時":"2024-12-20T14:45:00Z","作成者ID":"rec-user-2024-0418"},{"契約書ID":"rec-001","契約書名":"労働者派遣契約書（2024年度）","契約書説明":"当社が派遣スタッフを受け入れるための労働者派遣契約。派遣期間中の労働条件、給与支払い、保険加入等の諸条件を定める。","契約種別":"労働者派遣契約","契約相手先ID":"rec-002","契約開始日":"2024-04-01T00:00:00Z","契約終了日":"2025-03-31T23:59:59Z","契約金額":14400000,"ステータス":"有効","担当者ID":"rec-003","ファイルパス":"/contracts/派遣契約_2024_001.pdf","作成日時":"2024-03-15T09:30:00Z","更新日時":"2024-03-28T14:20:00Z","作成者ID":"rec-004"},{"契約書ID":"rec-001","契約書名":"鋼材原材料長期供給契約書","契約書説明":"新日本鉄鋼工業株式会社との冷間圧延鋼板及び熱間圧延鋼板の長期安定供給に関する契約。月間供給量500トン、品質基準JIS G3141準拠。","契約種別":"売買契約","契約相手先ID":"rec-102","契約開始日":"2021-04-01T00:00:00Z","契約終了日":"2025-03-31T23:59:59Z","契約金額":1800000000,"ステータス":"有効","担当者ID":"rec-201","ファイルパス":"/contracts/2021/04/steel_supply_contract_20210401.pdf","作成日時":"2021-03-15T09:30:00Z","更新日時":"2024-11-20T14:15:00Z","作成者ID":"rec-301"}],"提案資料":[{"提案資料ID":"rec-001","提案資料名":"製造業向け統合生産管理システム導入提案書","説明":"大手自動車部品メーカー向けの生産計画、在庫管理、品質管理を統合したクラウドベースのシステム導入提案。既存の基幹システムとの連携を実現し、生産効率を30%向上させることを目指す。導入期間は6ヶ月、初期投資額は約2,500万円。","ユーザーID":"rec-u-042","ステータス":"承認待ち","提案日":"2024-11-15T10:30:00+09:00","契約書ID":null,"作成日時":"2024-11-08T14:22:15+09:00","更新日時":"2024-11-14T16:45:30+09:00","作成者ID":"rec-u-028"},{"提案資料ID":"rec-001","提案資料名":"既存顧客向け クラウドストレージ容量拡張プラン提案書","説明":"現在ご利用いただいている基本プランから、ストレージ容量を100GBから500GBへ拡張し、API連携機能とユーザー管理機能を追加するアップグレード提案です。月額利用料は現在の8,000円から15,000円となります。","ユーザーID":"rec-002","ステータス":"提案中","提案日":"2025-01-15T10:30:00+09:00","契約書ID":null,"作成日時":"2025-01-10T14:20:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","作成者ID":"rec-003"},{"提案資料ID":"rec-001","提案資料名":"2025年度年間保守契約更新提案書","説明":"株式会社ビジネスシステムズ様との2025年度年間保守契約の更新提案。既存システムの運用保守、定期メンテナンス、技術サポートを含む。前年度実績に基づいた改善提案も併せて記載。","ユーザーID":"rec-u-042","ステータス":"提案中","提案日":"2024-11-15T10:30:00+09:00","契約書ID":null,"作成日時":"2024-11-10T14:20:00+09:00","更新日時":"2024-11-15T09:45:00+09:00","作成者ID":"rec-u-015"},{"提案資料ID":"rec-20250115-001","提案資料名":"スタートアップ向けクラウドERP初期導入パッケージ","説明":"成長段階にあるスタートアップ企業を対象とした、クラウドベースのERP導入パッケージです。会計管理、在庫管理、顧客管理の3つの基本モジュールと、6ヶ月間の導入支援サービスが含まれています。初年度は特別割引価格を適用し、段階的な機能拡張に対応可能な設計となっています。","ユーザーID":"rec-user-0847","ステータス":"提案中","提案日":"2025-01-15T10:30:00+09:00","契約書ID":null,"作成日時":"2025-01-10T14:20:00+09:00","更新日時":"2025-01-15T10:35:00+09:00","作成者ID":"rec-user-0847"},{"提案資料ID":"rec-20250115-001","提案資料名":"次世代型交通管理システム技術仕様書","説明":"公開入札案件『スマートシティ交通管理システム構築事業』に対する技術仕様書。クラウドベースのリアルタイム交通流制御、AI予測分析機能、および自動運転対応インターフェースを含む。システム要件、アーキテクチャ設計、セキュリティ対策、実装スケジュール、保守運用体制を記載。","ユーザーID":"rec-user-2024-087","ステータス":"提案中","提案日":"2025-01-15T10:30:00+09:00","契約書ID":null,"作成日時":"2025-01-10T14:22:15+09:00","更新日時":"2025-01-15T09:45:30+09:00","作成者ID":"rec-user-2024-087"},{"提案資料ID":"rec-001","提案資料名":"既存システム連携による業務効率化提案","説明":"現在ご契約いただいている販売管理システムとの連携により、在庫管理業務の自動化を実現します。API連携による日次データ同期で、手作業による入力ミスを削減し、業務工数を月間40時間削減できる見込みです。","ユーザーID":"rec-u-0847","ステータス":"提案中","提案日":"2025-01-15T10:30:00+09:00","契約書ID":null,"作成日時":"2025-01-10T14:22:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","作成者ID":"rec-u-0847"},{"提案資料ID":"rec-001","提案資料名":"クラウド型営業管理システム導入提案","説明":"株式会社テクノソリューション様向けの営業プロセス効率化を目的とした、クラウド型CRMシステムの導入提案資料。顧客管理、案件管理、売上予測機能を備えており、営業チーム全体の生産性向上を見込める。初期導入コスト削減のため、段階的な機能展開プランも提示予定。","ユーザーID":"rec-0042","ステータス":"下書き","提案日":null,"契約書ID":null,"作成日時":"2025-01-15T10:30:00+09:00","更新日時":"2025-01-22T14:45:30+09:00","作成者ID":"rec-0042"},{"提案資料ID":"rec-20250115-001","提案資料名":"クラウド基幹システム導入プロジェクト提案書","説明":"株式会社山田製造所向けの統合クラウド基幹システム導入プロジェクト。既存のオンプレミスシステムからの移行、データマイグレーション、ユーザートレーニング、24ヶ月間の保守サポートを含む。総事業規模2,500万円。","ユーザーID":"rec-user-0847","ステータス":"承認待ち","提案日":"2025-01-15T10:30:00Z","契約書ID":null,"作成日時":"2024-12-20T14:22:15Z","更新日時":"2025-01-15T10:30:00Z","作成者ID":"rec-user-0847"},{"提案資料ID":"rec-20250115-001","提案資料名":"クラウド勤怠管理システム導入提案書（改訂版）","説明":"前回却下いただいた勤怠管理システム導入提案につき、ご指摘いただいたコスト削減とカスタマイズ対応を反映した改訂版です。初期導入費を30%削減し、段階的な機能展開プランを追加いたしました。","ユーザーID":"rec-user-0847","ステータス":"提案中","提案日":"2025-01-15T10:30:00+09:00","契約書ID":null,"作成日時":"2025-01-14T16:45:00+09:00","更新日時":"2025-01-15T09:20:00+09:00","作成者ID":"rec-user-0847"},{"提案資料ID":"rec-001","提案資料名":"クラウド基盤システム構築 実装フェーズ移行提案書","説明":"既存オンプレミスシステムからクラウド基盤への移行に伴い、要件定義フェーズ完了後の実装フェーズへの移行を提案。実装体制、スケジュール、見積もり、リスク管理計画を含む詳細な実装計画書。","ユーザーID":"rec-0047","ステータス":"契約済み","提案日":"2024-10-15T09:30:00+09:00","契約書ID":"rec-2024-1847","作成日時":"2024-10-12T14:22:00+09:00","更新日時":"2024-10-25T16:45:00+09:00","作成者ID":"rec-0047"}],"契約書バージョン":[{"バージョンID":"rec-001","契約書ID":"rec-002","バージョン番号":1,"ファイルパス":"/contracts/2024/basic_agreement_ABC_corp_v1.pdf","変更内容":"新規顧客ABC株式会社との基本契約書初版作成。契約期間3年、サービス内容はシステム保守・運用サポート。","ステータス":"レビュー中","作成者ID":"rec-003","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T09:30:00+09:00","承認者ID":null,"承認日時":null},{"バージョンID":"rec-00247","契約書ID":"rec-00156","バージョン番号":3,"ファイルパス":"/contracts/2025/rec-00156/v3_20250115_revised.pdf","変更内容":"法務レビュー指摘に基づき第5条（知的財産権）の帰属要件を明確化。第12条（損害賠償）の上限額を売上高の12ヶ月分から24ヶ月分に変更。第8条（秘密保持期間）を契約終了後5年から7年に延長。","ステータス":"レビュー中","作成者ID":"rec-00089","作成日時":"2025-01-15T10:30:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","承認者ID":null,"承認日時":null},{"バージョンID":"rec-001","契約書ID":"rec-042","バージョン番号":3,"ファイルパス":"/contracts/2025/rec-042_v3_20250115.pdf","変更内容":"顧客A社からの要望により、納期条件を「30日以内」から「45日以内」に変更。また、支払い条件を「一括払い」から「分割払い（初回50%、納品時50%）」に修正。","ステータス":"承認済み","作成者ID":"rec-201","作成日時":"2025-01-15 10:30:00","更新日時":"2025-01-20 14:45:00","承認者ID":"rec-305","承認日時":"2025-01-20 14:45:00"},{"バージョンID":"rec-001","契約書ID":"rec-042","バージョン番号":3,"ファイルパス":"https://storage.company.jp/contracts/rec-042/v3_20250115.pdf","変更内容":"契約期間を2025年3月31日から2027年3月31日に延長。年間保守費を前年度比3%増の¥2,472,000に変更。サービスレベルアグリーメント(SLA)を99.8%から99.95%に強化。緊急対応時間を24時間から12時間に短縮。","ステータス":"承認済み","作成者ID":"rec-156","作成日時":"2025-01-10 09:30:00","更新日時":"2025-01-15 14:22:00","承認者ID":"rec-203","承認日時":"2025-01-15 14:22:00"},{"バージョンID":"rec-v-20250215-001","契約書ID":"rec-c-20240601-001","バージョン番号":3,"ファイルパス":"s3://contracts-bucket/2025/02/supply-agreement-v3-20250215.pdf","変更内容":"2025年4月納入分より単価を前版比3.5%引き上げ。基本単価¥850/個から¥880/個に変更。最小発注数は変更なし。納期条件も従前通り。","ステータス":"承認済み","作成者ID":"rec-u-20230401-015","作成日時":"2025-02-10 09:30:00","更新日時":"2025-02-15 14:22:00","承認者ID":"rec-u-20220715-008","承認日時":"2025-02-15 14:22:00"},{"バージョンID":"rec-20250215-001","契約書ID":"rec-contract-2024-0847","バージョン番号":3,"ファイルパス":"s3://contracts-storage/2025/contract-0847-v3-20250215.pdf","変更内容":"2025年4月施行の個人情報保護法改正に対応し、第8条に『個人情報の第三国移転に関する条項』を追加。第12条では『生成AI利用に伴うデータ処理の透明性確保』について新規記載。","ステータス":"承認済み","作成者ID":"rec-user-2024-0156","作成日時":"2025-02-10T09:30:00+09:00","更新日時":"2025-02-15T14:45:00+09:00","承認者ID":"rec-user-2024-0089","承認日時":"2025-02-15T14:45:00+09:00"},{"バージョンID":"rec-v2024-0847","契約書ID":"rec-c2024-0312","バージョン番号":2,"ファイルパス":"s3://contracts/2024/12/rec-c2024-0312_v2_20250115.pdf","変更内容":"顧客指摘事項への対応：第5条の納期条件を「30日以内」から「45日以内」に変更、第8条の違約金を「契約金額の5%」から「3%」に修正、別紙1の仕様書を最新版に更新","ステータス":"レビュー中","作成者ID":"rec-u2024-0156","作成日時":"2025-01-15T10:30:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","承認者ID":null,"承認日時":null},{"バージョンID":"rec-001-v4a2b8c9","契約書ID":"rec-001-ct5f3e1","バージョン番号":3,"ファイルパス":"s3://contracts/2025/rec-001-ct5f3e1/v3_20250115_final_draft.pdf","変更内容":"第5条の納期表現を「営業日ベース」から「カレンダー日ベース」に統一。第8条の違約金計算式の小数点以下の丸め方を明確化。","ステータス":"レビュー中","作成者ID":"rec-001-usr7k2m","作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-15T14:45:00+09:00","承認者ID":null,"承認日時":null},{"バージョンID":"rec-v-0847","契約書ID":"rec-c-0512","バージョン番号":3,"ファイルパス":"https://storage.company.jp/contracts/2024/rec-c-0512/v3_20250115.pdf","変更内容":"子会社ジャパンテック株式会社の追加に伴い、契約者情報を更新。新規契約者の住所、代表者名、押印権者を第2条に追記。有効期限を2025年12月31日に延長。","ステータス":"承認済み","作成者ID":"rec-u-0234","作成日時":"2025-01-10T14:32:00+09:00","更新日時":"2025-01-15T09:18:00+09:00","承認者ID":"rec-u-0089","承認日時":"2025-01-15T09:18:00+09:00"},{"バージョンID":"rec-0847","契約書ID":"rec-0521","バージョン番号":3,"ファイルパス":"https://contracts.company.jp/2025/rec-0521/v3_standard_terms.pdf","変更内容":"既存の個別条件から標準契約条件への統一。支払い条件を月末締め翌月末払いに統一、納期遅延時の違約金を売上高の0.5%に統一、知的財産権の帰属を甲社に統一。","ステータス":"承認済み","作成者ID":"rec-1204","作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","承認者ID":"rec-1089","承認日時":"2025-01-22T14:45:00+09:00"}],"提案資料バージョン":[{"バージョンID":"rec-001","提案資料ID":"rec-002","バージョン番号":1,"タイトル":"次世代自動溶接システムAWS-5000導入提案書","内容":"【提案概要】\n貴社の自動車部品製造ラインの生産効率向上を実現するため、当社の最新自動溶接システムAWS-5000の導入をご提案いたします。\n\n【主な特徴】\n・溶接精度：±0.5mm以下の高精度実現\n・生産性：従来比150%の処理能力向上\n・消費電力：従来比35%削減\n・保守性：AI診断機能により予防保全を実現\n\n【導入効果】\n年間生産量10万ユニット想定時、初年度で約2,800万円のコスト削減が見込まれます。ROI期間は約18ヶ月です。\n\n【導入スケジュール】\n契約から納入まで4ヶ月、その後2ヶ月の稼働調整期間を予定しています。\n\n【価格】\nシステム一式：1億2,500万円（消費税別）\nオプション保守パッケージ（5年）：年間800万円","ステータス":"下書き","作成者ID":"rec-003","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T09:30:00+09:00","備考":"営業部・田中太郎が顧客ヒアリング後に初版作成。技術仕様書は佐藤工学部長に確認予定。財務シミュレーションは経理部・鈴木課長に依頼中。"},{"バージョンID":"rec-001-v2-20250115","提案資料ID":"rec-001-proposal","バージョン番号":2,"タイトル":"クラウド型顧客管理システム導入提案書（営業フィードバック反映版）","内容":"【提案概要】\n当社のクラウド型CRMシステム「SalesCloud Pro」の導入をご提案いたします。\n\n【主な改善点】\n・初期導入コストを15%削減し、月額利用料を¥450,000に設定\n・実装期間を3ヶ月から2.5ヶ月に短縮\n・既存システムとの連携機能を強化\n\n【期待効果】\n・営業生産性の向上：約30%\n・顧客対応時間の削減：約25%\n・売上予測精度の向上：約40%\n\n【導入スケジュール】\n2月中旬：要件定義ワークショップ\n3月上旬：システム構築・カスタマイズ\n4月中旬：本番運用開始\n\n【サポート体制】\n・24時間365日テクニカルサポート\n・月次の経営層向けレポート提供\n・年2回の無料アップデート","ステータス":"承認待ち","作成者ID":"rec-user-sales-yamada","作成日時":"2025-01-15T14:30:00+09:00","更新日時":"2025-01-15T14:30:00+09:00","備考":"営業チーム（山田営業部長）からのフィードバックを反映し、以下を修正：①コスト削減幅を拡大、②導入期間を短縮、③既存システム連携機能を詳述。次回会議で顧客提示予定。"},{"バージョンID":"rec-v-20250215-001","提案資料ID":"rec-p-20250101-042","バージョン番号":3,"タイトル":"2025年度デジタル変革推進プロジェクト提案書（経営層指摘対応版）","内容":"【プロジェクト概要】\n当社の競争力強化を目的とした包括的なデジタル変革を推進するプロジェクトです。経営層からの指摘を踏まえ、ROI最大化と実装リスク低減を重視した計画に大幅改訂いたしました。\n\n【実施体制】\nプロジェクト責任者：山田太郎（CTO）、推進チーム：15名\n\n【主要施策】\n1. 基幹システムのクラウド移行（Phase 1: 2025年4月〜9月）\n2. データ分析基盤の構築（Phase 2: 2025年10月〜2026年3月）\n3. 業務プロセス自動化（Phase 3: 2026年4月〜）\n\n【投資規模】\n総額：2億5,000万円（前版比▲30%削減）\n初年度：1億2,000万円\n\n【期待効果】\n- 運用コスト年間3,500万円削減\n- 業務効率化による生産性向上：25%\n- システム保守工数削減：40%\n\n【リスク対応】\nベンダーロックイン対策、段階的導入による実装リスク最小化、要員育成計画の強化","ステータス":"承認待ち","作成者ID":"rec-u-20240501-008","作成日時":"2025-02-15T14:30:00+09:00","更新日時":"2025-02-15T14:30:00+09:00","備考":"経営会議（2025年2月10日）での指摘事項を全て反映。前版からの主な変更：①投資規模の30%削減、②ROI試算の詳細化、③リスク対応策の強化、④段階的実装スケジュールの明確化。次回レビュー予定日：2025年2月28日"},{"バージョンID":"rec-001-v2-20250115","提案資料ID":"rec-001-prop-20241201","バージョン番号":2,"タイトル":"AI導入提案書_顧客質問対応版","内容":"前回の提案に対して頂いた質問への補足説明です。\n\n【質問1】導入期間について\n当初の3ヶ月から4ヶ月への変更理由：既存システムとの連携テストに予想以上の時間が必要となったため、安定稼働を優先し期間を延長いたしました。\n\n【質問2】コスト削減効果について\n初年度の効果試算を添付の詳細資料で提示いたします。事務作業時間の削減により、月額約45万円の効果を見込んでおります。\n\n【質問3】セキュリティ対策について\nISO27001認証取得済みのクラウドサービスを採用し、データ暗号化、アクセス制御、定期的なセキュリティ監査を実施いたします。詳細は別紙セキュリティ仕様書をご参照ください。","ステータス":"承認待ち","作成者ID":"rec-user-20240401","作成日時":"2025-01-15T14:30:00+09:00","更新日時":"2025-01-15T14:30:00+09:00","備考":"顧客（株式会社山田商事 営業部長 佐藤次郎）からの1月10日付けメール質問3項目に対応した補足版。初版から導入期間、コスト効果、セキュリティ対策の3点を詳細化。営業担当者：鈴木花子が作成。次回会議は1月22日予定。"},{"バージョンID":"rec-001-v2024-1127-a8f3","提案資料ID":"rec-001-prop-2024-1015","バージョン番号":3,"タイトル":"◎◎システム導入提案書（法務確認版）","内容":"【提案概要】\n当社が提供する◎◎システムの導入により、貴社の業務効率化を実現いたします。\n\n【契約条件】\n・導入期間：2025年2月〜4月（3ヶ月）\n・初期構築費：850万円\n・月額運用費：45万円（12ヶ月契約）\n・保守サポート：平日9:00-18:00対応\n・SLA：99.5%の可用性を保証\n\n【法務確認後の修正項目】\n・秘密保持契約条項を追加（有効期間5年）\n・個人情報の取り扱いについて改正個人情報保護法に準拠\n・契約解除条件を明確化（6ヶ月前通知が必要）\n・損害賠償責任の上限を年間費用の12ヶ月分に設定\n・知的財産権の帰属を明示\n\n【実装スケジュール】\n2025年2月：要件定義、環境構築\n2025年3月：システム開発、テスト\n2025年4月：本番運用開始、トレーニング実施","ステータス":"承認待ち","作成者ID":"rec-001-user-2024-0523","作成日時":"2024-11-27T14:30:00+09:00","更新日時":"2024-11-27T14:30:00+09:00","備考":"法務部（山田花子）による契約条件チェック完了。秘密保持条項、個人情報保護、契約解除条件、損害賠償責任上限、知的財産権帰属について修正。営業部長（佐藤次郎）の承認待ち。"},{"バージョンID":"rec-001","提案資料ID":"rec-002","バージョン番号":2,"タイトル":"システム導入提案書（修正版）- 2025年1月","内容":"貴社向けシステム導入提案の修正版です。\n\n【提案内容】\n業務管理システムの導入による業務効率化\n\n【納品スケジュール】\n・要件定義：2025年2月〜3月\n・開発期間：2025年4月〜8月\n・テスト期間：2025年9月\n・本番稼働：2025年10月\n\n【見積額】\n・システム開発費：4,200,000円\n・導入支援費：800,000円\n・研修費：300,000円\n・合計：5,300,000円\n\n【支払条件】\n・契約時：50%（2,650,000円）\n・本番稼働時：50%（2,650,000円）\n\n【変更内容】\n前版からの値引き対応により、総額を6,500,000円から5,300,000円に修正いたしました。","ステータス":"承認待ち","作成者ID":"rec-003","作成日時":"2025-01-15T10:30:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","備考":"顧客との価格交渉を踏まえ、見積額を18.5%削減。開発工程の効率化により対応可能。営業部門と技術部門で合意済み。"},{"バージョンID":"rec-001","提案資料ID":"rec-002","バージョン番号":5,"タイトル":"クラウド基盤統合システム導入提案書（最終版）","内容":"本提案は、貴社の既存システムの老朽化対応とDX推進を目的とした、クラウド基盤統合システムの導入に関するものです。\n\n【提案内容】\n1. 現状分析\n既存オンプレミスシステムの保守費用年間2,500万円、システム間のデータ連携の非効率性が課題\n\n2. ソリューション\n・AWS上へのマイグレーション\n・マイクロサービスアーキテクチャの採用\n・リアルタイムデータ分析基盤の構築\n\n3. 導入スケジュール\n第1フェーズ（3ヶ月）：基盤構築\n第2フェーズ（4ヶ月）：既存システム段階的移行\n第3フェーズ（2ヶ月）：運用安定化\n\n4. 投資効果\n初期投資：8,500万円\n年間運用費：1,800万円（削減効果：700万円/年）\nROI：12.1ヶ月\n\n5. リスク対策\n・段階的移行による業務継続性の確保\n・24時間サポート体制の構築\n・定期的なセキュリティ監査の実施","ステータス":"承認済み","作成者ID":"rec-003","作成日時":"2025-01-15T14:30:00+09:00","更新日時":"2025-01-28T16:45:00+09:00","備考":"顧客（鈴木商事 CTO 山田花子様）との最終打ち合わせ（2025年1月28日実施）で承認を得た。提案内容に変更なし。契約締結予定日は2025年2月10日。"},{"バージョンID":"rec-v2024-0847","提案資料ID":"rec-p2024-0312","バージョン番号":2,"タイトル":"既存システム拡張提案 - AI分析機能オプション追加","内容":"既にご導入いただいているERPシステムに対して、AI駆動の売上予測分析機能を追加するオプションサービスのご提案です。\n\n【提案内容】\n・リアルタイム売上データ分析\n・3ヶ月先までの需要予測\n・異常検知アラート機能\n・カスタムダッシュボード\n\n【導入スケジュール】\n2025年2月中旬：要件定義\n2025年3月：開発・テスト\n2025年4月：本番環境への展開\n\n【料金】\n初期導入費用：850,000円\n月額利用料：120,000円（年間契約時は月額100,000円）\n\n【期待効果】\n在庫削減率：15～20%\n予測精度：92%以上\n意思決定時間短縮：40%","ステータス":"承認待ち","作成者ID":"rec-u2024-1156","作成日時":"2025-01-15T10:30:00+09:00","更新日時":"2025-01-15T10:30:00+09:00","備考":"前回バージョン（v1）からの変更点：料金プランを年間契約割引対応に修正、導入スケジュールを2ヶ月短縮、ROI試算シートを別紙で追加。営業部長・佐藤次郎からのフィードバックを反映済み。"},{"バージョンID":"rec-001-v3","提案資料ID":"rec-001","バージョン番号":3,"タイトル":"2025年度デジタル化推進プロジェクト提案書","内容":"既承認の2024年度プロジェクトをベースに、新規部門への展開を追加。業務効率化ツールの導入により、事務作業時間を30%削減見込み。初期投資1,200万円、3年で投資回収予定。実施体制：プロジェクト管理室（山田花子リード）、IT企画部、各部門代表者。スケジュール：4月要件定義、6月システム選定、9月導入開始、12月本稼働。リスク対策：ベンダーロックイン回避、従業員教育の充実化。","ステータス":"承認済み","作成者ID":"rec-user-045","作成日時":"2025-02-14T09:30:00+09:00","更新日時":"2025-02-28T14:15:00+09:00","備考":"前年度承認版（v1）の実績データを反映し、新部門適用版として再構成。営業部、企画部からの追加要望を盛り込み、投資効果の根拠を強化。経営会議での質疑応答内容を踏まえ、ROI試算を詳細化。"},{"バージョンID":"rec-001","提案資料ID":"rec-prop-2024-001","バージョン番号":2,"タイトル":"クラウド基盤構築提案書（修正版）","内容":"前回の却下理由を踏まえ、以下の点を改善いたしました。\n\n【改善内容】\n1. コスト削減：初期投資を15%削減し、月額運用費を3万円削減\n2. セキュリティ強化：ISO27001認証取得済みのベンダーを採用\n3. 移行期間短縮：従来の6ヶ月から3ヶ月への短縮を実現\n4. サポート体制：24時間日本語サポートを追加\n\n【提案内容】\nAWSを基盤とした段階的なクラウド移行を実施します。第1段階でテスト環境構築、第2段階で本番環境への移行を行い、リスク最小化を図ります。\n\n【費用見積もり】\n初期構築費用：450万円\n月額運用費：12万円\n\n【期待効果】\nシステム稼働率99.9%以上、運用コスト年間100万円削減","ステータス":"承認待ち","作成者ID":"rec-user-2024-015","作成日時":"2024-12-15T10:30:00+09:00","更新日時":"2024-12-15T10:30:00+09:00","備考":"顧客からの却下理由「コスト高、セキュリティ懸念、移行期間長期化」に対応。営業部長・佐藤健一と顧客IT部長・山田花子との協議を経て修正。次回提案日時：2024年12月22日"}],"変更履歴":[{"変更履歴ID":"rec-001","対象テーブル":"契約書","対象ID":"rec-0042","変更種別":"作成","変更フィールド":"基本情報一括作成","変更前値":null,"変更後値":"契約書番号: CTR-2024-0891, 顧客名: 株式会社ビジネスソリューション, 契約金額: 2,500,000円, 契約開始日: 2024-04-01, 契約終了日: 2025-03-31, ステータス: 作成中","変更理由":"新規営業案件に基づく契約書初回作成","作成者ID":"rec-0156","作成日時":"2024-03-15T09:30:00+09:00"},{"変更履歴ID":"rec-20250215-001","対象テーブル":"契約書","対象ID":"rec-contract-2024-0847","変更種別":"更新","変更フィールド":"契約金額","変更前値":"2,500,000","変更後値":"2,350,000","変更理由":"顧客（株式会社山田商事）からの値引き要望に対応。営業担当者の判断により150万円の減額を承認。","作成者ID":"rec-user-営業部-0521","作成日時":"2025-02-15 14:32:18"},{"変更履歴ID":"rec-20250115-001","対象テーブル":"契約書","対象ID":"rec-contract-2024-0847","変更種別":"ステータス変更","変更フィールド":"ステータス","変更前値":"承認待ち","変更後値":"承認済み","変更理由":"法務部による内容確認完了。条項の適法性確認、リスク評価を実施し問題なし。","作成者ID":"rec-user-2024-0312","作成日時":"2025-01-15T14:32:18+09:00"},{"変更履歴ID":"rec-20250115-00847","対象テーブル":"契約書","対象ID":"rec-contract-2024-0156","変更種別":"更新","変更フィールド":"有効期限","変更前値":"2025-03-31","変更後値":"2026-03-31","変更理由":"顧客との協議により契約期間を1年間延長することが決定。既存契約の継続性を考慮し、自動更新条項に基づき有効期限を修正。","作成者ID":"rec-user-0892","作成日時":"2025-01-15T14:32:18+09:00"},{"変更履歴ID":"rec-20250215-0847","対象テーブル":"提案資料","対象ID":"rec-prop-20250110-0523","変更種別":"更新","変更フィールド":"見積金額","変更前値":"2,850,000","変更後値":"2,565,000","変更理由":"顧客（株式会社ABC商事）との価格交渉により10%の値引きを実施。営業担当者の鈴木営業との協議結果、競合他社との比較見積もりに対応するため値引きを承認。","作成者ID":"rec-user-20240401-0156","作成日時":"2025-02-15 14:32:18"},{"変更履歴ID":"rec-20250215-0847","対象テーブル":"提案資料","対象ID":"rec-prop-2024-1523","変更種別":"ステータス変更","変更フィールド":"全体ステータス","変更前値":"審査中","変更後値":"却下","変更理由":"顧客より2025年2月14日に却下連絡を受けた。理由は提案内容が顧客の予算要件を満たさないため。","作成者ID":"rec-user-0156","作成日時":"2025-02-15 09:30:00"},{"変更履歴ID":"rec-20250115-0847","対象テーブル":"契約書","対象ID":"rec-contract-2024-1523","変更種別":"ステータス変更","変更フィールド":"ステータス","変更前値":"署名待機中","変更後値":"契約済み","変更理由":"契約書に全署名者からの署名が完了したため、ステータスを契約済みに更新しました。署名完了日時: 2025-01-15 14:32:00","作成者ID":"rec-user-admin-0892","作成日時":"2025-01-15 14:33:45"},{"変更履歴ID":"rec-001","対象テーブル":"提案資料","対象ID":"rec-0042","変更種別":"更新","変更フィールド":"付加サービス一覧","変更前値":"基本サポート（平日9:00-17:00）、月次レポート","変更後値":"基本サポート（平日9:00-17:00）、月次レポート、24時間緊急対応サービス、カスタマイズコンサルティング（月2回まで）","変更理由":"顧客からの要望により、より充実したサービス内容を提案するため付加サービスを拡張。競合他社との差別化を図る。","作成者ID":"rec-0156","作成日時":"2024-11-15T14:32:00+09:00"},{"変更履歴ID":"rec-001","対象テーブル":"契約書","対象ID":"rec-002","変更種別":"作成","変更フィールド":"契約書全体","変更前値":"","変更後値":"契約ID: rec-002, 契約先: 株式会社ソリューションパートナー, 契約金額: ¥2,500,000, 契約期間: 2025年4月1日～2026年3月31日, ステータス: 下書き","変更理由":"既存契約書（rec-001）の更新時期到来に伴い、契約条件を踏襲して新規契約書を複製作成。前回契約期間満了に伴う継続契約対応。","作成者ID":"rec-003","作成日時":"2025-02-15T09:30:00+09:00"},{"変更履歴ID":"rec-20250214-001","対象テーブル":"契約書","対象ID":"rec-contract-2023-0847","変更種別":"ステータス変更","変更フィールド":"ステータス","変更前値":"有効","変更後値":"削除","変更理由":"監査対応のため。2023年度決算監査における過去契約書の整理。本契約は既に履行完了し、新規契約に置き換わっているため、履歴保持の上でステータスを削除に変更。","作成者ID":"rec-user-2024-0156","作成日時":"2025-02-14T10:35:22+09:00"}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1782623274190";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav style="display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg,var(--bg-sidebar,#0e1a31));border-bottom:1px solid var(--top-bar-border,var(--border,#2a3a5d));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--text,#e8eefc);white-space:nowrap;">匠の案件管理</span><a href="./scr-1782622835730.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">営業成果レポート自動生成・配信システム</a><a href="./scr-1782623175064.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:1;border-bottom:2px solid var(--primary,#2b66ff);font-weight:600;">契約・提案資料管理システム</a><a href="./scr-1782623533329.html" data-aivic-nav-system="itg-4" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">顧客企業向け契約・成果管理ポータル</a><a href="./scr-1782623848853.html" data-aivic-nav-system="itg-5" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">契約変更・請求検証管理システム</a><a href="./scr-1782622299760.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">営業データ品質管理・請求自動化システム</a></nav>
+  <div class="shell">
+    <div class="top-bar">
+      <div class="logo">
+        <div class="logo-icon">📋</div>
+        <span>契約・提案資料管理</span>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-menu">
+          <div class="user-avatar">U</div>
+          <span>ユーザー</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div class="sidebar scrollbar-thin">
+        <div class="sidebar-section">
+          <div class="sidebar-label">メイン</div>
+          <div class="nav-item aivic-active" data-aivic-nav="scr-1782623175064" onclick="window.showScreen('scr-1782623175064')">
+            <div class="nav-icon">📁</div>
+            <span>資料管理</span>
+          </div>
+          <div class="nav-item" data-aivic-nav="scr-1782623246430" onclick="window.showScreen('scr-1782623246430')">
+            <div class="nav-icon">🔍</div>
+            <span>検索・表示</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">バージョン管理</div>
+          <div class="nav-item" data-aivic-nav="scr-1782623187703" onclick="window.showScreen('scr-1782623187703')">
+            <div class="nav-icon">⚖️</div>
+            <span>バージョン比較</span>
+          </div>
+          <div class="nav-item" data-aivic-nav="scr-1782623214998" onclick="window.showScreen('scr-1782623214998')">
+            <div class="nav-icon">➕</div>
+            <span>バージョン入力</span>
+          </div>
+          <div class="nav-item" data-aivic-nav="scr-1782623226957" onclick="window.showScreen('scr-1782623226957')">
+            <div class="nav-icon">🏷️</div>
+            <span>最新版・アーカイブ</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">設定</div>
+          <div class="nav-item" data-aivic-nav="scr-1782623302597" onclick="window.showScreen('scr-1782623302597')">
+            <div class="nav-icon">⚙️</div>
+            <span>ドキュメント管理</span>
+          </div>
+          <div class="nav-item" data-aivic-nav="scr-1782623316492" onclick="window.showScreen('scr-1782623316492')">
+            <div class="nav-icon">📋</div>
+            <span>テンプレート・ルール</span>
+          </div>
+        </div>
+      </div>
+
+      <main class="content-area scrollbar-thin">
+        <div data-aivic-panel="scr-1782623175064" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623187703" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623214998" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623226957" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623246430" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623260221" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623274190" style="display:block"><div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-main); color: var(--text);">
+  <!-- ヘッダー -->
+  <div style="padding: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card);">
+    <h1 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 600;">契約書・提案資料検索</h1>
+    <p style="margin: 0; font-size: 13px; color: var(--text-muted);">契約書と提案資料を統合的に検索・フィルタリング</p>
+  </div>
+
+  <!-- 検索フィルタバー -->
+  <div style="padding: 12px 16px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end;">
+    
+    <!-- キーワード検索 -->
+    <div style="flex: 1; min-width: 180px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">キーワード</label>
+      <input 
+        type="text" 
+        data-testid="keyword-input"
+        placeholder="資料名、説明で検索..."
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      />
+    </div>
+
+    <!-- 資料種別フィルタ -->
+    <div style="flex: 0 0 140px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">種別</label>
+      <select 
+        data-testid="document-type-filter"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      >
+        <option value="">すべて</option>
+        <option value="contract">契約書</option>
+        <option value="proposal">提案資料</option>
+      </select>
+    </div>
+
+    <!-- ステータスフィルタ -->
+    <div style="flex: 0 0 140px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">ステータス</label>
+      <select 
+        data-testid="status-filter"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      >
+        <option value="">すべて</option>
+        <option value="draft">下書き</option>
+        <option value="pending">承認待ち</option>
+        <option value="approved">承認済み</option>
+        <option value="active">有効</option>
+        <option value="completed">完了</option>
+        <option value="rejected">却下</option>
+      </select>
+    </div>
+
+    <!-- 作成者フィルタ -->
+    <div style="flex: 0 0 140px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">作成者</label>
+      <select 
+        data-testid="creator-filter"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      >
+        <option value="">すべて</option>
+      </select>
+    </div>
+
+    <!-- 作成日範囲 -->
+    <div style="flex: 0 0 110px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">作成日（開始）</label>
+      <input 
+        type="date" 
+        data-testid="created-from-date"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      />
+    </div>
+
+    <div style="flex: 0 0 110px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">作成日（終了）</label>
+      <input 
+        type="date" 
+        data-testid="created-to-date"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      />
+    </div>
+
+    <!-- 更新日範囲 -->
+    <div style="flex: 0 0 110px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">更新日（開始）</label>
+      <input 
+        type="date" 
+        data-testid="updated-from-date"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      />
+    </div>
+
+    <div style="flex: 0 0 110px;">
+      <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500;">更新日（終了）</label>
+      <input 
+        type="date" 
+        data-testid="updated-to-date"
+        style="width: 100%; padding: 6px 8px; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; background: var(--bg-main); color: var(--text); font-size: 13px; box-sizing: border-box;"
+      />
+    </div>
+
+    <!-- ボタングループ -->
+    <div style="display: flex; gap: 6px; align-items: flex-end;">
+      <button 
+        data-testid="search-button"
+        style="padding: 6px 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+        onmouseover="this.style.background='var(--primary-hover)'"
+        onmouseout="this.style.background='var(--primary)'"
+      >
+        検索
+      </button>
+      <button 
+        data-testid="reset-button"
+        style="padding: 6px 12px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+        onmouseover="this.style.background='rgba(212, 175, 55, 0.08)'"
+        onmouseout="this.style.background='transparent'"
+      >
+        リセット
+      </button>
+      <button 
+        data-testid="export-csv-button"
+        style="padding: 6px 12px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+        onmouseover="this.style.background='rgba(212, 175, 55, 0.08)'"
+        onmouseout="this.style.background='transparent'"
+      >
+        CSVエクスポート
+      </button>
+    </div>
+  </div>
+
+  <!-- 検索結果情報 -->
+  <div style="padding: 8px 16px; background: var(--bg-main); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-muted);">
+    <span>検索結果: <strong data-testid="result-count" style="color: var(--text);">0</strong> 件</span>
+  </div>
+
+  <!-- 検索結果テーブル -->
+  <div style="flex: 1; overflow: auto; padding: 0;">
+    <div class="table-wrap" style="margin: 0; border-radius: 0;">
+      <table data-testid="record-list" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="background: var(--bg-card); border-bottom: 1px solid var(--border);">
+            <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-right: 1px solid var(--border);">資料名</th>
+            <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-right: 1px solid var(--border); width: 80px;">種別</th>
+            <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-right: 1px solid var(--border); width: 90px;">ステータス</th>
+            <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-right: 1px solid var(--border); width: 100px;">作成者</th>
+            <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-right: 1px solid var(--border); width: 100px;">作成日</th>
+            <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-right: 1px solid var(--border); width: 100px;">更新日</th>
+            <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text); border-right: 1px solid var(--border); width: 60px;">Ver</th>
+            <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text); width: 80px;">操作</th>
+          </tr>
+        </thead>
+        <tbody data-testid="record-tbody" id="record-tbody">
+          <tr style="background: var(--bg-main); border-bottom: 1px solid var(--border);">
+            <td colspan="8" style="padding: 20px 12px; text-align: center; color: var(--text-muted);">検索条件を入力して「検索」ボタンをクリックしてください</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 詳細・バージョン情報モーダル（初期非表示） -->
+<div 
+  id="detail-modal-overlay" 
+  class="modal-overlay"
+  style="display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.55); display: flex; align-items: center; justify-content: center;"
+>
+  <div style="background: var(--bg-card); color: var(--text); padding: 24px; border-radius: 8px; max-width: 600px; width: 90%; max-height: 80vh; overflow: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2 data-testid="modal-title" style="margin: 0; font-size: 16px; font-weight: 600;">詳細情報</h2>
+      <button 
+        data-testid="modal-close-button"
+        style="background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
+        onclick="document.getElementById('detail-modal-overlay').style.display='none'"
+      >
+        ×
+      </button>
+    </div>
+    <div id="modal-content" style="font-size: 13px; line-height: 1.6;">
+      <!-- 動的に挿入される -->
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end;">
+      <button 
+        data-testid="modal-compare-button"
+        style="padding: 8px 16px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+        onmouseover="this.style.background='var(--primary-hover)'"
+        onmouseout="this.style.background='var(--primary)'"
+      >
+        バージョン比較
+      </button>
+      <button 
+        data-testid="modal-manage-button"
+        style="padding: 8px 16px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+        onmouseover="this.style.background='var(--primary-hover)'"
+        onmouseout="this.style.background='var(--primary)'"
+      >
+        管理画面へ
+      </button>
+      <button 
+        data-testid="modal-close-button-bottom"
+        style="padding: 8px 16px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;"
+        onmouseover="this.style.background='rgba(212, 175, 55, 0.08)'"
+        onmouseout="this.style.background='transparent'"
+        onclick="document.getElementById('detail-modal-overlay').style.display='none'"
+      >
+        閉じる
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay背景クリックで閉じる -->
+<script>
+document.getElementById('detail-modal-overlay')?.addEventListener('click', (e) => {
+  if (e.target.id === 'detail-modal-overlay') {
+    e.target.style.display = 'none';
+  }
+});
+</script></div>
+        <div data-aivic-panel="scr-1782623288137" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623302597" style="display:none"></div>
+        <div data-aivic-panel="scr-1782623316492" style="display:none"></div>
+      </main>
+    </div>
+  </div>
+
+  
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>
